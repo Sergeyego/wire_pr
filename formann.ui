@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormAnn</class>
+ <widget class="QWidget" name="FormAnn">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>945</width>
+    <height>593</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>С</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="DateEdit" name="dateEditBeg">
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>По</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="DateEdit" name="dateEditEnd">
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdUpd">
+           <property name="toolTip">
+            <string>Обновить список отжигов</string>
+           </property>
+           <property name="text">
+            <string>Обновить</string>
+           </property>
+           <property name="icon">
+            <iconset theme="view-refresh">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableView" name="tableViewAnn">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEditNum"/>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLineEdit" name="lineEditEx"/>
+         </item>
+         <item row="3" column="1">
+          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Примечание</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Стенд</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="DateEdit" name="dateEdit">
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Время продувки, мин</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="lineEditBlow"/>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Выдержка, мин</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Номер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Дата</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Тмепер., град</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLineEdit" name="lineEditTemp"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBoxStend"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="pushButtonFltPodt">
+           <property name="text">
+            <string>Фильтр подтяжек</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2" rowspan="2" colspan="2">
+          <widget class="QGroupBox" name="groupBoxLoad">
+           <property name="title">
+            <string>Загрузка печи</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="Viewer" name="tableViewCont">
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SingleSelection</enum>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxMech">
+         <property name="title">
+          <string>Испытания</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="2">
+           <widget class="Viewer" name="tableViewMechAnn"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="Viewer" name="tableViewMechSrc"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="Viewer" name="tableViewPodtMech"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>После протяжки</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Заготовка</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>После отжига</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Следующая протяжка</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="TableView" name="tableViewNext">
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>Готовая проволока</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="TableView" name="tableViewPart">
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Viewer</class>
+   <extends>QTableView</extends>
+   <header>viewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>viewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QTableView</extends>
+   <header>tableview.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>lineEditNum</tabstop>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>comboBoxStend</tabstop>
+  <tabstop>lineEditTemp</tabstop>
+  <tabstop>lineEditBlow</tabstop>
+  <tabstop>lineEditEx</tabstop>
+  <tabstop>plainTextEdit</tabstop>
+  <tabstop>tableViewCont</tabstop>
+  <tabstop>tableViewMechSrc</tabstop>
+  <tabstop>tableViewPodtMech</tabstop>
+  <tabstop>tableViewMechAnn</tabstop>
+  <tabstop>tableViewNext</tabstop>
+  <tabstop>tableViewPart</tabstop>
+  <tabstop>dateEditBeg</tabstop>
+  <tabstop>dateEditEnd</tabstop>
+  <tabstop>cmdUpd</tabstop>
+  <tabstop>tableViewAnn</tabstop>
+  <tabstop>pushButtonFltPodt</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

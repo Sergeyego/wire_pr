@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>998</width>
+    <height>698</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Производство проволоки</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>998</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Справочники</string>
+    </property>
+    <addaction name="actionEdtWire"/>
+    <addaction name="actionSpool"/>
+    <addaction name="actionRoute"/>
+    <addaction name="actionLine"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Производство</string>
+    </property>
+    <addaction name="actionPodt"/>
+    <addaction name="actionAnn"/>
+    <addaction name="actionPart"/>
+    <addaction name="actionLbl"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>Готовая продукция</string>
+    </property>
+    <addaction name="actionPerepack"/>
+    <addaction name="actionPrecense"/>
+    <addaction name="actionPeport"/>
+    <addaction name="actionWarehouse"/>
+    <addaction name="actionNakl"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>Аналитика</string>
+    </property>
+    <addaction name="actionAnSpool"/>
+    <addaction name="actionAdd"/>
+    <addaction name="actionSrc"/>
+    <addaction name="actionPerepackCube"/>
+    <addaction name="actionCubePodt"/>
+   </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>Сертификаты</string>
+    </property>
+    <addaction name="actionShip"/>
+    <addaction name="actionCod"/>
+    <addaction name="actionProv"/>
+   </widget>
+   <widget class="QMenu" name="menu_7">
+    <property name="title">
+     <string>Сервис</string>
+    </property>
+    <addaction name="actionRefresh"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
+   <addaction name="menu_6"/>
+   <addaction name="menu_7"/>
+  </widget>
+  <action name="actionEdtWire">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Марки проволоки</string>
+   </property>
+  </action>
+  <action name="actionPodt">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Подтяжки</string>
+   </property>
+  </action>
+  <action name="actionAnn">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Отжиг</string>
+   </property>
+  </action>
+  <action name="actionPart">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Партии</string>
+   </property>
+  </action>
+  <action name="actionAnSpool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Анализ намотки</string>
+   </property>
+  </action>
+  <action name="actionSpool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Тип намотки</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="actionRoute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Маршруты</string>
+   </property>
+  </action>
+  <action name="actionPerepack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Перепаковка</string>
+   </property>
+  </action>
+  <action name="actionPrecense">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Наличие в цехе</string>
+   </property>
+  </action>
+  <action name="actionPeport">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Отчет</string>
+   </property>
+  </action>
+  <action name="actionWarehouse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Движение партий</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Анализ поступления</string>
+   </property>
+  </action>
+  <action name="actionSrc">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Расход сырья</string>
+   </property>
+  </action>
+  <action name="actionShip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Сертификаты на отгрузки</string>
+   </property>
+  </action>
+  <action name="actionCod">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Проверить код</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="icon">
+    <iconset theme="view-refresh">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Обновить все данные</string>
+   </property>
+  </action>
+  <action name="actionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Оборудование</string>
+   </property>
+  </action>
+  <action name="actionProv">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Аттестация/Сертификация марок</string>
+   </property>
+   <property name="toolTip">
+    <string>Аттестация / Сертификация марок</string>
+   </property>
+  </action>
+  <action name="actionLbl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Этикетки (ручной режим)</string>
+   </property>
+  </action>
+  <action name="actionPerepackCube">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Анализ перепаковки</string>
+   </property>
+  </action>
+  <action name="actionNakl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Накладные</string>
+   </property>
+  </action>
+  <action name="actionCubePodt">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Анализ подтяжек</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

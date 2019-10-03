@@ -43,8 +43,8 @@ FormPodt::FormPodt(QWidget *parent) :
     modelPodtAnn = new ModelPodtAnn(this);
     ui->tableViewAnn->setModel(modelPodtAnn);
 
-    push = new PushForm(ui->tableView,this);
-    this->layout()->addWidget(push);
+    push = new DbMapper(ui->tableView,this);
+    ui->horizontalLayoutBtn->insertWidget(0,push);
     push->addMapping(ui->lineEditNum,1);
     push->addMapping(ui->dateEdit,2);
     push->addMapping(ui->comboBoxSrs,3);

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "pgdialog.h"
+#include "db/dblogin.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +12,8 @@ int main(int argc, char *argv[])
         key=QString(argv[1]);
     }
 
-    PgDialog d(QObject::tr("Производство проволоки"));
+    QPixmap logo(":/images/simb_labl.png");
+    DbLogin d(QObject::tr("Производство проволоки"),logo);
     if (d.exec()!=QDialog::Accepted) exit(1);
 
     MainWindow w(key);

@@ -2,8 +2,8 @@
 #define FORMPEREPACK_H
 
 #include <QWidget>
-#include "dbtablemodel.h"
-#include "pushform.h"
+#include "db/dbtablemodel.h"
+#include "db/dbmapper.h"
 #include "models.h"
 #include "modelwarehouse.h"
 #include <QTcpSocket>
@@ -24,7 +24,7 @@ private:
     Ui::FormPerePack *ui;
     ModelNakl *modelNakl;
     ModelPerepack *modelPerepack;
-    PushForm *push;
+    DbMapper *push;
 
 private slots:
     void refresh();

@@ -220,7 +220,7 @@ MainWindow::~MainWindow()
 {
     tabWidget->saveSettings();
     saveSettings();
-    /delete formWarehouse;
+    delete formWarehouse;
     delete formShip;
     delete formRoute;
     delete formWire;

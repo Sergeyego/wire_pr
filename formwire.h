@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "models.h"
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 
 namespace Ui {
 class FormWire;

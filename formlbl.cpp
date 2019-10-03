@@ -17,8 +17,8 @@ FormLbl::FormLbl(QWidget *parent) :
     ui->lineEditMas->setValidator(new QDoubleValidator(0,999999999,3,this));
 
     modelOtk = new DbTableModel("otk",this);
-    modelOtk->addColumn("id",tr("id"),true,true,TYPE_INT);
-    modelOtk->addColumn("nam",tr("ОТК"),false,false,TYPE_STRING);
+    modelOtk->addColumn("id",tr("id"),true,TYPE_INT);
+    modelOtk->addColumn("nam",tr("ОТК"),false,TYPE_STRING);
     modelOtk->setSort("otk.nam");
     modelOtk->select();
     ui->tableViewOtk->setModel(modelOtk);
@@ -26,10 +26,10 @@ FormLbl::FormLbl(QWidget *parent) :
     ui->tableViewOtk->setColumnWidth(1,150);
 
     modelNam = new DbTableModel("wire_namoch",this);
-    modelNam->addColumn("id",tr("id"),true,true,TYPE_INT);
-    modelNam->addColumn("num",tr("№"),false,false,TYPE_INT, new QIntValidator(0,999999,this));
-    modelNam->addColumn("id_rab",tr("ФИО"),false,false,TYPE_STRING,NULL,Models::instance()->relRab);
-    modelNam->addColumn("id_pr",tr("id_pr"),false,false,TYPE_INT);
+    modelNam->addColumn("id",tr("id"),true,TYPE_INT);
+    modelNam->addColumn("num",tr("№"),false,TYPE_INT, new QIntValidator(0,999999,this));
+    modelNam->addColumn("id_rab",tr("ФИО"),false,TYPE_STRING,NULL,Models::instance()->relRab);
+    modelNam->addColumn("id_pr",tr("id_pr"),false,TYPE_INT);
     modelNam->setFilter("wire_namoch.id_pr = 3");
     modelNam->setSort("wire_namoch.num");
     modelNam->setDefaultValue(3,3);
@@ -41,10 +41,10 @@ FormLbl::FormLbl(QWidget *parent) :
     ui->tableViewNam->setColumnHidden(3,true);
 
     modelVol = new DbTableModel("wire_namoch",this);
-    modelVol->addColumn("id",tr("id"),true,true,TYPE_INT);
-    modelVol->addColumn("num",tr("№"),false,false,TYPE_INT, new QIntValidator(0,999999,this));
-    modelVol->addColumn("id_rab",tr("ФИО"),false,false,TYPE_STRING,NULL,Models::instance()->relRab);
-    modelVol->addColumn("id_pr",tr("id_pr"),false,false,TYPE_INT);
+    modelVol->addColumn("id",tr("id"),true,TYPE_INT);
+    modelVol->addColumn("num",tr("№"),false,TYPE_INT, new QIntValidator(0,999999,this));
+    modelVol->addColumn("id_rab",tr("ФИО"),false,TYPE_STRING,NULL,Models::instance()->relRab);
+    modelVol->addColumn("id_pr",tr("id_pr"),false,TYPE_INT);
     modelVol->setFilter("wire_namoch.id_pr = 2");
     modelVol->setSort("wire_namoch.num");
     modelVol->setDefaultValue(3,2);

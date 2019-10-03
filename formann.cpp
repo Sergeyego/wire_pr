@@ -1,7 +1,5 @@
 #include "formann.h"
 #include "ui_formann.h"
-#include "dbtablemodel.h"
-#include "pushform.h"
 
 FormAnn::FormAnn(QWidget *parent) :
     QWidget(parent),
@@ -14,9 +12,9 @@ FormAnn::FormAnn(QWidget *parent) :
     relBuht = new DbRelation(Models::instance()->relPodt->model(),0,2,this);
 
     modelMechSrc = new DbTableModel("prov_mech",this);
-    modelMechSrc->addColumn("id_buht",tr("id_buht"),true,false,TYPE_INT);
-    modelMechSrc->addColumn("id_par",tr("Параметр"),true,false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    modelMechSrc->addColumn("kvo",tr("Значение"),false,false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
+    modelMechSrc->addColumn("id_buht",tr("id_buht"),true,TYPE_INT);
+    modelMechSrc->addColumn("id_par",tr("Параметр"),true,TYPE_STRING,NULL,Models::instance()->relMechTbl);
+    modelMechSrc->addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
     modelMechSrc->setDefaultValue(1,1);
     ui->tableViewMechSrc->setModel(modelMechSrc);
     ui->tableViewMechSrc->setColumnHidden(0,true);
@@ -31,10 +29,10 @@ FormAnn::FormAnn(QWidget *parent) :
     ui->tableViewPodtMech->setColumnWidth(3,90);
 
     modelMechAnn = new DbTableModel("wire_ann_mech",this);
-    modelMechAnn->addColumn("id",tr("id"),true,true,TYPE_INT);
-    modelMechAnn->addColumn("id_ann_cont",tr("id_ann_cont"),false,false,TYPE_INT);
-    modelMechAnn->addColumn("id_mech",tr("Параметр"),false,false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    modelMechAnn->addColumn("kvo",tr("Значение"),false,false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
+    modelMechAnn->addColumn("id",tr("id"),true,TYPE_INT);
+    modelMechAnn->addColumn("id_ann_cont",tr("id_ann_cont"),false,TYPE_INT);
+    modelMechAnn->addColumn("id_mech",tr("Параметр"),false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
+    modelMechAnn->addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
     modelMechAnn->setDefaultValue(2,1);
     modelMechAnn->setSort("wire_ann_mech.id_mech, wire_ann_mech.kvo");
     ui->tableViewMechAnn->setModel(modelMechAnn);
@@ -44,11 +42,11 @@ FormAnn::FormAnn(QWidget *parent) :
     ui->tableViewMechAnn->setColumnWidth(3,90);
 
     modelCont = new DbTableModel("wire_ann_cont",this);
-    modelCont->addColumn("id",tr("id"),true,true,TYPE_INT);
-    modelCont->addColumn("id_ann",tr("id_ann"),false,false,TYPE_INT);
-    modelCont->addColumn("id_podt",tr("Подтяжка"),false,false,TYPE_STRING,NULL,Models::instance()->relPodt);
-    modelCont->addColumn("num",tr("NN"),false,false,TYPE_INT,new QIntValidator(0,10,this));
-    modelCont->addColumn("kvo",tr("Масса, кг"),false,false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,1,this));
+    modelCont->addColumn("id",tr("id"),true,TYPE_INT);
+    modelCont->addColumn("id_ann",tr("id_ann"),false,TYPE_INT);
+    modelCont->addColumn("id_podt",tr("Подтяжка"),false,TYPE_STRING,NULL,Models::instance()->relPodt);
+    modelCont->addColumn("num",tr("NN"),false,TYPE_INT,new QIntValidator(0,10,this));
+    modelCont->addColumn("kvo",tr("Масса, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,1,this));
     modelCont->setSort("wire_ann_cont.num");
     ui->tableViewCont->setModel(modelCont);
     ui->tableViewCont->setColumnHidden(0,true);
@@ -74,8 +72,8 @@ FormAnn::FormAnn(QWidget *parent) :
     ui->tableViewAnn->setColumnWidth(2,100);
     ui->tableViewAnn->setColumnWidth(3,100);
 
-    push = new PushForm(ui->tableViewAnn,this);
-    ui->verticalLayout->addWidget(push);
+    push = new DbMapper(ui->tableViewAnn,this);
+    ui->horizontalLayoutBtn->insertWidget(0,push);
 
     push->addMapping(ui->lineEditNum,1);
     push->addMapping(ui->dateEdit,2);

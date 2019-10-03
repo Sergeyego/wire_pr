@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>754</width>
-    <height>415</height>
+    <width>752</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="Viewer" name="tableView"/>
+        <widget class="DbViewer" name="tableView"/>
        </item>
       </layout>
      </widget>
@@ -35,7 +35,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="Viewer" name="tableViewType"/>
+        <widget class="DbViewer" name="tableViewType"/>
        </item>
       </layout>
      </widget>
@@ -45,9 +45,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Viewer</class>
+   <class>DbViewer</class>
    <extends>QTableView</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

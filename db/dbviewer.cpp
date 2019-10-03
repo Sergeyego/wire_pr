@@ -1,6 +1,6 @@
-#include "viewer.h"
+#include "dbviewer.h"
 
-Viewer::Viewer(QWidget *parent) :
+DbViewer::DbViewer(QWidget *parent) :
     QTableView(parent)
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
@@ -8,31 +8,31 @@ Viewer::Viewer(QWidget *parent) :
     verticalHeader()->setDefaultSectionSize(verticalHeader()->fontMetrics().height()*1.5);
     verticalHeader()->setFixedWidth(verticalHeader()->fontMetrics().height()*1.2);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
     updAct = new QAction(tr("Обновить"),this);
     removeAct = new QAction(tr("Удалить"),this);
-    saveAct = new QAction(tr("Сохранить"),this);
+    //saveAct = new QAction(tr("Сохранить"),this);
     this->setAutoScroll(true);
-    this->setItemDelegate(new CbRelationDelegate(this));
+    this->setItemDelegate(new DbDelegate(this));
     writeOk=true;
-
     connect(updAct,SIGNAL(triggered()),this,SLOT(upd()));
     connect(removeAct,SIGNAL(triggered()),this,SLOT(remove()));
 }
 
-void Viewer::setModel(QAbstractItemModel *model)
+void DbViewer::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
     connect(this->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(submit(QModelIndex,QModelIndex)));
 }
 
-void Viewer::setColumnsWidth(QVector<int> width)
+void DbViewer::setColumnsWidth(QVector<int> width)
 {
     for (int i=0; i<width.size(); i++){
         setColumnWidth(i,width[i]);
     }
 }
 
-void Viewer::keyPressEvent(QKeyEvent *e)
+void DbViewer::keyPressEvent(QKeyEvent *e)
 {
     DbTableModel *sqlModel = qobject_cast<DbTableModel *>(this->model());
     if (sqlModel && this->editTriggers()!=QAbstractItemView::NoEditTriggers){
@@ -95,13 +95,14 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 }
 
 
-void Viewer::upd()
+void DbViewer::upd()
 {
     DbTableModel *sqlModel = qobject_cast<DbTableModel *>(this->model());
-    if (sqlModel) sqlModel->select();
+    if (sqlModel)
+        sqlModel->select();
 }
 
-void Viewer::remove()
+void DbViewer::remove()
 {
     DbTableModel *sqlModel = qobject_cast<DbTableModel *>(this->model());
     QModelIndex ind=this->currentIndex();
@@ -109,7 +110,7 @@ void Viewer::remove()
         setCurrentIndex(model()->index(ind.row()-1,ind.column()));
 }
 
-void Viewer::submit(QModelIndex ind, QModelIndex oldInd)
+void DbViewer::submit(QModelIndex ind, QModelIndex oldInd)
 {
     if (this->editTriggers()==QAbstractItemView::NoEditTriggers) return;
     DbTableModel *sqlModel = qobject_cast<DbTableModel *>(this->model());
@@ -122,32 +123,37 @@ void Viewer::submit(QModelIndex ind, QModelIndex oldInd)
             sqlModel->escAdd();
         else if ((sqlModel->isEdt() && !sqlModel->isAdd()) || (sqlModel->isAdd() && ind.row()!=sqlModel->rowCount()-1)){
             writeOk=sqlModel->submitRow();
-            }
+        }
     }
 }
 
-void Viewer::focusOutEvent(QFocusEvent *event)
+void DbViewer::focusOutEvent(QFocusEvent *event)
 {
     if (this->editTriggers()!=QAbstractItemView::NoEditTriggers && event->reason()==Qt::MouseFocusReason){
         DbTableModel *sqlModel = qobject_cast<DbTableModel *>(this->model());
-        if (sqlModel && sqlModel->isAdd() && !sqlModel->isEdt()) sqlModel->escAdd();
+        if (sqlModel && sqlModel->isAdd() && !sqlModel->isEdt())
+            sqlModel->escAdd();
     }
     return QTableView::focusOutEvent(event);
 }
 
-void Viewer::setMenuEnabled(bool value)
+void DbViewer::setMenuEnabled(bool value)
 {
     menuEnabled=value;
 }
 
-void Viewer::contextMenuEvent(QContextMenuEvent *event)
+void DbViewer::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu(this);
     if (menuEnabled){
+        //if (this->editTriggers()!=QAbstractItemView::NoEditTriggers){
         menu.addAction(updAct);
         menu.addSeparator();
         menu.addAction(removeAct);
         menu.addSeparator();
+        //}
+        //menu.addAction(saveAct);
+        //menu.addSeparator();
     }
     menu.exec(event->globalPos());
 }
@@ -158,4 +164,5 @@ DateEdit::DateEdit(QWidget *parent): QDateEdit(parent)
     QCalendarWidget * pCW = new QCalendarWidget(this);
     pCW->setFirstDayOfWeek( Qt::Monday );
     this->setCalendarWidget( pCW );
+    this->setDisplayFormat("dd.MM.yy");
 }

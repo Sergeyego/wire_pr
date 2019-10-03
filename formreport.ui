@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>700</height>
+    <width>996</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,7 +59,8 @@
         <string>Обновить</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh"/>
+        <iconset theme="view-refresh">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -82,7 +83,8 @@
         <string>Сохранить</string>
        </property>
        <property name="icon">
-        <iconset theme="document-save"/>
+        <iconset theme="document-save">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -97,12 +99,12 @@
   <customwidget>
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
-   <header>tableview.h</header>
+   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

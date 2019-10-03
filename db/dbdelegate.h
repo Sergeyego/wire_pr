@@ -1,17 +1,18 @@
-#ifndef QCOMBODELEGATE_H
-#define QCOMBODELEGATE_H
+#ifndef DBDELEGATE_H
+#define DBDELEGATE_H
 #include <QtGui>
 #include <QtSql>
 #include "dbtablemodel.h"
 #include <QDateEdit>
 #include <QCompleter>
 #include <QCalendarWidget>
+#include <QLineEdit>
 
-class CbRelationDelegate : public QItemDelegate
+class DbDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-     CbRelationDelegate(QObject *parent = 0);
+     DbDelegate(QObject *parent = 0);
      QWidget *createEditor(
                  QWidget *parent,
                  const QStyleOptionViewItem &option,
@@ -37,4 +38,12 @@ public:
 
 };
 
-#endif // QCOMBODELEGATE_H
+class ComboLineEdit : public QLineEdit
+{
+    Q_OBJECT
+public:
+    explicit ComboLineEdit(QWidget *parent = 0);
+    void keyPressEvent(QKeyEvent *e);
+};
+
+#endif // DBDELEGATE_H

@@ -50,7 +50,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     chemModel = new ModelWirePartiChem(this);
     mechModel = new ModelWirePartiMech(this);
     modelShip = new ModelShipment(this);
-    push = new PushForm(ui->tableViewPart,this);
+    push = new DbMapper(ui->tableViewPart,this);
 
     ui->tableViewProvChem->setModel(srsChemModel);
     ui->tableViewProvChem->verticalHeader()->hide();

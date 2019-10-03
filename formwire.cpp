@@ -8,14 +8,14 @@ FormWire::FormWire(QWidget *parent) :
     ui->setupUi(this);
     loadSettings();
     modelGost = new DbTableModel("wire_gost",this);
-    modelGost->addColumn("id","id",true,true,TYPE_INT);
-    modelGost->addColumn("id_provol","id_provol",false,false,TYPE_INT);
-    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),false,false,TYPE_STRING,NULL,Models::instance()->relNewGost);
+    modelGost->addColumn("id","id",true,TYPE_INT);
+    modelGost->addColumn("id_provol","id_provol",false,TYPE_INT);
+    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),false,TYPE_STRING,NULL,Models::instance()->relNewGost);
     modelDiamSert = new DbTableModel("zvd_wire_diam_sert",this);
-    modelDiamSert->addColumn("id","id",true,true,TYPE_INT);
-    modelDiamSert->addColumn("id_provol","id_provol",false,false,TYPE_INT);
-    modelDiamSert->addColumn("id_diam",tr("Диаметр"),false,false,TYPE_STRING,NULL,Models::instance()->relDiam);
-    modelDiamSert->addColumn("id_sert",tr("№ Документа"),false,false,TYPE_STRING,NULL,Models::instance()->relZvdSert);
+    modelDiamSert->addColumn("id","id",true,TYPE_INT);
+    modelDiamSert->addColumn("id_provol","id_provol",false,TYPE_INT);
+    modelDiamSert->addColumn("id_diam",tr("Диаметр"),false,TYPE_STRING,NULL,Models::instance()->relDiam);
+    modelDiamSert->addColumn("id_sert",tr("№ Документа"),false,TYPE_STRING,NULL,Models::instance()->relZvdSert);
     modelDiamSert->setSuffix("inner join diam as d on zvd_wire_diam_sert.id_diam=d.id");
     modelDiamSert->setSort("d.sdim");
 

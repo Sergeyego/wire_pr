@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>773</width>
-    <height>600</height>
+    <width>769</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -145,7 +145,8 @@
              <string>Многостраничный PDF</string>
             </property>
             <property name="icon">
-             <iconset theme="document-save"/>
+             <iconset theme="document-save">
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
           </item>
@@ -175,12 +176,12 @@
   <customwidget>
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
-   <header>tableview.h</header>
+   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

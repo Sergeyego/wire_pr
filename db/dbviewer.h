@@ -1,23 +1,21 @@
-#ifndef PARTVIEWER_H
-#define PARTVIEWER_H
+#ifndef DBVIEWER_H
+#define DBVIEWER_H
 
 #include <QtGui>
 #include "dbtablemodel.h"
-#include "cbrelationdelegate.h"
+#include "dbdelegate.h"
 #include <QTableView>
 #include <QHeaderView>
 #include <QAction>
 #include <QMenu>
 
-//using namespace xlslib_core;
-
 class QMenu;
 class QAction;
-class Viewer : public QTableView
+class DbViewer : public QTableView
 {
     Q_OBJECT
 public:
-    Viewer(QWidget *parent = 0);
+    DbViewer(QWidget *parent = 0);
     void setModel(QAbstractItemModel *model);
     void setColumnsWidth(QVector<int> width);
 
@@ -28,7 +26,7 @@ protected:
 private:
     QAction *updAct;
     QAction *removeAct;
-    QAction *saveAct;
+    //QAction *saveAct;
     bool menuEnabled;
     bool writeOk;
 
@@ -40,8 +38,6 @@ private slots:
 
 public slots:
      void setMenuEnabled(bool value);
-     //void save();
-
 };
 
 class DateEdit : public QDateEdit{
@@ -50,4 +46,4 @@ public:
     DateEdit(QWidget *parent=0);
 };
 
-#endif // PARTVIEWER_H
+#endif // DBVIEWER_H

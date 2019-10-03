@@ -2,9 +2,9 @@
 #define FORMPODT_H
 
 #include <QWidget>
-#include "pushform.h"
+#include "db/dbmapper.h"
 #include "modelwarehouse.h"
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "models.h"
 #include "models_edt.h"
 #include "dialogflt.h"
@@ -25,7 +25,7 @@ private:
     Ui::FormPodt *ui;
     ModelPodt *modelPodt;
     ModelPodtPart *modelPodtPart;
-    PushForm *push;
+    DbMapper *push;
     void loadSettings();
     void saveSettings();
     ModelPodtCont *modelCont;

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "models.h"
-#include "pushform.h"
+#include "db/dbmapper.h"
 #include "drawing.h"
 
 namespace Ui {
@@ -20,7 +20,7 @@ public:
     
 private:
     Ui::FormRoute *ui;
-    PushForm *push;
+    DbMapper *push;
     Drawing *draw;
     DbTableModel *modelRoute;
     void loadSettings();

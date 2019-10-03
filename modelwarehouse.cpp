@@ -189,11 +189,11 @@ void ModelShipment::refresh(int id_part, QDate date)
 ModelInCex::ModelInCex(QObject *parent):
     DbTableModel("wire_in_cex_data",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("id_wparti",tr("id_wparti"),false,false,TYPE_INT);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
-    addColumn("m_netto",tr("Масса, кг"),false,false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
-    addColumn("id_type",tr("Операция"),false,false,TYPE_STRING,NULL,Models::instance()->relAddType);
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_wparti",tr("id_wparti"),false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("m_netto",tr("Масса, кг"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
+    addColumn("id_type",tr("Операция"),false,TYPE_STRING,NULL,Models::instance()->relAddType);
     setDefaultValue(4,3);
     setSuffix("inner join wire_in_cex_type on wire_in_cex_type.id=wire_in_cex_data.id_type and wire_in_cex_type.koef=1");
     setSort("wire_in_cex_data.dat");
@@ -223,11 +223,11 @@ void ModelInCex::calcSum()
 ModelOutCex::ModelOutCex(QObject *parent) :
     DbTableModel("wire_in_cex_data",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("id_wparti",tr("id_wparti"),false,false,TYPE_INT);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
-    addColumn("m_netto",tr("Масса, кг"),false,false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
-    addColumn("id_type",tr("Причина"),false,false,TYPE_STRING, NULL, Models::instance()->relCause);
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_wparti",tr("id_wparti"),false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("m_netto",tr("Масса, кг"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
+    addColumn("id_type",tr("Причина"),false,TYPE_STRING, NULL, Models::instance()->relCause);
     setSuffix("inner join wire_in_cex_type on wire_in_cex_type.id = wire_in_cex_data.id_type");
     setSort("wire_in_cex_data.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
@@ -255,9 +255,9 @@ void ModelOutCex::calcSum()
 
 ModelNakl::ModelNakl(QObject *parent) : DbTableModel("wire_perepack_nakl",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("num",tr("Номер"),false,false,TYPE_STRING);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("num",tr("Номер"),false,TYPE_STRING);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
     setSort("wire_perepack_nakl.dat, wire_perepack_nakl.num");
 }
 
@@ -279,11 +279,11 @@ bool ModelNakl::insertRow(int row, const QModelIndex &parent)
 
 ModelPerepack::ModelPerepack(QObject *parent) : DbTableModel("wire_perepack",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("id_nakl",tr("id_nakl"),false,false,TYPE_INT);
-    addColumn("id_wpartisrc",tr("Из партии"),false,false,TYPE_STRING,NULL,Models::instance()->relWirePart);
-    addColumn("id_wpartires",tr("В партию"),false,false,TYPE_STRING,NULL, Models::instance()->relWirePart);
-    addColumn("m_netto",tr("Масса, кг"),false,false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_nakl",tr("id_nakl"),false,TYPE_INT);
+    addColumn("id_wpartisrc",tr("Из партии"),false,TYPE_STRING,NULL,Models::instance()->relWirePart);
+    addColumn("id_wpartires",tr("В партию"),false,TYPE_STRING,NULL, Models::instance()->relWirePart);
+    addColumn("m_netto",tr("Масса, кг"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
 }
 
 void ModelPerepack::refresh(int id_nakl)
@@ -334,12 +334,12 @@ void ModelPerepack::refreshPart()
 
 ModelNamCex::ModelNamCex(QObject *parent) : DbTableModel("wire_in_cex_nam",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("id_wparti",tr("id_wparti"),false,false,TYPE_INT);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
-    addColumn("m_netto",tr("Масса, кг"),false,false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
-    addColumn("id_empl",tr("Работник"),false,false,TYPE_STRING, NULL, Models::instance()->relRab);
-    addColumn("id_line",tr("Линия"),false,false,TYPE_STRING, NULL, Models::instance()->relLine);
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_wparti",tr("id_wparti"),false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("m_netto",tr("Масса, кг"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
+    addColumn("id_empl",tr("Работник"),false,TYPE_STRING, NULL, Models::instance()->relRab);
+    addColumn("id_line",tr("Линия"),false,TYPE_STRING, NULL, Models::instance()->relLine);
     setSort("wire_in_cex_nam.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
@@ -365,13 +365,13 @@ void ModelNamCex::calcSum()
 
 ModelPodt::ModelPodt(QObject *parent) : DbTableModel("wire_podt",parent)
 {
-    addColumn("id","id",true,true,TYPE_INT);
-    addColumn("n_s",tr("№"),false,false,TYPE_STRING);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
-    addColumn("id_buht",tr("Исх. партия"),false,false,TYPE_STRING,NULL,Models::instance()->relSrcPart);
-    addColumn("id_diam",tr("Ф"),false,false,TYPE_STRING,NULL,Models::instance()->relDiam);
-    addColumn("id_line",tr("Стан"),false,false,TYPE_STRING,NULL,Models::instance()->relLine);
-    addColumn("comment",tr("Комментарий"),false,false,TYPE_STRING);
+    addColumn("id","id",true,TYPE_INT);
+    addColumn("n_s",tr("№"),false,TYPE_STRING);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("id_buht",tr("Исх. партия"),false,TYPE_STRING,NULL,Models::instance()->relSrcPart);
+    addColumn("id_diam",tr("Ф"),false,TYPE_STRING,NULL,Models::instance()->relDiam);
+    addColumn("id_line",tr("Стан"),false,TYPE_STRING,NULL,Models::instance()->relLine);
+    addColumn("comment",tr("Комментарий"),false,TYPE_STRING);
     setSort("dat,n_s");
     connect(this,SIGNAL(sigUpd()),Models::instance()->relPodt->model(),SLOT(refresh()));
 }
@@ -472,12 +472,12 @@ void ModelPodtPart::refresh(int id_podt)
 
 ModelPodtCont::ModelPodtCont(QObject *parent) : DbTableModel("wire_podt_cont",parent)
 {
-    addColumn("id",tr("id"),true,true,TYPE_INT);
-    addColumn("id_podt",tr("id_podt"),false,false,TYPE_INT);
-    addColumn("dat",tr("Дата"),false,false,TYPE_DATE);
-    addColumn("kvo",tr("Масса, кг"),false,false,TYPE_DOUBLE,new QDoubleValidator(0,999999999,2,this));
-    addColumn("id_rab",tr("Волочильщик"),false,false,TYPE_STRING,NULL,Models::instance()->relVol);
-    addColumn("id_podt_src",tr("Исходная протяжка"),false,false,TYPE_STRING,NULL, Models::instance()->relPodt);
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_podt",tr("id_podt"),false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("kvo",tr("Масса, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,999999999,2,this));
+    addColumn("id_rab",tr("Волочильщик"),false,TYPE_STRING,NULL,Models::instance()->relVol);
+    addColumn("id_podt_src",tr("Исходная протяжка"),false,TYPE_STRING,NULL, Models::instance()->relPodt);
     setSort("wire_podt_cont.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));

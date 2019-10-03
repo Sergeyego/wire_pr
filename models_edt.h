@@ -1,6 +1,6 @@
 #ifndef MODELS_EDT_H
 #define MODELS_EDT_H
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "models.h"
 
 class ModelPart : public DbTableModel

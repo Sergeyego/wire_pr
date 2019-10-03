@@ -26,12 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     tabwidget.cpp \
-    axiswidget.cpp \
-    cbrelationdelegate.cpp \
     checkform.cpp \
-    cubewidget.cpp \
-    cubic.cpp \
-    dbtablemodel.cpp \
     dialogotk.cpp \
     dialogpack.cpp \
     drawing.cpp \
@@ -52,27 +47,27 @@ SOURCES += main.cpp\
     models.cpp \
     modelship.cpp \
     modelwarehouse.cpp \
-    olapmodel.cpp \
-    pgdialog.cpp \
-    pushform.cpp \
     sertbuild.cpp \
-    tableview.cpp \
-    viewer.cpp \
     formann.cpp \
     formedtpack.cpp \
     formedtline.cpp \
     formlbl.cpp \
     dialogflt.cpp \
-    formnakl.cpp
+    formnakl.cpp \
+    db/dbdelegate.cpp \
+    db/dblogin.cpp \
+    db/dbmapper.cpp \
+    db/dbtablemodel.cpp \
+    db/dbviewer.cpp \
+    olap/axiswidget.cpp \
+    olap/cubewidget.cpp \
+    olap/cubic.cpp \
+    olap/olapmodel.cpp \
+    olap/tableview.cpp
 
 HEADERS  += mainwindow.h \
     tabwidget.h \
-    axiswidget.h \
-    cbrelationdelegate.h \
     checkform.h \
-    cubewidget.h \
-    cubic.h \
-    dbtablemodel.h \
     dialogotk.h \
     dialogpack.h \
     drawing.h \
@@ -93,23 +88,26 @@ HEADERS  += mainwindow.h \
     models.h \
     modelship.h \
     modelwarehouse.h \
-    olapmodel.h \
-    pgdialog.h \
-    pushform.h \
     sertbuild.h \
-    tableview.h \
-    viewer.h \
     formann.h \
     formedtpack.h \
     formedtline.h \
     formlbl.h \
     dialogflt.h \
-    formnakl.h
+    formnakl.h \
+    db/dbdelegate.h \
+    db/dblogin.h \
+    db/dbmapper.h \
+    db/dbtablemodel.h \
+    db/dbviewer.h \
+    olap/axiswidget.h \
+    olap/cubewidget.h \
+    olap/cubic.h \
+    olap/olapmodel.h \
+    olap/tableview.h
 
 FORMS    += mainwindow.ui \
-    axiswidget.ui \
     checkform.ui \
-    cubewidget.ui \
     dialogotk.ui \
     dialogpack.ui \
     editor.ui \
@@ -123,17 +121,21 @@ FORMS    += mainwindow.ui \
     formship.ui \
     formwarehouse.ui \
     formwire.ui \
-    pgdialog.ui \
-    pushform.ui \
     formann.ui \
     formedtpack.ui \
     formedtline.ui \
     formlbl.ui \
     dialogflt.ui \
-    formnakl.ui
+    formnakl.ui \
+    db/dblogin.ui \
+    olap/axiswidget.ui \
+    olap/cubewidget.ui
 
 RESOURCES += \
     res.qrc
 LIBS += -lqrencode \
         -lxls
 INCLUDEPATH+=/usr/include/xlslib
+
+DISTFILES += \
+    runlbl.sh

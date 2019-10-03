@@ -15,7 +15,7 @@
 #include "formperepack.h"
 #include "formpresence.h"
 #include "formreport.h"
-#include "cubewidget.h"
+#include "olap/cubewidget.h"
 #include "formpodt.h"
 #include "formann.h"
 #include "formedtpack.h"

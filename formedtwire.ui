@@ -6,23 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>698</height>
+    <width>994</width>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Марки проволоки</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTableView" name="tableViewWire">
+     <widget class="DbViewer" name="tableViewWire">
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>350</width>
         <height>16777215</height>
        </size>
       </property>
@@ -37,48 +37,127 @@
       </property>
      </widget>
      <widget class="QWidget" name="">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="checkBoxCored">
-           <property name="text">
-            <string>Порошковая</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEditMark"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBoxNerj">
-           <property name="text">
-            <string>Нержавейка</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Описание</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
           <widget class="QLabel" name="label">
            <property name="text">
             <string>Марка</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+         <item>
+          <widget class="QLineEdit" name="lineEditMark">
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
-         <item row="3" column="0">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Базовая марка</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBoxBase">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QCheckBox" name="checkBoxNerj">
+           <property name="text">
+            <string>Нержавейка</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxCored">
+           <property name="text">
+            <string>Порошковая</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="checkBoxWire">
            <property name="text">
             <string>Выпускаемая</string>
            </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxKat">
+           <property name="text">
+            <string>Каталог</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QGroupBox" name="groupBoxText">
+           <property name="title">
+            <string>Описание</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QPlainTextEdit" name="plainTextEdit"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxChem">
+           <property name="title">
+            <string>Химический состав базовой марки</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="DbViewer" name="tableViewChem"/>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>
@@ -86,7 +165,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QGroupBox" name="groupBox_2">
+          <widget class="QGroupBox" name="groupBoxKoef">
            <property name="maximumSize">
             <size>
              <width>250</width>
@@ -98,22 +177,39 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="Viewer" name="tableViewKr"/>
+             <widget class="DbViewer" name="tableViewKr"/>
             </item>
            </layout>
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox">
+          <widget class="QGroupBox" name="groupBoxEan">
            <property name="title">
             <string>Упаковка, штрих код</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="Viewer" name="tableViewPack"/>
+             <widget class="DbViewer" name="tableViewPack"/>
             </item>
            </layout>
           </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutBtn">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -125,16 +221,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Viewer</class>
+   <class>DbViewer</class>
    <extends>QTableView</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>lineEditMark</tabstop>
   <tabstop>checkBoxNerj</tabstop>
-  <tabstop>checkBoxCored</tabstop>
-  <tabstop>checkBoxWire</tabstop>
   <tabstop>plainTextEdit</tabstop>
   <tabstop>tableViewPack</tabstop>
   <tabstop>tableViewWire</tabstop>

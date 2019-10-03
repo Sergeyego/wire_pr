@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>944</width>
-    <height>528</height>
+    <width>942</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -231,7 +231,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="Viewer" name="tableViewVol"/>
+           <widget class="DbViewer" name="tableViewVol"/>
           </item>
          </layout>
         </widget>
@@ -243,7 +243,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="Viewer" name="tableViewNam"/>
+           <widget class="DbViewer" name="tableViewNam"/>
           </item>
          </layout>
         </widget>
@@ -255,7 +255,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="Viewer" name="tableViewOtk"/>
+           <widget class="DbViewer" name="tableViewOtk"/>
           </item>
          </layout>
         </widget>
@@ -270,12 +270,12 @@
   <customwidget>
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
-   <class>Viewer</class>
+   <class>DbViewer</class>
    <extends>QTableView</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

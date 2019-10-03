@@ -43,6 +43,7 @@ class DbRelation : public QObject
     Q_OBJECT
 public:
     DbRelation(DbRelationalModel *queryModel, int key, int disp, QObject *parent=0);
+    DbRelation(const QString &query, int key, int disp, QObject *parent=0);
     QVariant data(QString key);
     DbRelationalModel *model() const;
     QSortFilterProxyModel *proxyModel() const;
@@ -63,7 +64,6 @@ typedef struct
     QString name;
     QString display;
     bool isPk;
-    bool isSerial;
     int type;
     DbRelation *relation;
     QVector<QVariant> data;
@@ -126,7 +126,7 @@ public:
     int columnCount(const QModelIndex &parent=QModelIndex()) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool addColumn(QString name, QString display, bool isPk, bool isSerial, int type, QValidator *validator=NULL, DbRelation *relation=NULL);
+    bool addColumn(QString name, QString display, bool isPk, int type, QValidator *validator=NULL, DbRelation *relation=NULL);
     bool removeRow(int row, const QModelIndex &parent = QModelIndex());
     void setFilter(QString s);
     void setSort(QString s);

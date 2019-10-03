@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>704</height>
+    <width>1020</width>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,7 +74,7 @@
         </layout>
        </item>
        <item>
-        <widget class="Viewer" name="tableViewPart">
+        <widget class="TableView" name="tableViewPart">
          <property name="selectionMode">
           <enum>QAbstractItemView::SingleSelection</enum>
          </property>
@@ -456,7 +456,7 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="Viewer" name="tableViewNam"/>
+             <widget class="DbViewer" name="tableViewNam"/>
             </item>
            </layout>
           </widget>
@@ -468,7 +468,7 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
-             <widget class="Viewer" name="tableViewInCex"/>
+             <widget class="DbViewer" name="tableViewInCex"/>
             </item>
            </layout>
           </widget>
@@ -490,7 +490,7 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="Viewer" name="tableViewShip"/>
+             <widget class="DbViewer" name="tableViewShip"/>
             </item>
            </layout>
           </widget>
@@ -502,7 +502,7 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="Viewer" name="tableViewOutCex"/>
+             <widget class="DbViewer" name="tableViewOutCex"/>
             </item>
            </layout>
           </widget>
@@ -516,7 +516,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="Viewer" name="tableViewMechReal">
+           <widget class="DbViewer" name="tableViewMechReal">
             <property name="maximumSize">
              <size>
               <width>270</width>
@@ -526,7 +526,7 @@
            </widget>
           </item>
           <item>
-           <widget class="Viewer" name="tableViewProvChem"/>
+           <widget class="DbViewer" name="tableViewProvChem"/>
           </item>
           <item>
            <widget class="QToolButton" name="cmdCopyChem">
@@ -539,7 +539,7 @@
            </widget>
           </item>
           <item>
-           <widget class="Viewer" name="tableViewWirePartChem"/>
+           <widget class="DbViewer" name="tableViewWirePartChem"/>
           </item>
          </layout>
         </widget>
@@ -551,7 +551,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="Viewer" name="tableViewWirePartMech"/>
+           <widget class="DbViewer" name="tableViewWirePartMech"/>
           </item>
          </layout>
         </widget>
@@ -611,14 +611,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Viewer</class>
-   <extends>QTableView</extends>
-   <header>viewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
+   <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QTableView</extends>
+   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

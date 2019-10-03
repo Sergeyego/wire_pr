@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QVector>
-#include <cubic.h>
+#include "cubic.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>

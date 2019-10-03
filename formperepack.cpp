@@ -19,8 +19,8 @@ FormPerePack::FormPerePack(QWidget *parent) :
     ui->tableViewNakl->verticalHeader()->setDefaultSectionSize(ui->tableViewNakl->verticalHeader()->fontMetrics().height()*1.5);
     ui->tableViewNakl->setColumnHidden(0,true);
 
-    push = new PushForm(ui->tableViewNakl,this);
-    this->layout()->addWidget(push);
+    push = new DbMapper(ui->tableViewNakl,this);
+    ui->horizontalLayoutBtn->insertWidget(0,push);
     push->addMapping(ui->lineEditNum,1);
     push->addMapping(ui->dateEdit,2);
     push->addLock(ui->dateEditBeg);

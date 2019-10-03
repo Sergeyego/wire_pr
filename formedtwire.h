@@ -2,9 +2,9 @@
 #define FORMEDTWIRE_H
 
 #include <QWidget>
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "models.h"
-#include "pushform.h"
+#include "db/dbmapper.h"
 
 namespace Ui {
 class FormEdtWire;
@@ -21,7 +21,8 @@ public:
 private:
     Ui::FormEdtWire *ui;
     DbTableModel *modelWire;
-    PushForm *mapper;
+    DbMapper *mapper;
+    DbTableModel *modelChemTu;
     DbTableModel *modelEan;
     DbTableModel *modelKr;
 

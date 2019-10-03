@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>945</width>
-    <height>593</height>
+    <width>941</width>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,6 +175,12 @@
          </item>
          <item row="4" column="1">
           <widget class="QPushButton" name="pushButtonFltPodt">
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Фильтр подтяжек</string>
            </property>
@@ -187,7 +193,7 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <widget class="Viewer" name="tableViewCont">
+             <widget class="DbViewer" name="tableViewCont">
               <property name="selectionMode">
                <enum>QAbstractItemView::SingleSelection</enum>
               </property>
@@ -208,13 +214,13 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="2">
-           <widget class="Viewer" name="tableViewMechAnn"/>
+           <widget class="DbViewer" name="tableViewMechAnn"/>
           </item>
           <item row="1" column="0">
-           <widget class="Viewer" name="tableViewMechSrc"/>
+           <widget class="DbViewer" name="tableViewMechSrc"/>
           </item>
           <item row="1" column="1">
-           <widget class="Viewer" name="tableViewPodtMech"/>
+           <widget class="DbViewer" name="tableViewPodtMech"/>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_11">
@@ -282,6 +288,23 @@
          </item>
         </layout>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutBtn">
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -290,19 +313,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Viewer</class>
-   <extends>QTableView</extends>
-   <header>viewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
-   <header>viewer.h</header>
+   <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
+   <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
-   <header>tableview.h</header>
+   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

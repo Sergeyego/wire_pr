@@ -2,7 +2,7 @@
 #define FORMEDTLINE_H
 
 #include <QWidget>
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "models.h"
 
 namespace Ui {

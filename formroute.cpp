@@ -8,9 +8,9 @@ FormRoute::FormRoute(QWidget *parent) :
     ui->setupUi(this);
 
     modelRoute = new DbTableModel("wire_route",this);
-    modelRoute->addColumn("id","id",true,true,TYPE_INT);
-    modelRoute->addColumn("nam",tr("Название"),false,false,TYPE_STRING);
-    modelRoute->addColumn("data",tr("Маршрут"),false,false,TYPE_STRING);
+    modelRoute->addColumn("id","id",true,TYPE_INT);
+    modelRoute->addColumn("nam",tr("Название"),false,TYPE_STRING);
+    modelRoute->addColumn("data",tr("Маршрут"),false,TYPE_STRING);
     modelRoute->setSort("nam");
 
     draw = new Drawing(ui->lineEditRoute,this);
@@ -23,12 +23,12 @@ FormRoute::FormRoute(QWidget *parent) :
     ui->tableViewRoute->setFocus();
     ui->verticalLayout->insertWidget(1,draw);
 
-    push = new PushForm(ui->tableViewRoute,this);
+    push = new DbMapper(ui->tableViewRoute,this);
     push->addMapping(ui->lineEditName,1);
     push->addMapping(ui->lineEditRoute,2);
     push->addLock(ui->tableViewRoute);
     push->addUnLock(draw);
-    ui->verticalLayout_2->addWidget(push);
+    ui->horizontalLayoutBtn->insertWidget(0,push);
 
     loadSettings();
 

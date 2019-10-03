@@ -4,7 +4,7 @@
 #include <QSqlQueryModel>
 #include <QSqlError>
 #include <QDate>
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "models.h"
 
 class ModelWarehouse : public QSqlQueryModel

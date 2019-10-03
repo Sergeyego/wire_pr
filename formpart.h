@@ -3,8 +3,7 @@
 
 #include <QWidget>
 #include "models.h"
-#include "pushform.h"
-#include "cbrelationdelegate.h"
+#include "db/dbmapper.h"
 #include "models_edt.h"
 #include "editor.h"
 #include "sertbuild.h"
@@ -28,7 +27,7 @@ public:
     
 private:
     Ui::FormPart *ui;
-    PushForm *push;
+    DbMapper *push;
     ModelPart *modelPart;
     ModelWirePartiChem *chemModel;
     ModelWirePartiMech *mechModel;

@@ -5,7 +5,7 @@
 #include <QSqlQueryModel>
 #include <QMessageBox>
 #include <QtSql>
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 
 class Models : public QObject
 {

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "models.h"
-#include "dbtablemodel.h"
+#include "db/dbtablemodel.h"
 #include "lblengine.h"
 
 namespace Ui {

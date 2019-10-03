@@ -1,23 +1,22 @@
-#ifndef PUSHFORM_H
-#define PUSHFORM_H
+#ifndef DBMAPPER_H
+#define DBMAPPER_H
 
 #include <QWidget>
 #include "dbtablemodel.h"
 #include <QDataWidgetMapper>
-#include "cbrelationdelegate.h"
+#include "dbdelegate.h"
 #include <QTableView>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QApplication>
 
-namespace Ui {
-class PushForm;
-}
-
-class PushForm : public QWidget
+class DbMapper : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit PushForm(QAbstractItemView *v, QWidget *parent = 0);
-    ~PushForm();
+    explicit DbMapper(QAbstractItemView *v, QWidget *parent = 0);
+    ~DbMapper();
     void addLock(QWidget *widget);
     void addUnLock(QWidget *widget);
     void addEmptyLock(QWidget *widget);
@@ -26,15 +25,21 @@ public:
     int currentIndex();
     
 private:
-    Ui::PushForm *ui;
     QVector <QWidget*> lock1;
     QVector <QWidget*> lock2;
     QVector <QWidget*> lockEmpty;
     QDataWidgetMapper *mapper;
     QAbstractItemView *viewer;
+    QPushButton *cmdNew;
+    QPushButton *cmdWrite;
+    QPushButton *cmdEdt;
+    QPushButton *cmdEsc;
+    QPushButton *cmdDel;
+    QHBoxLayout *mainLayout;
     bool isEdt;
 
 public slots:
+    void refresh();
     void slotNew();
     void slotEdt();
     void slotDel();
@@ -42,13 +47,13 @@ public slots:
     void slotEsc();
     void first();
     void setCurrentViewRow(int row);
-    void lock(bool val);
 
 private slots:
     void checkEmpty();
+    void lock(bool val);
 
 signals:
     void currentIndexChanged(int index);
 };
 
-#endif // PUSHFORM_H
+#endif // DBMAPPER_H

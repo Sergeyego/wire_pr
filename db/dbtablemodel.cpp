@@ -1,5 +1,4 @@
 #include "dbtablemodel.h"
-#include "models.h"
 
 DbTableModel::DbTableModel(QString table, QObject *parent) :
     QAbstractTableModel(parent)
@@ -8,7 +7,6 @@ DbTableModel::DbTableModel(QString table, QObject *parent) :
     modelData = new MData(this);
     editor = new DataEditor(modelData,this);
     block=false;
-    connect(Models::instance(),SIGNAL(sigRefresh()),this,SLOT(select()));
 }
 
 Qt::ItemFlags DbTableModel::flags(const QModelIndex &index) const
@@ -18,6 +16,7 @@ Qt::ItemFlags DbTableModel::flags(const QModelIndex &index) const
 
 QVariant DbTableModel::data(const QModelIndex &index, int role) const
 {
+    if (!index.isValid()) return QVariant();
     QVariant value;
     switch (role) {
         case Qt::DisplayRole:
@@ -95,6 +94,7 @@ int DbTableModel::columnCount(const QModelIndex &parent) const
 
 bool DbTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    if (!(this->flags(index) & Qt::ItemIsEditable)) return false;
     bool ok=false;
     ok=editor->edt(index.row(),index.column(),value);
     emit dataChanged(index,index);
@@ -114,13 +114,12 @@ QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int 
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
-bool DbTableModel::addColumn(QString name, QString display, bool isPk, bool isSerial, int type, QValidator *validator, DbRelation *relation)
+bool DbTableModel::addColumn(QString name, QString display, bool isPk, int type, QValidator *validator, DbRelation *relation)
 {
     col tmpColumn;
     tmpColumn.name=name;
     tmpColumn.display=display;
     tmpColumn.isPk=isPk;
-    tmpColumn.isSerial=isSerial;
     tmpColumn.type=type;
     tmpColumn.validator=validator;
     tmpColumn.data.resize(rowCount());
@@ -276,15 +275,18 @@ bool DbTableModel::insertDb()
     QSqlQuery query;
     QString qu;
     QVector<QVariant> tmpRow=editor->newRow();
+
     qu="INSERT INTO "+tableName+" (";
     for (int i=0; i<modelData->columnCount(); i++){
-        if (!modelData->column(i)->isSerial) qu+=(modelData->column(i)->name+", ");
+        //if (!modelData->column(i)->isAutoVal) qu+=(modelData->column(i)->name+", ");
+        if(!tmpRow[i].toString().isEmpty()) qu+=(modelData->column(i)->name+", ");
     }
     qu.truncate(qu.count()-2);
     qu+=") VALUES (";
     for (int i=0; i<modelData->columnCount(); i++){
-        if (!modelData->column(i)->isSerial)
-            !tmpRow[i].toString().isEmpty() ? qu+=(":"+modelData->column(i)->name+", "):qu+=("NULL, ");
+        //if (!modelData->column(i)->isAutoVal)
+        //    !tmpRow[i].toString().isEmpty() ? qu+=(":"+modelData->column(i)->name+", "):qu+=("NULL, ");
+        if (!tmpRow[i].toString().isEmpty()) qu+=(":"+modelData->column(i)->name+", ");
     }
     qu.truncate(qu.count()-2);
     qu+=") ";
@@ -295,7 +297,7 @@ bool DbTableModel::insertDb()
     qu.truncate(qu.count()-2);
     query.prepare(qu);
     for (int i=0; i<modelData->columnCount(); i++){
-        if (!modelData->column(i)->isSerial && !QVariant(tmpRow[i]).toString().isEmpty()){
+        if (/*!modelData->column(i)->isAutoVal && */!QVariant(tmpRow[i]).toString().isEmpty()){
             QVariant val;
             switch (modelData->column(i)->type){
             case TYPE_BOOL:
@@ -314,7 +316,7 @@ bool DbTableModel::insertDb()
             query.bindValue(":"+modelData->column(i)->name,val);
         }
     }
-    //qDebug()<<query.executedQuery();
+    //qDebug()<</*query.executedQuery();*/qu;
     bool ok=query.exec();
     if (!ok) {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
@@ -658,6 +660,19 @@ DbRelation::DbRelation(DbRelationalModel *queryModel, int key, int disp, QObject
     connect(queryModel,SIGNAL(sigRefresh()),this,SLOT(reHash()));
 }
 
+DbRelation::DbRelation(const QString &query, int key, int disp, QObject *parent) :
+    keyCol(key), dispCol(disp), QObject(parent)
+{
+    relQueryModel= new DbRelationalModel(query,this);
+    reHash();
+    filterModel = new QSortFilterProxyModel(this);
+    filterModel->setSourceModel(relQueryModel);
+    filterModel->setFilterKeyColumn(disp);
+    connect(relQueryModel,SIGNAL(sigRefresh()),this,SLOT(reHash()));
+}
+
+
+
 QVariant DbRelation::data(QString key)
 {
     return relQueryModel->data(dict.value(key,QModelIndex()),Qt::EditRole);
@@ -687,7 +702,7 @@ void DbRelation::reHash()
 {
     dict.clear();
     for (int i=0; i<relQueryModel->rowCount(); i++){
-        QString key=relQueryModel->data(relQueryModel->index(i,keyCol)).toString();
+        QString key=relQueryModel->data(relQueryModel->index(i,keyCol),Qt::EditRole).toString();
         QModelIndex val=relQueryModel->index(i,dispCol);
         dict[key]=val;
     }

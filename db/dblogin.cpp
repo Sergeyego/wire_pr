@@ -1,11 +1,12 @@
-#include "pgdialog.h"
-#include "ui_pgdialog.h"
+#include "dblogin.h"
+#include "ui_dblogin.h"
 
-PgDialog::PgDialog(const QString title, QWidget *parent) :
+DbLogin::DbLogin(const QString title, QPixmap &pix, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PgDialog)
+    ui(new Ui::DbLogin)
 {
     ui->setupUi(this);
+    ui->labelImg->setPixmap(pix);
     this->setWindowTitle(title);
     ui->edtHost->setText("192.168.1.10");
     ui->groupBox->setVisible(false);
@@ -14,13 +15,13 @@ PgDialog::PgDialog(const QString title, QWidget *parent) :
     connect(ui->cmdConnect,SIGNAL(clicked()),this,SLOT(dBconnect()));
 }
 
-PgDialog::~PgDialog()
+DbLogin::~DbLogin()
 {
     delete ui;
     if (db.isOpen()) db.close();
 }
 
-void PgDialog::dBconnect()
+void DbLogin::dBconnect()
 {
     db.setDatabaseName("neo_rtx");
     db.setHostName(ui->edtHost->text());

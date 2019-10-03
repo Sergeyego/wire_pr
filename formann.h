@@ -3,8 +3,8 @@
 
 #include <QWidget>
 #include "models_edt.h"
-#include "pushform.h"
-#include "dbtablemodel.h"
+#include "db/dbmapper.h"
+#include "db/dbtablemodel.h"
 #include "modelwarehouse.h"
 #include "dialogflt.h"
 
@@ -23,7 +23,7 @@ public:
 private:
     Ui::FormAnn *ui;
     ModelAnn *modelAnn;
-    PushForm *push;
+    DbMapper *push;
     DbTableModel *modelCont;
     DbTableModel *modelMechSrc;
     DbTableModel *modelMechAnn;

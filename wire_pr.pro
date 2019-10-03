@@ -63,7 +63,8 @@ SOURCES += main.cpp\
     olap/cubewidget.cpp \
     olap/cubic.cpp \
     olap/olapmodel.cpp \
-    olap/tableview.cpp
+    olap/tableview.cpp \
+    modelstu.cpp
 
 HEADERS  += mainwindow.h \
     tabwidget.h \
@@ -104,7 +105,8 @@ HEADERS  += mainwindow.h \
     olap/cubewidget.h \
     olap/cubic.h \
     olap/olapmodel.h \
-    olap/tableview.h
+    olap/tableview.h \
+    modelstu.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \

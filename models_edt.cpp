@@ -22,11 +22,6 @@ ModelPart::ModelPart(QObject *parent):DbTableModel("wire_parti_m",parent)
 
 bool ModelPart::submitRow()
 {
-    /*if (isAdd()&& isEdt()){
-        int year=this->data(this->index(rowCount()-1,2),Qt::EditRole).toDate().year();
-        setData(this->index(rowCount()-1,8),year,Qt::EditRole);
-        setData(this->index(rowCount()-1,8),year,Qt::DisplayRole);
-    }*/
     return DbTableModel::submitRow();
 }
 
@@ -35,6 +30,7 @@ bool ModelPart::insertRow(int row, const QModelIndex &parent)
     int old_num=0;
     if (rowCount()>0) old_num=this->data(this->index(rowCount()-1,1),Qt::EditRole).toInt();
     setDefaultValue(1,QString("%1").arg((old_num+1),4,'d',0,QChar('0')));
+    setDefaultValue(2,QDate::currentDate());
     return DbTableModel::insertRow(row,parent);
 }
 
@@ -51,13 +47,7 @@ QVariant ModelPart::data(const QModelIndex &index, int role) const
 
 bool ModelPart::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    /*if (index.column()==2){
-        bool ok=false;
-        if (DbTableModel::setData(index,value,role)){
-            ok=setData(this->index(index.row(),8),value.toDate().year(),role);
-        }
-        return ok;
-    } else */return DbTableModel::setData(index,value,role);
+    return DbTableModel::setData(index,value,role);
 }
 
 void ModelPart::copyChem(int id_wparti)
@@ -123,7 +113,7 @@ void ModelPart::refreshState()
 }
 
 
-ModelWirePartiChem::ModelWirePartiChem(QObject *parent):
+/*ModelWirePartiChem::ModelWirePartiChem(QObject *parent):
     DbTableModel("wire_parti_chem",parent)
 {
     addColumn("id","id",true,TYPE_INT);
@@ -141,7 +131,7 @@ void ModelWirePartiChem::refresh(int id_part)
     setDefaultValue(1,id_wparti);
     select();
 }
-
+*/
 
 ModelWirePartiMech::ModelWirePartiMech(QObject *parent):DbTableModel("wire_parti_mech",parent)
 {
@@ -179,7 +169,7 @@ bool ModelWirePartiMech::setData(const QModelIndex &index, const QVariant &value
 }
 
 
-SrcChemModel::SrcChemModel(QObject *parent):
+/*SrcChemModel::SrcChemModel(QObject *parent):
     QSqlQueryModel(parent)
 {
 }
@@ -210,7 +200,7 @@ QVariant SrcChemModel::data(const QModelIndex &item, int role) const
         }
     }
     return QSqlQueryModel::data(item,role);
-}
+}*/
 
 
 PartPackModel::PartPackModel(QObject *parent):
@@ -303,6 +293,7 @@ bool ModelAnn::insertRow(int row, const QModelIndex &parent)
     int old_num=0;
     if (rowCount()>0) old_num=this->data(this->index(rowCount()-1,1),Qt::EditRole).toInt();
     setDefaultValue(1,QString("%1").arg((old_num+1),4,'d',0,QChar('0')));
+    setDefaultValue(2,QDate::currentDate());
     return DbTableModel::insertRow(row,parent);
 }
 

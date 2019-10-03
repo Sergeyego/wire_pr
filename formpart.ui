@@ -526,7 +526,11 @@
            </widget>
           </item>
           <item>
-           <widget class="DbViewer" name="tableViewProvChem"/>
+           <widget class="DbViewer" name="tableViewProvChem">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QToolButton" name="cmdCopyChem">

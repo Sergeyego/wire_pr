@@ -46,16 +46,17 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewPart->setColumnWidth(5,150);
     ui->tableViewPart->setColumnWidth(6,50);
 
-    srsChemModel = new SrcChemModel(this);
-    chemModel = new ModelWirePartiChem(this);
+    srsChemModel = new /*SrcChemModel*/ModelChemSrc(this);
+    chemModel = new ModelChemSert(this);
     mechModel = new ModelWirePartiMech(this);
     modelShip = new ModelShipment(this);
     push = new DbMapper(ui->tableViewPart,this);
 
     ui->tableViewProvChem->setModel(srsChemModel);
     ui->tableViewProvChem->verticalHeader()->hide();
+    ui->tableViewProvChem->setColumnHidden(0,true);
+    ui->tableViewProvChem->setColumnWidth(1,100);
     ui->tableViewProvChem->setColumnWidth(2,100);
-    ui->tableViewProvChem->setColumnWidth(3,100);
     ui->tableViewProvChem->setMenuEnabled(false);
 
 
@@ -215,7 +216,8 @@ void FormPart::blockShip(bool val)
 void FormPart::updData(int row)
 {
     int id_p=modelPart->data(modelPart->index(row,0),Qt::EditRole).toInt();
-    srsChemModel->refresh(id_p);
+    int id_buht=modelPart->data(modelPart->index(row,4),Qt::EditRole).toInt();
+    srsChemModel->refresh(id_buht);
     chemModel->refresh(id_p);
     mechModel->refresh(id_p);
     partPackModel->refresh(id_p);

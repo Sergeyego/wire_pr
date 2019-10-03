@@ -12,6 +12,7 @@
 #include "lblengine.h"
 #include "dialogotk.h"
 #include "dialogflt.h"
+#include "modelstu.h"
 
 namespace Ui {
 class FormPart;
@@ -29,10 +30,10 @@ private:
     Ui::FormPart *ui;
     DbMapper *push;
     ModelPart *modelPart;
-    ModelWirePartiChem *chemModel;
+    ModelChemSert *chemModel;
     ModelWirePartiMech *mechModel;
     PartPackModel *partPackModel;
-    SrcChemModel *srsChemModel;
+    /*SrcChemModel*/ModelChemSrc *srsChemModel;
     ModelShipment *modelShip;
     ModelInCex *modelInCex;
     ModelOutCex *modelOutCex;

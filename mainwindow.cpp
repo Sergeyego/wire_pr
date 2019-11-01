@@ -33,10 +33,11 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
     axesStock.push_back(tr("Диаметр"));
     axesStock.push_back(tr("Катушка"));
     axesStock.push_back(tr("Партия"));
+    axesStock.push_back(tr("Линия"));
     axesStock.push_back(tr("Год"));
     axesStock.push_back(tr("Месяц"));
     axesStock.push_back(tr("День"));
-    QString queryStock="select s.nam, t.nam, pr.nam, d.sdim, k.short, m.n_s||'-'||date_part('year',m.dat), "
+    QString queryStock="select s.nam, t.nam, pr.nam, d.sdim, k.short, m.n_s||'-'||date_part('year',m.dat), l.snam, "
                        "substr(cast(w.dat as char(32)),1,4) as yr, "
                        "substr(cast(w.dat as char(32)),1,7) as mn, "
                        "substr(cast(w.dat as char(32)),1,10) as dy, w.m_netto "
@@ -44,6 +45,7 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
                        "inner join wire_in_cex_type t on w.id_type=t.id and t.koef=1 "
                        "inner join wire_parti p on w.id_wparti=p.id "
                        "inner join wire_parti_m m on p.id_m=m.id "
+                       "inner join wire_line as l on m.id_type=l.id "
                        "inner join provol pr on pr.id=m.id_provol "
                        "inner join diam d on d.id=m.id_diam "
                        "inner join wire_pack_kind k on p.id_pack=k.id "

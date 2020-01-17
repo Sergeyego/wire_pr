@@ -592,7 +592,7 @@ void DataSert::refreshQR(int id, bool is_ship)
 
 void DataSert::refreshMechCategory()
 {
-    mechCategory->setQuery("select id, nam from mech_category");
+    mechCategory->setQuery("select id, nam from mech_category order by id");
     if (mechCategory->lastError().isValid())
             QMessageBox::critical(NULL,"Error",mechCategory->lastError().text(),QMessageBox::Ok);
 }

@@ -43,6 +43,9 @@ Editor::Editor(QTextDocument *doc, QWidget *parent) :
     if (s){
         ui->checkBoxPrn->setChecked(s->getPrn());
         connect(ui->checkBoxPrn,SIGNAL(clicked(bool)),s,SLOT(setPrn(bool)));
+        connect(ui->radioButtonRus,SIGNAL(clicked(bool)),s,SLOT(setLRus(bool)));
+        connect(ui->radioButtonEn,SIGNAL(clicked(bool)),s,SLOT(setLEn(bool)));
+        connect(ui->radioButtonMix,SIGNAL(clicked(bool)),s,SLOT(setLMix(bool)));
     }
 
     connect(ui->textEdit->document(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
@@ -415,7 +418,7 @@ void Editor::exportPdf()
 {
     SertBuild *doc = qobject_cast<SertBuild *>(ui->textEdit->document());
     QString exportname, fname;
-    fname= doc? ("/ws_"+doc->getNomPart()+"_"+doc->getYearPart()) : QString("sertificat");
+    fname= doc? (doc->getNomPart()+"_"+doc->getYearPart()) : QString("sertificat");
     if (doc){
         if (!doc->getNomSert().isEmpty()){
             fname+="_"+doc->getNomSert();

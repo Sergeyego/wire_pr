@@ -29,13 +29,15 @@ public:
     QString nPlav;
     QString srcProv;
     QString prov;
-    QString diam;
+    double diam;
     QString spul;
     QString poluch;
     QStringList tuList;
     QString adres;
+    QString adres_en;
     QString contact;
     QString otk;
+    QString otk_en;
     bool is_cored;
     QSqlQueryModel *chemModel;
     QSqlQueryModel *mechModel;
@@ -71,13 +73,21 @@ private:
     QTextCursor* cursor;
     DataSert *data;
     bool prn;
+    bool l_rus;
+    bool l_en;
     int current_id;
     bool current_is_ship;
+    void insertText(QTextCursor &c, const QString &rus, const QString &eng, bool newpar=false, bool sep=true, bool html=false);
+    void insertDouble(QTextCursor &c, const QVariant &val, int dec);
+    void insertDate(QTextCursor &c, const QDate &date, bool newpar=true);
     
 signals:
     
 public slots:
     void setPrn(bool p);
+    void setLRus(bool b);
+    void setLEn(bool b);
+    void setLMix(bool b);
 };
 
 

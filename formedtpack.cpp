@@ -10,6 +10,7 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     modelPack->addColumn("id",tr("id"),true,TYPE_INT);
     modelPack->addColumn("nam",tr("Наименование"),false,TYPE_STRING);
     modelPack->addColumn("short",tr("Крат. наименование"),false,TYPE_STRING);
+    modelPack->addColumn("short_en",tr("Наименование анг."),false,TYPE_STRING);
     modelPack->addColumn("id_pack_def",tr("Упаковка по умолчанию"),false,TYPE_STRING,NULL,Models::instance()->relPackType);
     modelPack->setSort("wire_pack_kind.nam");
     modelPack->select();
@@ -17,7 +18,8 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     ui->tableView->setColumnHidden(0,true);
     ui->tableView->setColumnWidth(1,160);
     ui->tableView->setColumnWidth(2,150);
-    ui->tableView->setColumnWidth(3,250);
+    ui->tableView->setColumnWidth(3,150);
+    ui->tableView->setColumnWidth(4,250);
 
     modelPackType = new DbTableModel("wire_pack",this);
     modelPackType->addColumn("id",tr("id"),true,TYPE_INT);

@@ -30,8 +30,10 @@ public:
     QString srcProv;
     QString prov;
     double diam;
-    QString spul;
+    QString spool;
+    QString spool_en;
     QString poluch;
+    QString poluch_en;
     QStringList tuList;
     QString adres;
     QString adres_en;
@@ -78,6 +80,7 @@ private:
     int current_id;
     bool current_is_ship;
     void insertText(QTextCursor &c, const QString &rus, const QString &eng, bool newpar=false, bool sep=true, bool html=false);
+    void insertHtml(QTextCursor &c, const QString &html);
     void insertDouble(QTextCursor &c, const QVariant &val, int dec);
     void insertDate(QTextCursor &c, const QDate &date, bool newpar=true);
     

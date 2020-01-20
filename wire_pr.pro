@@ -140,4 +140,7 @@ LIBS += -lqrencode \
 INCLUDEPATH+=/usr/include/xlslib
 
 DISTFILES += \
-    runlbl.sh
+    runlbl.sh \
+    images/bg.png \
+    images/otk.png \
+    images/logo2.png

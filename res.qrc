@@ -2,8 +2,6 @@
     <qresource prefix="/">
         <file>images/down.png</file>
         <file>images/up.png</file>
-        <file>images/simb_labl.png</file>
-        <file>images/site.png</file>
         <file>images/wire.png</file>
         <file>icons/editcopy.png</file>
         <file>icons/editcut.png</file>
@@ -24,5 +22,7 @@
         <file>icons/textunder.png</file>
         <file>icons/zoomin.png</file>
         <file>icons/zoomout.png</file>
+        <file>images/simb_labl.png</file>
+        <file>images/site.png</file>
     </qresource>
 </RCC>

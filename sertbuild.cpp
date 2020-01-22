@@ -748,73 +748,67 @@ void DataSert::refreshSert()
 void DataSert::refreshQR(int id, bool is_ship)
 {
     QString str;
-    str+="СЕРТИФИКАТ КАЧЕСТВА №"+nomPart.toUtf8()+"-"+QString::number(yearPart).toUtf8();
-    if (is_ship) str+="/"+nomSert.toUtf8();
+    str+="СЕРТИФИКАТ КАЧЕСТВА №"+nomPart+"-"+QString::number(yearPart);
+    if (is_ship) str+="/"+nomSert;
     str+="\n";
     str+=is_cored? "Наименование продукции " : "Марка проволоки ";
-    str+=is_cored? "Порошковая проволока" : srcProv.toUtf8();
+    str+=is_cored? "Порошковая проволока" : srcProv;
     str+="\n";
     str+=is_cored? "Марка " : "Условное обозначение проволоки ";
-    str+=is_cored? prov.toUtf8() : QString::number(diam).toUtf8()+" "+prov.toUtf8();
+    str+=is_cored? prov : QString::number(diam)+" "+prov;
     str+="\n";
     str+=is_cored? "Диаметр, мм " : "Тип носителя проволоки ";
-    str+=is_cored? QString::number(diam).toUtf8() : spool.toUtf8();
+    str+=is_cored? QString::number(diam) : spool;
     str+="\n";
     str+=is_cored? "Тип носителя проволоки " : "Номер плавки ";
-    str+=is_cored? spool.toUtf8() : nPlav.toUtf8();
+    str+=is_cored? spool : nPlav;
     str+="\n";
-    str+="Номер партии "+nomPart.toUtf8();
+    str+="Номер партии "+nomPart;
     str+="\n";
-    str+="Дата производства "+datePart.toString("dd.MM.yy").toUtf8();
+    str+="Дата производства "+datePart.toString("dd.MM.yy");
     str+="\n";
-    str+="Масса проволоки нетто, кг "+QString::number(netto).toUtf8();
+    str+="Масса проволоки нетто, кг "+QString::number(netto);
     str+="\n";
-    if (is_ship) str+="Грузополучатель: "+poluch.toUtf8()+"\n";
+    if (is_ship) str+="Грузополучатель: "+poluch+"\n";
     QDate date;
     date=(is_ship)? dateVidSert : QDate::currentDate();
-    str+="Дата "+date.toString("dd.MM.yy").toUtf8()+"\n";
-    u_int32_t id_part=id_wparti;
-    u_int32_t id_ship= is_ship ? id : 0;
-    u_int64_t cod=0;
+    str+="Дата "+date.toString("dd.MM.yy")+"\n";
+    quint32 id_part=id_wparti;
+    quint32 id_ship= is_ship ? id : 0;
+    quint64 cod=0;
 
-    memcpy((u_int8_t*)&cod,(u_int8_t*)&id_ship,4);
-    memcpy((u_int8_t*)&cod+4,(u_int8_t*)&id_part,4);
+    memcpy((quint8*)&cod,(quint8*)&id_ship,4);
+    memcpy((quint8*)&cod+4,(quint8*)&id_part,4);
 
-    str+="Код подлинности "+QString::number(cod).toUtf8();
-    QRcode *qr = QRcode_encodeString(str.toStdString().c_str(), 1, QR_ECLEVEL_L, QR_MODE_8, 0);
-        bool ok= qr!=0;
-        const int scale=10;
-        int s=1;
-        if (ok) s=(qr->width>0)? qr->width : 1;
-        QImage img(s*scale,s*scale,QImage::Format_RGB32);
-        QPainter painter(&img);
-        if(ok){
-            QColor fg("black");
-            QColor bg("white");
-            painter.setBrush(bg);
-            painter.setPen(Qt::NoPen);
-            painter.drawRect(0,0,s*scale,s*scale);
-            painter.setBrush(fg);
-            for(int y=0;y<s;y++){
-                const int yy=y*s;
-                for(int x=0;x<s;x++){
-                    const int xx=yy+x;
-                    const unsigned char b=qr->data[xx];
-                    if(b & 0x01){
-                        const double rx1=x*scale, ry1=y*scale;
-                        QRectF r(rx1, ry1, scale, scale);
-                        painter.drawRects(&r,1);
-                    }
+    str+="Код подлинности "+QString::number(cod);
+    QrEncode qr;
+    bool ok=qr.encodeData(0,0,true,-1,str.toUtf8().data());
+    const int scale=10;
+    int s=(qr.size()>0)? qr.size() : 1;;
+    QImage img(s*scale,s*scale,QImage::Format_RGB32);
+    QPainter painter(&img);
+    if(ok){
+        QColor fg("black");
+        QColor bg("white");
+        painter.setBrush(bg);
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(0,0,s*scale,s*scale);
+        painter.setBrush(fg);
+        for(int y=0;y<s;y++){
+            for(int x=0;x<s;x++){
+                if(qr.data(y,x)){
+                    const double rx1=x*scale, ry1=y*scale;
+                    QRectF r(rx1, ry1, scale, scale);
+                    painter.drawRects(&r,1);
                 }
             }
-            QRcode_free(qr);
         }
-        else{
-            QColor error("red");
-            painter.setBrush(error);
-            painter.drawRect(0,0,s*scale,s*scale);
-        }
-        qrCode=img;
+    } else {
+        QColor error("red");
+        painter.setBrush(error);
+        painter.drawRect(0,0,scale-1,scale-1);
+    }
+    qrCode=img;
 }
 
 void DataSert::refreshMechCategory()

@@ -7,9 +7,9 @@
 #include <QSqlError>
 #include <QSqlQueryModel>
 #include <QTextCharFormat>
-#include <qrencode.h>
 #include <QMessageBox>
 #include "models.h"
+#include "qr/qrencode.h"
 
 
 class DataSert : public QObject

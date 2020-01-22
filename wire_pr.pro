@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     olap/cubic.cpp \
     olap/olapmodel.cpp \
     olap/tableview.cpp \
-    modelstu.cpp
+    modelstu.cpp \
+    qr/qrencode.cpp
 
 HEADERS  += mainwindow.h \
     tabwidget.h \
@@ -106,7 +107,8 @@ HEADERS  += mainwindow.h \
     olap/cubic.h \
     olap/olapmodel.h \
     olap/tableview.h \
-    modelstu.h
+    modelstu.h \
+    qr/qrencode.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -135,12 +137,11 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     res.qrc
-LIBS += -lqrencode \
-        -lxls
+
+LIBS += -lxls
 INCLUDEPATH+=/usr/include/xlslib
 
 DISTFILES += \
     runlbl.sh \
-    images/bg.png \
     images/otk.png \
     images/logo2.png

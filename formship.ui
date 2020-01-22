@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>769</width>
-    <height>596</height>
+    <width>767</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -142,7 +142,7 @@
           <item>
            <widget class="QPushButton" name="cmdMultiPagePdf">
             <property name="text">
-             <string>Многостраничный PDF</string>
+             <string>Многостранич. PDF</string>
             </property>
             <property name="icon">
              <iconset theme="document-save">

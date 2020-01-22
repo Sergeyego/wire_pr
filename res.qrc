@@ -24,5 +24,8 @@
         <file>icons/zoomout.png</file>
         <file>images/simb_labl.png</file>
         <file>images/site.png</file>
+        <file>images/bge.png</file>
+        <file>images/bgm.png</file>
+        <file>images/bgr.png</file>
     </qresource>
 </RCC>

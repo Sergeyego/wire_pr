@@ -144,4 +144,5 @@ INCLUDEPATH+=/usr/include/xlslib
 DISTFILES += \
     runlbl.sh \
     images/otk.png \
-    images/logo2.png
+    images/logo2.png \
+    templates/glabels_szsm.xml

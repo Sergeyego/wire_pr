@@ -38,6 +38,7 @@ public:
     DbRelation *relOtk;
     DbRelation *relNaklType;
     DbRelation *relVedPix;
+    DbRelation *relWireType;
 
 public slots:
     void refresh();

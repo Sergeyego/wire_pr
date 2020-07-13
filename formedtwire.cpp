@@ -57,14 +57,17 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     modelWire->addColumn("description",tr("Описание"),false,TYPE_STRING);
     modelWire->addColumn("katalog",tr("Каталог"),false,TYPE_BOOL);
     modelWire->addColumn("id_base",tr("Базовая марка"),false,TYPE_STRING,NULL,Models::instance()->relProvol);
+    modelWire->addColumn("id_type",tr("Тип"),false,TYPE_STRING,NULL,Models::instance()->relWireType);
     modelWire->setSort("provol.nam");
     modelWire->setDefaultValue(5,1025);
     ui->tableViewWire->setModel(modelWire);
     ui->tableViewWire->setColumnHidden(0,true);
     ui->tableViewWire->setColumnWidth(1,200);
 
-    for (int i=2; i<ui->tableViewWire->model()->columnCount()-1; i++){
-        ui->tableViewWire->setColumnHidden(i,true);
+    for (int i=2; i<ui->tableViewWire->model()->columnCount(); i++){
+        if (i!=ui->tableViewWire->model()->columnCount()-2){
+            ui->tableViewWire->setColumnHidden(i,true);
+        }
     }
 
     mapper = new DbMapper(ui->tableViewWire,this);
@@ -77,6 +80,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     mapper->addMapping(ui->plainTextEdit,5);
     mapper->addMapping(ui->checkBoxKat,6);
     mapper->addMapping(ui->comboBoxBase,7);
+    mapper->addMapping(ui->comboBoxType,8);
 
     mapper->addEmptyLock(ui->groupBoxChem);
     mapper->addEmptyLock(ui->groupBoxKoef);

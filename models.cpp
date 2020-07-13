@@ -60,6 +60,7 @@ Models::Models(QObject *parent) :
     relOtk = new DbRelation(new DbRelationalModel(QString("select id, nam from otk order by nam"),this),0,1,this);
     relNaklType = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type order by sort_order"), this),0,1,this);    
     relVedPix = new DbRelation(new DbRelationalModel(QString("select id, simb from zvd_ved"),this),0,1,this);
+    relWireType = new DbRelation(new DbRelationalModel(QString("select id, nam from provol_type order by id"), this),0,1,this);
 
     rels.push_back(relProvol);
     rels.push_back(relDiam);
@@ -87,6 +88,7 @@ Models::Models(QObject *parent) :
     rels.push_back(relOtk);
     rels.push_back(relNaklType);
     rels.push_back(relVedPix);
+    rels.push_back(relWireType);
 
     int year=QDate::currentDate().year();
 

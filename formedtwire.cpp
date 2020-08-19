@@ -15,6 +15,15 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     modelChemTu->addColumn("max",QString::fromUtf8("Максимум, %"),false,TYPE_DOUBLE,new QDoubleValidator(0,100,3,this));
     modelChemTu->setSort("wire_chem_tu.id_chem");
 
+    modelDim = new DbTableModel("wire_diams",this);
+    modelDim->addColumn("id_wire","id_wire",true,TYPE_INT);
+    modelDim->addColumn("id_diam",QString::fromUtf8("Диаметр"),true,TYPE_STRING,NULL,Models::instance()->relDiam);
+    modelDim->setSuffix("inner join diam on wire_diams.id_diam=diam.id");
+    modelDim->setSort("diam.sdim");
+    ui->tableViewDiam->setModel(modelDim);
+    ui->tableViewDiam->setColumnHidden(0,true);
+    ui->tableViewDiam->setColumnWidth(1,70);
+
     ui->tableViewChem->setModel(modelChemTu);
     ui->tableViewChem->setColumnHidden(0,true);
     ui->tableViewChem->setColumnWidth(1,100);
@@ -59,7 +68,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     modelWire->addColumn("id_base",tr("Базовая марка"),false,TYPE_STRING,NULL,Models::instance()->relProvol);
     modelWire->addColumn("id_type",tr("Тип"),false,TYPE_STRING,NULL,Models::instance()->relWireType);
     modelWire->setSort("provol.nam");
-    modelWire->setDefaultValue(5,1025);
+
     ui->tableViewWire->setModel(modelWire);
     ui->tableViewWire->setColumnHidden(0,true);
     ui->tableViewWire->setColumnWidth(1,200);
@@ -85,6 +94,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     mapper->addEmptyLock(ui->groupBoxChem);
     mapper->addEmptyLock(ui->groupBoxKoef);
     mapper->addEmptyLock(ui->groupBoxEan);
+    mapper->addEmptyLock(ui->groupBoxDiam);
 
     connect(modelWire,SIGNAL(sigUpd()),Models::instance()->relProvol->model(),SLOT(refresh()));
     connect(mapper,SIGNAL(currentIndexChanged(int)),this,SLOT(updEan(int)));
@@ -108,6 +118,10 @@ void FormEdtWire::updEan(int row)
     modelKr->setFilter("wire_kr.id_prov = "+QString::number(id_prov));
     modelKr->select();
 
+    modelDim->setDefaultValue(0,id_prov);
+    modelDim->setFilter("wire_diams.id_wire = "+QString::number(id_prov));
+    modelDim->select();
+
     if (!ui->tableViewWire->model()->data(ui->tableViewWire->model()->index(row,7),Qt::EditRole).isNull()){
         id_prov=ui->tableViewWire->model()->data(ui->tableViewWire->model()->index(row,7),Qt::EditRole).toInt();
     }
@@ -115,4 +129,5 @@ void FormEdtWire::updEan(int row)
     modelChemTu->setDefaultValue(0,id_prov);
     modelChemTu->setFilter("wire_chem_tu.id_provol = "+QString::number(id_prov));
     modelChemTu->select();
+
 }

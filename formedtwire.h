@@ -25,6 +25,7 @@ private:
     DbTableModel *modelChemTu;
     DbTableModel *modelEan;
     DbTableModel *modelKr;
+    DbTableModel *modelDim;
 
 private slots:
     void updEan(int row);

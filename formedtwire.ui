@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>692</height>
+    <width>990</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -161,11 +161,23 @@
          <item>
           <widget class="QGroupBox" name="groupBoxChem">
            <property name="title">
-            <string>Химический состав базовой марки</string>
+            <string>Хим. состав базовой марки</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
              <widget class="DbViewer" name="tableViewChem"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxDiam">
+           <property name="title">
+            <string>Диаметры готовой продукции</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="DbViewer" name="tableViewDiam"/>
             </item>
            </layout>
           </widget>

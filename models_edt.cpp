@@ -113,26 +113,6 @@ void ModelPart::refreshState()
 }
 
 
-/*ModelWirePartiChem::ModelWirePartiChem(QObject *parent):
-    DbTableModel("wire_parti_chem",parent)
-{
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("id_part","id_part",false,TYPE_INT);
-    addColumn("id_chem",tr("Элемент"),false,TYPE_STRING,NULL,Models::instance()->relChemTbl);
-    addColumn("value",tr("Содерж., %"),false,TYPE_DOUBLE,new QDoubleValidator(0,100,3,this));
-    setSuffix("inner join chem_tbl on wire_parti_chem.id_chem=chem_tbl.id");
-    setSort("chem_tbl.sig");
-}
-
-void ModelWirePartiChem::refresh(int id_part)
-{
-    setFilter("wire_parti_chem.id_part="+QString::number(id_part));
-    id_wparti=id_part;
-    setDefaultValue(1,id_wparti);
-    select();
-}
-*/
-
 ModelWirePartiMech::ModelWirePartiMech(QObject *parent):DbTableModel("wire_parti_mech",parent)
 {
     addColumn("id","id",true,TYPE_INT);
@@ -167,41 +147,6 @@ bool ModelWirePartiMech::setData(const QModelIndex &index, const QVariant &value
     }
     return DbTableModel::setData(index,value,role);
 }
-
-
-/*SrcChemModel::SrcChemModel(QObject *parent):
-    QSqlQueryModel(parent)
-{
-}
-
-void SrcChemModel::refresh(int id_part)
-{
-    setQuery("select sig, kvo "
-             "from prov_chem p "
-             "inner join chem_tbl t on t.id=p.id_el "
-             "where id_buht=(select id_buht from wire_parti_m as p where p.id= "+QString::number(id_part)+
-             " ) order by sig");
-    if (lastError().isValid()){
-        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
-    } else {
-        setHeaderData(0,Qt::Horizontal,tr("Элемент"));
-        setHeaderData(1,Qt::Horizontal,tr("Содерж., %"));
-    }
-}
-
-QVariant SrcChemModel::data(const QModelIndex &item, int role) const
-{
-    if (item.column()==1){
-        if (role==Qt::TextAlignmentRole)
-            return int(Qt::AlignRight | Qt::AlignVCenter);
-        if (role==Qt::DisplayRole){
-            QVariant value=QSqlQueryModel::data(item,role);
-            return QLocale().toString(value.toDouble(),'f',3);
-        }
-    }
-    return QSqlQueryModel::data(item,role);
-}*/
-
 
 PartPackModel::PartPackModel(QObject *parent):
     QSqlQueryModel(parent)

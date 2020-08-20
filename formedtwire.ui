@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>990</width>
-    <height>690</height>
+    <width>988</width>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <widget class="DbViewer" name="tableViewWire">
       <property name="maximumSize">
        <size>
-        <width>350</width>
+        <width>400</width>
         <height>16777215</height>
        </size>
       </property>
@@ -147,16 +147,28 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QGroupBox" name="groupBoxText">
-           <property name="title">
-            <string>Описание</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QPlainTextEdit" name="plainTextEdit"/>
-            </item>
-           </layout>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Описание</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="plainTextEdit"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>ГОСТ/ТУ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="DbViewer" name="tableViewTu"/>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QGroupBox" name="groupBoxChem">
@@ -172,6 +184,12 @@
          </item>
          <item>
           <widget class="QGroupBox" name="groupBoxDiam">
+           <property name="maximumSize">
+            <size>
+             <width>220</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="title">
             <string>Диаметры готовой продукции</string>
            </property>
@@ -251,7 +269,6 @@
  <tabstops>
   <tabstop>lineEditMark</tabstop>
   <tabstop>checkBoxNerj</tabstop>
-  <tabstop>plainTextEdit</tabstop>
   <tabstop>tableViewPack</tabstop>
   <tabstop>tableViewWire</tabstop>
  </tabstops>

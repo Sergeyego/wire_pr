@@ -728,19 +728,12 @@ void DataSert::refreshMech()
 void DataSert::refreshSert()
 {
     QString id_part=QString::number(id_wparti);
-    sertModel->setQuery("select i.id_ved, i.vid, i.ved, i.nom, i.dat, i.vid_en, i.ved_en from ( "
-                        "select pd.id_provol as id_provol, pd.id_diam as id_diam, zd.id_ved as id_ved, "
-                        "d.fnam as vid, d.fnam_en as vid_en, v.fnam as ved, v.fnam_en as ved_en, zd.nom_doc as nom, zd.dat_doc as dat, "
-                        "zd.dat_beg as beg, zd.dat_end as end "
-                        "from zvd_wire_diam_sert as pd "
-                        "inner join zvd_sert as zd on pd.id_sert=zd.id "
-                        "inner join zvd_doc as d on zd.id_doc=d.id "
-                        "inner join zvd_ved as v on zd.id_ved=v.id "
-                        ") as i "
-                        "where i.beg<=(select dat from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ) "
-                        "and i.end>=(select dat from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ) "
-                        "and i.id_provol=(select id_provol from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ) "
-                        "and i.id_diam=(select id_diam from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ) order by i.id_ved");
+    sertModel->setQuery("select i.id_ved, i.vid, i.ved, i.nom, i.dat, i.vid_en, i.ved_en "
+                        "from zvd_get_wire_sert( "
+                        "(select dat from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ), "
+                        "(select id_provol from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ), "
+                        "(select id_diam from wire_parti_m where id= (select p.id_m from wire_parti as p where p.id= "+id_part+") ) "
+                        ") as i order by i.id_ved");
     if (sertModel->lastError().isValid())
         QMessageBox::critical(NULL,"Error",sertModel->lastError().text(),QMessageBox::Ok);
 }

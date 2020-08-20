@@ -40,7 +40,6 @@ SOURCES += main.cpp\
     formroute.cpp \
     formship.cpp \
     formwarehouse.cpp \
-    formwire.cpp \
     lblengine.cpp \
     modelpresence.cpp \
     models_edt.cpp \
@@ -83,7 +82,6 @@ HEADERS  += mainwindow.h \
     formroute.h \
     formship.h \
     formwarehouse.h \
-    formwire.h \
     lblengine.h \
     modelpresence.h \
     models_edt.h \
@@ -124,7 +122,6 @@ FORMS    += mainwindow.ui \
     formroute.ui \
     formship.ui \
     formwarehouse.ui \
-    formwire.ui \
     formann.ui \
     formedtpack.ui \
     formedtline.ui \

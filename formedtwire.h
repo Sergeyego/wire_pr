@@ -26,6 +26,9 @@ private:
     DbTableModel *modelEan;
     DbTableModel *modelKr;
     DbTableModel *modelDim;
+    DbTableModel *modelGost;
+    void loadSettings();
+    void saveSettings();
 
 private slots:
     void updEan(int row);

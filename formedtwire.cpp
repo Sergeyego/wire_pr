@@ -5,7 +5,8 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormEdtWire)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
+    loadSettings();
     ui->tableViewWire->verticalHeader()->setDefaultSectionSize(ui->tableViewWire->verticalHeader()->fontMetrics().height()*1.5);
 
     modelChemTu = new DbTableModel("wire_chem_tu",this);
@@ -57,6 +58,15 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewKr->setColumnWidth(1,100);
     ui->tableViewKr->setColumnWidth(2,100);
 
+    modelGost = new DbTableModel("wire_gost",this);
+    modelGost->addColumn("id","id",true,TYPE_INT);
+    modelGost->addColumn("id_provol","id_provol",false,TYPE_INT);
+    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),false,TYPE_STRING,NULL,Models::instance()->relNewGost);
+    ui->tableViewTu->setModel(modelGost);
+    ui->tableViewTu->setColumnHidden(0,true);
+    ui->tableViewTu->setColumnHidden(1,true);
+    ui->tableViewTu->setColumnWidth(2,200);
+
     modelWire = new DbTableModel("provol",this);
     modelWire->addColumn("id","id",true,TYPE_INT);
     modelWire->addColumn("nam",tr("Название"),false,TYPE_STRING);
@@ -72,6 +82,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewWire->setModel(modelWire);
     ui->tableViewWire->setColumnHidden(0,true);
     ui->tableViewWire->setColumnWidth(1,200);
+    ui->tableViewWire->setColumnWidth(7,150);
 
     for (int i=2; i<ui->tableViewWire->model()->columnCount(); i++){
         if (i!=ui->tableViewWire->model()->columnCount()-2){
@@ -95,6 +106,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     mapper->addEmptyLock(ui->groupBoxKoef);
     mapper->addEmptyLock(ui->groupBoxEan);
     mapper->addEmptyLock(ui->groupBoxDiam);
+    mapper->addEmptyLock(ui->tableViewTu);
 
     connect(modelWire,SIGNAL(sigUpd()),Models::instance()->relProvol->model(),SLOT(refresh()));
     connect(mapper,SIGNAL(currentIndexChanged(int)),this,SLOT(updEan(int)));
@@ -104,7 +116,22 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
 
 FormEdtWire::~FormEdtWire()
 {
+    saveSettings();
     delete ui;
+}
+
+void FormEdtWire::loadSettings()
+{
+    QSettings settings("szsm", "wire_pr");
+    if (!settings.value("edtwire_splitter_width").isNull()){
+        this->ui->splitter->restoreState(settings.value("edtwire_splitter_width").toByteArray());
+    }
+}
+
+void FormEdtWire::saveSettings()
+{
+    QSettings settings("szsm", "wire_pr");
+    settings.setValue("edtwire_splitter_width",ui->splitter->saveState());
 }
 
 void FormEdtWire::updEan(int row)
@@ -121,6 +148,10 @@ void FormEdtWire::updEan(int row)
     modelDim->setDefaultValue(0,id_prov);
     modelDim->setFilter("wire_diams.id_wire = "+QString::number(id_prov));
     modelDim->select();
+
+    modelGost->setFilter("wire_gost.id_provol="+QString::number(id_prov));
+    modelGost->setDefaultValue(1,id_prov);
+    modelGost->select();
 
     if (!ui->tableViewWire->model()->data(ui->tableViewWire->model()->index(row,7),Qt::EditRole).isNull()){
         id_prov=ui->tableViewWire->model()->data(ui->tableViewWire->model()->index(row,7),Qt::EditRole).toInt();

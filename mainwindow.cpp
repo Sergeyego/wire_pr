@@ -10,7 +10,6 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
     this->setCentralWidget(tabWidget);
 
     formPart = new FormPart(key==QString("srt"));
-    formWire = new FormWire();
     formRoute = new FormRoute();
     formShip = new FormShip();
     formWarehouse = new FormWarehouse();
@@ -191,7 +190,6 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
 
     loadSettings();
 
-    tabWidget->addTabAction(formWire,ui->actionProv);
     tabWidget->addTabAction(formPart,ui->actionPart);
     tabWidget->addTabAction(formRoute,ui->actionRoute);
     tabWidget->addTabAction(formShip,ui->actionShip);
@@ -225,7 +223,6 @@ MainWindow::~MainWindow()
     delete formWarehouse;
     delete formShip;
     delete formRoute;
-    delete formWire;
     delete formPart;
     delete formEdtWire;
     delete checkForm;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>996</width>
-    <height>696</height>
+    <width>994</width>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>996</width>
+     <width>994</width>
      <height>24</height>
     </rect>
    </property>
@@ -75,7 +75,6 @@
     </property>
     <addaction name="actionShip"/>
     <addaction name="actionCod"/>
-    <addaction name="actionProv"/>
    </widget>
    <widget class="QMenu" name="menu_7">
     <property name="title">

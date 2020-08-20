@@ -6,7 +6,6 @@
 #include "tabwidget.h"
 #include "formpart.h"
 #include "models.h"
-#include "formwire.h"
 #include "formroute.h"
 #include "formship.h"
 #include "formwarehouse.h"
@@ -39,7 +38,6 @@ private:
     Ui::MainWindow *ui;
     TabWidget *tabWidget;
     FormPart *formPart;
-    FormWire *formWire;
     FormRoute *formRoute;
     FormShip *formShip;
     FormWarehouse *formWarehouse;

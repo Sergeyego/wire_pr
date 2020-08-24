@@ -51,7 +51,8 @@ void SertBuild::build(int id, bool is_ship)
     formatCenter.setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
     QTextCharFormat textAdrFormat;
-    QFont serifFont("Cursive",10,QFont::Normal);
+    QFont serifFont("Droid Sans",10,QFont::Normal);
+    serifFont.setItalic(true);
     textAdrFormat.setFont(serifFont);
 
     QTextCharFormat textTitleFormat;

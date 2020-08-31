@@ -355,9 +355,11 @@ void SertBuild::build(int id, bool is_ship)
     cursor.setCharFormat(textNormalFormat);
     QString stat=tr("Состояние поверхности проволоки: поверхность проволоки чистая, "
                     "гладкая, без трещин, расслоений, плен, закатов, раковин, забоин "
-                    "окалины, ржавчины, масла, технологической смазки и других загрязнений");
+                    "окалины, ржавчины, масла, технологической смазки и других загрязнений.\n"
+                    "Гарантийный срок хранения сварочной проволоки в упаковке производителя - 12 месяцев с момента изготовления.");
     QString stat_en=tr("The condition of the surface of the wire: the surface of the wire is clean, smooth, without cracks, delaminations, "
-                       "slivers, laps, shells, nicks, scale, rust, oil, grease and other contaminants");
+                       "slivers, laps, shells, nicks, scale, rust, oil, grease and other contaminants.\n"
+                       "The guaranteed shelf life of the welding wire in the manufacturer's packaging is 12 months from the date of manufacture.");
     insertText(cursor,stat,stat_en,true);
     mechTable0->mergeCells(pos,0,1,3);
 

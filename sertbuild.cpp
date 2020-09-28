@@ -631,7 +631,7 @@ void DataSert::refresh(int id, bool is_ship)
     QSqlQuery query;
     QString sQuery;
     sQuery= is_ship ? QString("select w.id_wparti, w.m_netto, s.nom_s, s.dat_vid, m.n_s, date_part('year',m.dat), m.dat, "
-                  "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, pol.naim, pprov.is_cored, pol.naim_en, k.short_en "
+                  "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, pol.naim, pprov.is_cored, pol.naim_en, k.short_en, coalesce(bprov.nam, pprov.nam) "
                   "from wire_shipment_consist as w "
                   "inner join sertifikat as s on w.id_ship=s.id "
                   "inner join wire_parti as p on w.id_wparti=p.id "
@@ -640,18 +640,20 @@ void DataSert::refresh(int id, bool is_ship)
                   "inner join prov_prih as pr on b.id_prih=pr.id "
                   "inner join provol as prov on pr.id_pr=prov.id "
                   "inner join provol as pprov on m.id_provol=pprov.id "
+                  "left join provol as bprov on pprov.id_base=bprov.id "
                   "inner join diam as d on m.id_diam=d.id "
                   "inner join poluch as pol on s.id_pol=pol.id "
                   "inner join wire_pack_kind as k on p.id_pack=k.id "
                   "where w.id= :id ") :
                   QString("select p.id, m.kvo, NULL, NULL, m.n_s, date_part('year',m.dat), m.dat, "
-                          "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, NULL, pprov.is_cored, NULL, k.short_en "
+                          "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, NULL, pprov.is_cored, NULL, k.short_en, coalesce(bprov.nam, pprov.nam) "
                           "from wire_parti as p "
                           "inner join wire_parti_m as m on p.id_m=m.id "
                           "inner join prov_buht as b on m.id_buht=b.id "
                           "inner join prov_prih as pr on b.id_prih=pr.id "
                           "inner join provol as prov on pr.id_pr=prov.id "
                           "inner join provol as pprov on m.id_provol=pprov.id "
+                          "left join provol as bprov on pprov.id_base=bprov.id "
                           "inner join diam as d on m.id_diam=d.id "
                           "inner join wire_pack_kind as k on p.id_pack=k.id "
                           "where p.id= :id ");
@@ -667,7 +669,7 @@ void DataSert::refresh(int id, bool is_ship)
             yearPart=query.value(5).toInt();
             datePart=query.value(6).toDate();
             nPlav=query.value(7).toString();
-            srcProv=query.value(8).toString();
+            //srcProv=query.value(8).toString();
             prov=query.value(9).toString();
             diam=query.value(10).toDouble();
             spool=query.value(11).toString();
@@ -675,8 +677,9 @@ void DataSert::refresh(int id, bool is_ship)
             is_cored=query.value(13).toBool();
             poluch_en=query.value(14).toString();
             spool_en=query.value(15).toString();
+            srcProv=query.value(16).toString();
         }
-        srcProv=prov;
+        //srcProv=prov;
         if (srcProv.right(2)==tr("-О") || srcProv.right(2)==tr("-П")) srcProv.truncate(srcProv.size()-2);
         refreshTu();
         refreshChem();

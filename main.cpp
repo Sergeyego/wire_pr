@@ -16,6 +16,12 @@ int main(int argc, char *argv[])
     DbLogin d(QObject::tr("Производство проволоки"),logo);
     if (d.exec()!=QDialog::Accepted) exit(1);
 
+    QDir dir(":fonts");
+    QFileInfoList list = dir.entryInfoList();
+    foreach (QFileInfo i, list) {
+        QFontDatabase::addApplicationFont(i.absoluteFilePath());
+    }
+
     MainWindow w(key);
     w.show();
 

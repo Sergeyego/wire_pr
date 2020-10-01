@@ -275,3 +275,50 @@ void ModelMechReal::refresh(int id_part)
     setFilter("wire_mech.id_part = "+QString::number(id_part));
     select();
 }
+
+ModelGostSrc::ModelGostSrc(QObject *parent) : QSqlQueryModel(parent)
+{
+    refresh(-1);
+}
+
+void ModelGostSrc::refresh(int id_part)
+{
+    setQuery(QString("select g.id, g.nam from wire_gost as w "
+                     "inner join gost_new as g on w.id_gost=g.id "
+                     "where w.id_provol=(select m.id_provol from wire_parti_m as m where m.id = %1 ) order by g.nam").arg(id_part));
+    if (lastError().isValid()){
+        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+    } else {
+        setHeaderData(1,Qt::Horizontal,QString::fromUtf8("Наименование"));
+    }
+}
+
+ModelGostPart::ModelGostPart(QObject *parent) : DbTableModel("wire_parti_gost",parent)
+{
+    addColumn("id_parti","id_parti",true,TYPE_INT);
+    addColumn("id_gost",QString::fromUtf8("Наименование"),true,TYPE_STRING,NULL,Models::instance()->relNewGost);
+    setSuffix("inner join gost_new as gn on gn.id = wire_parti_gost.id_gost");
+    setSort("gn.nam");
+}
+
+void ModelGostPart::refresh(int id_part)
+{
+    id_p=id_part;
+    setFilter("wire_parti_gost.id_parti = "+QString::number(id_part));
+    setDefaultValue(0,id_part);
+    select();
+}
+
+void ModelGostPart::copyTu()
+{
+    QSqlQuery query;
+    query.prepare("insert into wire_parti_gost (id_parti, id_gost) "
+                  "select :id_p, g.id_gost from wire_gost as g where g.id_provol = (select m.id_provol from wire_parti_m as m where m.id = :id_part )");
+    query.bindValue(":id_p",id_p);
+    query.bindValue(":id_part",id_p);
+    if (query.exec()){
+        select();
+    } else {
+        QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
+    }
+}

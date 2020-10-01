@@ -44,6 +44,8 @@ private:
     Editor *editor;
     void blockShip(bool val);
     ModelMechReal *modelMechReal;
+    ModelGostSrc *modelGostSrc;
+    ModelGostPart *modelGostPart;
 
 private slots:
     void updData(int row);

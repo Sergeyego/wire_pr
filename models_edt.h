@@ -28,16 +28,6 @@ public slots:
     void refreshState();
 };
 
-/*class ModelWirePartiChem : public DbTableModel
-{
-    Q_OBJECT
-public:
-    ModelWirePartiChem(QObject *parent=0);
-    void refresh(int id_part);
-private:
-    int id_wparti;
-};*/
-
 class ModelWirePartiMech : public DbTableModel
 {
     Q_OBJECT
@@ -48,15 +38,6 @@ public:
 private:
     int id_wparti;
 };
-
-/*class SrcChemModel : public QSqlQueryModel
-{
-    Q_OBJECT
-public:
-    SrcChemModel(QObject *parent=0);
-    void refresh(int id_part);
-    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
-};*/
 
 class PartPackModel : public QSqlQueryModel
 {
@@ -95,4 +76,25 @@ public:
     ModelMechReal(QObject *parent=0);
     void refresh(int id_part);
 };
+
+class ModelGostSrc : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelGostSrc(QObject *parent=0);
+    void refresh(int id_part);
+};
+
+class ModelGostPart : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelGostPart(QObject *parent=0);
+    void refresh(int id_part);
+private:
+    int id_p;
+public slots:
+    void copyTu();
+};
+
 #endif // MODELS_EDT_H

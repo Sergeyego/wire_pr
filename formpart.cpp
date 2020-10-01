@@ -46,7 +46,17 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewPart->setColumnWidth(5,150);
     ui->tableViewPart->setColumnWidth(6,50);
 
-    srsChemModel = new /*SrcChemModel*/ModelChemSrc(this);
+    modelGostSrc = new ModelGostSrc(this);
+    ui->tableViewSrcTu->setModel(modelGostSrc);
+    ui->tableViewSrcTu->setColumnHidden(0,true);
+    ui->tableViewSrcTu->setColumnWidth(1,200);
+
+    modelGostPart = new ModelGostPart(this);
+    ui->tableViewPartiTu->setModel(modelGostPart);
+    ui->tableViewPartiTu->setColumnHidden(0,true);
+    ui->tableViewPartiTu->setColumnWidth(1,200);
+
+    srsChemModel = new ModelChemSrc(this);
     chemModel = new ModelChemSert(this);
     mechModel = new ModelWirePartiMech(this);
     modelShip = new ModelShipment(this);
@@ -104,6 +114,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addEmptyLock(ui->toolButtonAddPack);
     push->addEmptyLock(ui->toolButtonDelPack);
     push->addEmptyLock(ui->toolButtonEdtPack);
+    push->addEmptyLock(ui->groupBoxTu);
     push->addUnLock(ui->toolButtonPodt);
     push->addUnLock(ui->toolButtonSrc);
 
@@ -164,6 +175,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(ui->tableViewShip,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showSertShip(QModelIndex)));
     connect(ui->toolButtonPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
     connect(ui->toolButtonSrc,SIGNAL(clicked(bool)),this,SLOT(fltSrc()));
+    connect(ui->toolButtonCopyTu,SIGNAL(clicked(bool)),modelGostPart,SLOT(copyTu()));
 
     modelPart->select();
 
@@ -187,15 +199,14 @@ FormPart::~FormPart()
 void FormPart::loadSettings()
 {
     QSettings settings("szsm", "wire_pr");
-    //this->restoreGeometry(settings.value("part_geometry").toByteArray());
-    this->ui->splitter->restoreState(settings.value("part_splitter_width").toByteArray());
-
+    ui->splitter->restoreState(settings.value("part_splitter_width").toByteArray());
+    ui->tabWidget->setCurrentIndex(settings.value("part_current_tab",0).toInt());
 }
 
 void FormPart::saveSettings()
 {
     QSettings settings("szsm", "wire_pr");
-    //settings.setValue("part_geometry", this->saveGeometry());
+    settings.setValue("part_current_tab",ui->tabWidget->currentIndex());
     settings.setValue("part_splitter_width",ui->splitter->saveState());
 }
 
@@ -222,6 +233,8 @@ void FormPart::updData(int row)
     mechModel->refresh(id_p);
     partPackModel->refresh(id_p);
     modelMechReal->refresh(id_p);
+    modelGostSrc->refresh(id_p);
+    modelGostPart->refresh(id_p);
     bool ok= partPackModel->rowCount()>0;
     if (ok){
         ui->comboBoxPack->setCurrentIndex(0);

@@ -131,9 +131,9 @@ void LblEngine::createLblGroup(int id_part)
 
         QString tuStr=tr("Проволока сварочная  ");
         QSqlQuery tuQuery;
-        tuQuery.prepare("select g.nam from wire_gost as w "
+        tuQuery.prepare("select g.nam from wire_parti_gost as w "
                         "inner join gost_new as g on w.id_gost=g.id "
-                        "where w.id_provol=(select m.id_provol from wire_parti as p inner join wire_parti_m as m on p.id_m=m.id where p.id=:id) order by g.nam");
+                        "where w.id_parti = (select p.id_m from wire_parti as p where p.id = :id) order by g.nam");
         tuQuery.bindValue(":id",id_part);
         if (tuQuery.exec()){
             while(tuQuery.next()){

@@ -2,6 +2,7 @@
 #define DIALOGOTK_H
 
 #include <QDialog>
+#include <QCompleter>
 #include "models.h"
 #include "db/dbtablemodel.h"
 
@@ -14,14 +15,10 @@ class DialogOtk : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogOtk(QString vol, QString nam, QDate d, QWidget *parent = 0);
+    explicit DialogOtk(int id_p, QWidget *parent = 0);
     ~DialogOtk();
-    QString getNam();
-    QString getOtk();
-    QString getVol();
     QString getCod();
     bool barCode();
-    bool getOpt();
 
 private:
     Ui::DialogOtk *ui;

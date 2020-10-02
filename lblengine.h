@@ -20,8 +20,8 @@ class LblEngine : public QObject
     Q_OBJECT
 public:
     explicit LblEngine(QObject *parent = 0);
-    void createLblEd(int id_part, QString nam, QString otk, bool barcode, bool opt);
-    void createLblEd(QString text, QString barcode, bool opt);
+    void createLblEd(int id_part, QString cod, bool barcode);
+    void createLblEd(QString text, QString barcode);
     void createLblGroup(int id_part);
 
 private:

@@ -18,7 +18,7 @@ LblEngine::LblEngine(QObject *parent) : QObject(parent)
     fileTemp.close();
 }
 
-void LblEngine::createLblEd(int id_part, QString nam, QString otk, bool barcode, bool opt)
+void LblEngine::createLblEd(int id_part, QString cod, bool barcode)
 {
     QString marka, diam, spool, plavka, part, date, massa, ean;
     QSqlQuery query;
@@ -51,19 +51,18 @@ void LblEngine::createLblEd(int id_part, QString nam, QString otk, bool barcode,
         str+=tr("Диаметр, мм - ")+diam+"\n";
         str+=tr("Плавка - ")+plavka+"\n";
         str+=tr("Партия - ")+part+"\n";
-        str+=tr("Носитель - ")+spool+"\n";
-        str+=tr("№ - ")+nam+"\n";
-        //str+=tr("ОТК - ")+otk+"\n";
+        str+=tr("Тип носителя - ")+spool+"\n";
+        str+=tr("Код продукции - ")+cod+"\n";
         str+=tr("Масса нетто, кг - ")+massa+"\n";
         str+=tr("Дата изг. - ")+date;
-        createLblEd(str,ean,opt);
+        createLblEd(str,ean);
 
     } else {
         QMessageBox::critical(NULL,tr("Ошибка"),query.lastError().text(),QMessageBox::Ok);
     }
 }
 
-void LblEngine::createLblEd(QString text, QString barcode, bool opt)
+void LblEngine::createLblEd(QString text, QString barcode)
 {
     QString templ=QString::fromLocal8Bit("СЗСМ");
     if (map.value(templ).isNull()){
@@ -81,12 +80,9 @@ void LblEngine::createLblEd(QString text, QString barcode, bool opt)
     root.appendChild(obj);
 
     obj.appendChild(newText("4mm","35mm","38mm","28.5mm",text,7,true,&doc));
-    if (!opt){
-        obj.appendChild(newImage("6.5mm","4mm","33mm","13mm",dir+"/images/simb.png",&doc));
-        obj.appendChild(newImage("5.5mm","17.5mm","35mm","2.5mm",dir+"/images/site.png",&doc));
-    } else {
-        obj.appendChild(newImage("6.5mm","4mm","33mm","13mm",dir+"/images/logo-dark.png",&doc));
-    }
+    obj.appendChild(newImage("6.5mm","4mm","33mm","13mm",dir+"/images/simb.png",&doc));
+    obj.appendChild(newImage("5.5mm","17.5mm","35mm","2.5mm",dir+"/images/site.png",&doc));
+
     if (!barcode.isEmpty()) {
         obj.appendChild(newBarcode("4mm","20.5mm","38mm","17mm",barcode,&doc));
     }

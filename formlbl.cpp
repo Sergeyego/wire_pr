@@ -7,23 +7,22 @@ FormLbl::FormLbl(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->dateEditPart->setDate(QDate::currentDate());
-    ui->dateEditNam->setDate(QDate::currentDate());
     setComboBoxModel(ui->comboBoxMar,Models::instance()->relProvol);
     setComboBoxModel(ui->comboBoxDiam,Models::instance()->relDiam);
     setComboBoxModel(ui->comboBoxPack,Models::instance()->relPack);
-    setComboBoxModel(ui->comboBoxVol,Models::instance()->relVol);
     setComboBoxModel(ui->comboBoxNam,Models::instance()->relNam);
-    //setComboBoxModel(ui->comboBoxOtk,Models::instance()->relOtk);
     ui->lineEditMas->setValidator(new QDoubleValidator(0,999999999,3,this));
 
     modelOtk = new DbTableModel("otk",this);
     modelOtk->addColumn("id",tr("id"),true,TYPE_INT);
+    modelOtk->addColumn("num",tr("№"),false,TYPE_INT, new QIntValidator(0,999999,this));
     modelOtk->addColumn("nam",tr("ОТК"),false,TYPE_STRING);
     modelOtk->setSort("otk.nam");
     modelOtk->select();
     ui->tableViewOtk->setModel(modelOtk);
     ui->tableViewOtk->setColumnHidden(0,true);
-    ui->tableViewOtk->setColumnWidth(1,150);
+    ui->tableViewOtk->setColumnWidth(1,40);
+    ui->tableViewOtk->setColumnWidth(2,150);
 
     modelNam = new DbTableModel("wire_namoch",this);
     modelNam->addColumn("id",tr("id"),true,TYPE_INT);
@@ -81,23 +80,26 @@ QString FormLbl::getNum(QComboBox *c)
     if (c->findText(c->currentText())!=-1 && c->model()->columnCount()>2){
         n=c->model()->data(c->model()->index(c->currentIndex(),2),Qt::EditRole).toInt();
     }
-    return QString("%1").arg((n),2,'d',0,QChar('0'));
+    return QString("%1").arg(n,2,'d',0,QChar('0'));
 }
 
 void FormLbl::goLbl1()
 {
-    QString num=ui->dateEditNam->date().toString("yyMMdd")+getNum(ui->comboBoxNam)+getNum(ui->comboBoxVol);
+    QString year=ui->lineEditYear->text();
+    year=year.rightJustified(2,QChar('0'));
+    QString opart=ui->lineEditOrigPart->text();
+    opart=opart.rightJustified(4,QChar('0'));
+    QString num=year+opart+getNum(ui->comboBoxNam);
     QString str;
     str+=tr("Марка - ")+ui->comboBoxMar->currentText()+"\n";
     str+=tr("Диаметр, мм - ")+ui->comboBoxDiam->currentText()+"\n";
     str+=tr("Плавка - ")+ui->lineEditPlav->text()+"\n";
     str+=tr("Партия - ")+ui->lineEditPart->text()+"\n";
-    str+=tr("Носитель - ")+ui->comboBoxPack->currentText()+"\n";
-    str+=tr("№ - ")+num+"\n";
-    //str+=tr("ОТК - ")+ui->comboBoxOtk->currentText()+"\n";
+    str+=tr("Тип носителя - ")+ui->comboBoxPack->currentText()+"\n";
+    str+=tr("Код продукции - ")+num+"\n";
     str+=tr("Масса нетто, кг - ")+ui->lineEditMas->text()+"\n";
     str+=tr("Дата изг. - ")+ui->dateEditPart->date().toString("dd.MM.yy");
     LblEngine e;
-    e.createLblEd(str,QString(),ui->checkBoxOpt->isChecked());
+    e.createLblEd(str,QString());
 }
 

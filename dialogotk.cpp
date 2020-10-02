@@ -1,27 +1,22 @@
 #include "dialogotk.h"
 #include "ui_dialogotk.h"
 
-DialogOtk::DialogOtk(QString vol, QString nam, QDate d, QWidget *parent) :
+DialogOtk::DialogOtk(int id_p, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogOtk)
 {
     ui->setupUi(this);
-    ui->dateEdit->setDate(d);
-
-    /*ui->comboBoxOtk->setModel(Models::instance()->relOtk->model());
-    ui->comboBoxOtk->setModelColumn(Models::instance()->relOtk->columnDisplay());
-    ui->comboBoxOtk->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    ui->comboBoxOtk->completer()->setCaseSensitivity(Qt::CaseInsensitive);*/
     ui->comboBoxNam->setModel(Models::instance()->relNam->model());
     ui->comboBoxNam->setModelColumn(Models::instance()->relNam->columnDisplay());
-    ui->comboBoxNam->setCurrentIndex(ui->comboBoxNam->findText(nam));
     ui->comboBoxNam->completer()->setCompletionMode(QCompleter::PopupCompletion);
     ui->comboBoxNam->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->comboBoxVol->setModel(Models::instance()->relVol->model());
-    ui->comboBoxVol->setModelColumn(Models::instance()->relVol->columnDisplay());
-    ui->comboBoxVol->setCurrentIndex(ui->comboBoxVol->findText(vol));
-    ui->comboBoxVol->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    ui->comboBoxVol->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+
+    ui->comboBoxPart->setModel(Models::instance()->relWirePart->proxyModel());
+    ui->comboBoxPart->setModelColumn(1);
+    ui->comboBoxPart->completer()->setCompletionMode(QCompleter::PopupCompletion);
+    ui->comboBoxPart->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+
+    ui->comboBoxPart->setCurrentIndex(ui->comboBoxPart->findText(Models::instance()->relWirePart->data(QString::number(id_p)).toString()));
 }
 
 DialogOtk::~DialogOtk()
@@ -29,34 +24,34 @@ DialogOtk::~DialogOtk()
     delete ui;
 }
 
-QString DialogOtk::getNam()
-{
-    return getNum(ui->comboBoxNam);
-}
-
-QString DialogOtk::getOtk()
-{
-    return /*ui->comboBoxOtk->currentText()*/QString();
-}
-
-QString DialogOtk::getVol()
-{
-    return getNum(ui->comboBoxVol);
-}
 
 QString DialogOtk::getCod()
 {
-    return ui->dateEdit->date().toString("yyMMdd")+getNam()+getVol();
+    QModelIndex ind=ui->comboBoxPart->model()->index(ui->comboBoxPart->currentIndex(),0);
+    int id_p=ui->comboBoxPart->model()->data(ind,Qt::EditRole).toInt();
+    QString opart, year;
+    QSqlQuery query;
+    query.prepare("select m.n_s, m.dat "
+                  "from wire_parti as p "
+                  "inner join wire_parti_m as m on p.id_m=m.id "
+                  "where p.id = :id_part ");
+    query.bindValue(":id_part",id_p);
+    if (query.exec()){
+        while (query.next()){
+            opart=query.value(0).toString();
+            year=query.value(1).toDate().toString("yy");
+        }
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Ok);
+    }
+    year=year.rightJustified(2,QChar('0'));
+    opart=opart.rightJustified(4,QChar('0'));
+    return year+opart+getNum(ui->comboBoxNam);
 }
 
 bool DialogOtk::barCode()
 {
     return ui->checkBox->isChecked();
-}
-
-bool DialogOtk::getOpt()
-{
-    return ui->checkBoxOpt->isChecked();
 }
 
 QString DialogOtk::getNum(QComboBox *c)
@@ -65,5 +60,5 @@ QString DialogOtk::getNum(QComboBox *c)
     if (c->findText(c->currentText())!=-1 && c->model()->columnCount()>2){
         n=c->model()->data(c->model()->index(c->currentIndex(),2),Qt::EditRole).toInt();
     }
-    return QString("%1").arg((n),2,'d',0,QChar('0'));
+    return QString("%1").arg(n,2,'d',0,QChar('0'));
 }

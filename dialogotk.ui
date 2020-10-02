@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
+    <width>518</width>
     <height>350</height>
    </rect>
   </property>
@@ -17,7 +17,14 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QComboBox" name="comboBoxVol">
+      <widget class="QComboBox" name="comboBoxPart">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBoxNam">
        <property name="editable">
         <bool>true</bool>
        </property>
@@ -30,45 +37,20 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="comboBoxNam">
-       <property name="editable">
-        <bool>true</bool>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="checkBox">
+       <property name="text">
+        <string>Печать штрих кода</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Волочильщик</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Дата производства</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="DateEdit" name="dateEdit">
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QCheckBox" name="checkBox">
-       <property name="text">
-        <string>Печать штрих кода</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QCheckBox" name="checkBoxOpt">
-       <property name="text">
-        <string>СварМонтажСтрой</string>
+        <string>Ориг. партия</string>
        </property>
       </widget>
      </item>
@@ -99,13 +81,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

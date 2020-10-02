@@ -30,12 +30,18 @@
           <layout class="QGridLayout" name="gridLayout">
            <item row="0" column="0">
             <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Марка</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2">
+           <item row="0" column="1" colspan="3">
             <widget class="QComboBox" name="comboBoxMar">
              <property name="editable">
               <bool>true</bool>
@@ -44,12 +50,18 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Диаметр</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1" colspan="2">
+           <item row="1" column="1" colspan="3">
             <widget class="QComboBox" name="comboBoxDiam">
              <property name="editable">
               <bool>true</bool>
@@ -63,10 +75,7 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLineEdit" name="lineEditPart"/>
-           </item>
-           <item row="2" column="1" colspan="2">
+           <item row="2" column="1" colspan="3">
             <widget class="QComboBox" name="comboBoxPack">
              <property name="editable">
               <bool>true</bool>
@@ -80,12 +89,18 @@
              </property>
             </widget>
            </item>
+           <item row="3" column="1" colspan="3">
+            <widget class="QLineEdit" name="lineEditPart"/>
+           </item>
            <item row="4" column="0">
             <widget class="QLabel" name="label_5">
              <property name="text">
               <string>Плавка</string>
              </property>
             </widget>
+           </item>
+           <item row="4" column="1" colspan="3">
+            <widget class="QLineEdit" name="lineEditPlav"/>
            </item>
            <item row="5" column="0">
             <widget class="QLabel" name="label_6">
@@ -94,74 +109,82 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Волочильщик</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Намотчик</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLineEdit" name="lineEditPlav"/>
-           </item>
-           <item row="5" column="1" colspan="2">
+           <item row="5" column="1" colspan="3">
             <widget class="DateEdit" name="dateEditPart">
              <property name="calendarPopup">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="6" column="1" colspan="2">
-            <widget class="DateEdit" name="dateEditNam">
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Масса нетто, кг</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1" colspan="2">
-            <widget class="QLineEdit" name="lineEditMas"/>
-           </item>
            <item row="6" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Дата производства</string>
+              <string>Ориг. партия</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="1" colspan="2">
-            <widget class="QComboBox" name="comboBoxVol">
-             <property name="editable">
-              <bool>true</bool>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="lineEditOrigPart">
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string>9999</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1" colspan="2">
+           <item row="6" column="2">
+            <widget class="QLabel" name="label_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>год</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="3">
+            <widget class="QLineEdit" name="lineEditYear">
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="inputMask">
+              <string>99</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Намотчик</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" colspan="3">
             <widget class="QComboBox" name="comboBoxNam">
              <property name="editable">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="10" column="0">
-            <widget class="QCheckBox" name="checkBoxOpt">
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>СварМонтажСтрой</string>
+              <string>Масса нетто, кг</string>
              </property>
             </widget>
+           </item>
+           <item row="8" column="1" colspan="3">
+            <widget class="QLineEdit" name="lineEditMas"/>
            </item>
           </layout>
          </item>
@@ -188,7 +211,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>156</height>
           </size>
          </property>
         </spacer>
@@ -278,6 +301,23 @@
    <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>comboBoxMar</tabstop>
+  <tabstop>comboBoxDiam</tabstop>
+  <tabstop>comboBoxPack</tabstop>
+  <tabstop>lineEditPart</tabstop>
+  <tabstop>lineEditPlav</tabstop>
+  <tabstop>dateEditPart</tabstop>
+  <tabstop>lineEditOrigPart</tabstop>
+  <tabstop>lineEditYear</tabstop>
+  <tabstop>comboBoxNam</tabstop>
+  <tabstop>lineEditMas</tabstop>
+  <tabstop>pushButtonLbl1</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>tableViewOtk</tabstop>
+  <tabstop>tableViewNam</tabstop>
+  <tabstop>tableViewVol</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

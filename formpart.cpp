@@ -355,11 +355,11 @@ void FormPart::lblEd()
 {
     if (partPackModel->rowCount()){
         int id_p = partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
-        DialogOtk d(ui->comboBoxVol->currentText(),QString(),ui->dateEdit->date());
+        DialogOtk d(id_p);
         if (d.exec()==QDialog::Accepted){
             LblEngine e;
             //qDebug()<<d.getNam()<<" "<<d.getVol()<<" "<<d.getCod();
-            e.createLblEd(id_p,d.getCod(),d.getOtk(),d.barCode(),d.getOpt());
+            e.createLblEd(id_p,d.getCod(),d.barCode());
         }
     }
 }

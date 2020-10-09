@@ -97,4 +97,13 @@ public slots:
     void copyTu();
 };
 
+class ModelEan : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelEan(QObject *parent=0);
+    void refresh(int id_prov);
+public slots:
+    void updRels(QModelIndex index);
+};
 #endif // MODELS_EDT_H

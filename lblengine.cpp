@@ -42,7 +42,7 @@ void LblEngine::createLblEd(int id_part, QString cod, bool barcode)
             part=query.value(4).toString();
             date=query.value(5).toDate().toString("dd.MM.yy");
             massa=query.value(6).toString();
-            ean=(!query.value(8).isNull() && barcode) ? query.value(7).toString() : QString();
+            ean=barcode ? query.value(7).toString() : QString();
         }
 
         if (massa.toDouble()==0.0) massa="";
@@ -55,6 +55,7 @@ void LblEngine::createLblEd(int id_part, QString cod, bool barcode)
         str+=tr("Код продукции - ")+cod+"\n";
         str+=tr("Масса нетто, кг - ")+massa+"\n";
         str+=tr("Дата изг. - ")+date;
+
         createLblEd(str,ean);
 
     } else {
@@ -149,7 +150,7 @@ void LblEngine::createLblGroup(int id_part)
         QString str1;
         str1+=tr("Плавка - ")+plavka+"\n";
         str1+=tr("Партия - ")+part+"\n";
-        str1+=tr("Носитель - ")+spool+"\n";
+        str1+=tr("Тип носителя - ")+spool+"\n";
         str1+=tr("Масса нетто, кг - ")+massa+"\n";
         str1+=tr("Дата изг. - ")+date+"\n"+"\n";
         str1+=tr("Изготовлено в России");
@@ -171,7 +172,7 @@ void LblEngine::createLblGroup(int id_part)
         obj.appendChild(newImage("4mm","4mm","26mm","12mm",dir+"/images/simb.png",&doc));
         obj.appendChild(newText("35mm","5.5mm","95mm","10mm",str0,18,false,&doc));
         obj.appendChild(newText("4mm","18mm","127mm","4mm",tuStr,9,false,&doc));
-        obj.appendChild(newText("4mm","24mm","85mm","19mm",description,9,false,&doc));
+        obj.appendChild(newText("4mm","24mm","85mm","19mm",description,8,false,&doc));
         obj.appendChild(newText("91mm","24mm","40mm","32mm",str1,9,false,&doc));
         if (!ean.isEmpty()) obj.appendChild(newBarcode("51mm","42mm","38mm","17mm",ean,&doc));
 

@@ -13,6 +13,9 @@ FormLbl::FormLbl(QWidget *parent) :
     setComboBoxModel(ui->comboBoxNam,Models::instance()->relNam);
     ui->lineEditMas->setValidator(new QDoubleValidator(0,999999999,3,this));
 
+    ui->lineEditOrigPart->setValidator(new QIntValidator(0,9999,this));
+    ui->lineEditYear->setValidator(new QIntValidator(0,99,this));
+
     modelOtk = new DbTableModel("otk",this);
     modelOtk->addColumn("id",tr("id"),true,TYPE_INT);
     modelOtk->addColumn("num",tr("№"),false,TYPE_INT, new QIntValidator(0,999999,this));

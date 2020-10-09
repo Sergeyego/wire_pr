@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "db/dbtablemodel.h"
 #include "models.h"
+#include "models_edt.h"
 #include "db/dbmapper.h"
 
 namespace Ui {
@@ -23,7 +24,7 @@ private:
     DbTableModel *modelWire;
     DbMapper *mapper;
     DbTableModel *modelChemTu;
-    DbTableModel *modelEan;
+    ModelEan *modelEan;
     DbTableModel *modelKr;
     DbTableModel *modelDim;
     DbTableModel *modelGost;

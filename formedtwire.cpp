@@ -31,15 +31,8 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewChem->setColumnWidth(2,100);
     ui->tableViewChem->setColumnWidth(3,100);
 
-    modelEan = new DbTableModel("wire_ean",this);
-    modelEan->addColumn("id_prov","id_prov",true,TYPE_STRING);
-    modelEan->addColumn("id_diam",tr("Диаметр"),true,TYPE_STRING,NULL,Models::instance()->relDiam);
-    modelEan->addColumn("id_spool",tr("Носитель"),true,TYPE_STRING,NULL,Models::instance()->relPack);
-    modelEan->addColumn("id_pack",tr("Упаковка (ед., групп.)"),true,TYPE_STRING,NULL,Models::instance()->relPackType);
-    modelEan->addColumn("ean_ed",tr("Штрих код (ед.)"),false,TYPE_STRING);
-    modelEan->addColumn("ean_group",tr("Штрих код (гр.)"),false,TYPE_STRING);
-    modelEan->setSuffix("inner join diam on wire_ean.id_diam=diam.id");
-    modelEan->setSort("diam.sdim");
+    modelEan = new ModelEan(this);
+
     ui->tableViewPack->setModel(modelEan);
     ui->tableViewPack->setColumnHidden(0,true);
     ui->tableViewPack->setColumnWidth(1,70);
@@ -47,6 +40,11 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewPack->setColumnWidth(3,250);
     ui->tableViewPack->setColumnWidth(4,125);
     ui->tableViewPack->setColumnWidth(5,125);
+
+    DbDelegate *delegate=qobject_cast<DbDelegate *>(ui->tableViewPack->itemDelegate());
+    if (delegate){
+        connect(delegate,SIGNAL(createEdt(QModelIndex)),modelEan,SLOT(updRels(QModelIndex)));
+    }
 
     modelKr = new DbTableModel("wire_kr",this);
     modelKr->addColumn("id_prov",tr("id_prov"),true,TYPE_INT);
@@ -137,9 +135,7 @@ void FormEdtWire::saveSettings()
 void FormEdtWire::updEan(int row)
 {
     int id_prov=ui->tableViewWire->model()->data(ui->tableViewWire->model()->index(row,0),Qt::EditRole).toInt();
-    modelEan->setDefaultValue(0,id_prov);
-    modelEan->setFilter("wire_ean.id_prov = "+QString::number(id_prov));
-    modelEan->select();
+    modelEan->refresh(id_prov);
 
     modelKr->setDefaultValue(0,id_prov);
     modelKr->setFilter("wire_kr.id_prov = "+QString::number(id_prov));

@@ -322,3 +322,50 @@ void ModelGostPart::copyTu()
         QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
     }
 }
+
+ModelEan::ModelEan(QObject *parent) : DbTableModel("wire_ean",parent)
+{
+    addColumn("id_prov","id_prov",true,TYPE_STRING);
+    addColumn("id_diam",tr("Диаметр"),true,TYPE_STRING,NULL,Models::instance()->relDiam);
+    addColumn("id_spool",tr("Носитель"),true,TYPE_STRING,NULL,Models::instance()->relPack);
+    addColumn("id_pack",tr("Упаковка (ед., групп.)"),true,TYPE_STRING,NULL,Models::instance()->relPackType);
+    addColumn("ean_ed",tr("Штрих код (ед.)"),false,TYPE_STRING,NULL,Models::instance()->relEan);
+    addColumn("ean_group",tr("Штрих код (гр.)"),false,TYPE_STRING,NULL,Models::instance()->relEan);
+    setSuffix("inner join diam on wire_ean.id_diam=diam.id");
+    setSort("diam.sdim");
+}
+
+void ModelEan::refresh(int id_prov)
+{
+    setDefaultValue(0,id_prov);
+    setFilter("wire_ean.id_prov = "+QString::number(id_prov));
+    select();
+}
+
+void ModelEan::updRels(QModelIndex index)
+{
+    if (index.column()==4 || index.column()==5){
+        QString flt;
+        QSqlQuery query;
+        query.prepare("select e.ean from eans as e where e.ean not in "
+                      "(select ean_ed from wire_ean "
+                      "union "
+                      "select ean_group from wire_ean where ean_group is not null "
+                      "union "
+                      "select ean_ed from ean_el "
+                      "union "
+                      "select ean_group from ean_el where ean_group is not null) "
+                      "order by e.ean ");
+        if (query.exec()){
+            while (query.next()){
+                if (!flt.isEmpty()){
+                    flt+="|";
+                }
+                flt+=query.value(0).toString();
+            }
+            Models::instance()->relEan->proxyModel()->setFilterRegExp(flt);
+        } else {
+            QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
+        }
+    }
+}

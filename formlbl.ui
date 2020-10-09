@@ -131,8 +131,8 @@
                <height>16777215</height>
               </size>
              </property>
-             <property name="inputMask">
-              <string>9999</string>
+             <property name="maxLength">
+              <number>4</number>
              </property>
             </widget>
            </item>
@@ -157,8 +157,8 @@
                <height>16777215</height>
               </size>
              </property>
-             <property name="inputMask">
-              <string>99</string>
+             <property name="maxLength">
+              <number>2</number>
              </property>
             </widget>
            </item>

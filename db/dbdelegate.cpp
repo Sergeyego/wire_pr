@@ -66,7 +66,10 @@ QWidget *DbDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem 
             }
         }
     }
-    if (editor) editor->installEventFilter(const_cast<DbDelegate *>(this));
+    if (editor) {
+            editor->installEventFilter(const_cast<DbDelegate *>(this));
+            emit createEdt(index);
+        }
     return editor;
 }
 

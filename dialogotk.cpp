@@ -17,6 +17,8 @@ DialogOtk::DialogOtk(int id_p, QWidget *parent) :
     ui->comboBoxPart->completer()->setCaseSensitivity(Qt::CaseInsensitive);
 
     ui->comboBoxPart->setCurrentIndex(ui->comboBoxPart->findText(Models::instance()->relWirePart->data(QString::number(id_p)).toString()));
+
+    connect(ui->comboBoxPart->lineEdit(),SIGNAL(editingFinished()),this,SLOT(edtPartFinished()));
 }
 
 DialogOtk::~DialogOtk()
@@ -61,4 +63,9 @@ QString DialogOtk::getNum(QComboBox *c)
         n=c->model()->data(c->model()->index(c->currentIndex(),2),Qt::EditRole).toInt();
     }
     return QString("%1").arg(n,2,'d',0,QChar('0'));
+}
+
+void DialogOtk::edtPartFinished()
+{
+    ui->comboBoxPart->setCurrentIndex(ui->comboBoxPart->findText(ui->comboBoxPart->currentText()));
 }

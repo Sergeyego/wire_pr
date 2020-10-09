@@ -61,6 +61,7 @@ Models::Models(QObject *parent) :
     relNaklType = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type order by sort_order"), this),0,1,this);    
     relVedPix = new DbRelation(new DbRelationalModel(QString("select id, simb from zvd_ved"),this),0,1,this);
     relWireType = new DbRelation(new DbRelationalModel(QString("select id, nam from provol_type order by id"), this),0,1,this);
+    relEan = new DbRelation(new DbRelationalModel(QString("select ean from eans order by ean"), this),0,0,this);
 
     rels.push_back(relProvol);
     rels.push_back(relDiam);
@@ -89,6 +90,7 @@ Models::Models(QObject *parent) :
     rels.push_back(relNaklType);
     rels.push_back(relVedPix);
     rels.push_back(relWireType);
+    rels.push_back(relEan);
 
     int year=QDate::currentDate().year();
 
@@ -100,6 +102,8 @@ Models::Models(QObject *parent) :
 
     relSrcPart->proxyModel()->setFilterKeyColumn(3);
     relSrcPart->proxyModel()->setFilterRegExp(QRegExp(QString::number(year-1)+"|"+QString::number(year)));
+
+    relEan->proxyModel()->setFilterKeyColumn(0);
 }
 
 Models *Models::instance()

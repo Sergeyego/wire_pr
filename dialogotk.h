@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QCompleter>
+#include <QLineEdit>
 #include "models.h"
 #include "db/dbtablemodel.h"
 
@@ -23,6 +24,9 @@ public:
 private:
     Ui::DialogOtk *ui;
     QString getNum(QComboBox *c);
+
+private slots:
+    void edtPartFinished();
 };
 
 #endif // DIALOGOTK_H

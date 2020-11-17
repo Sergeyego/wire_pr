@@ -392,7 +392,7 @@ void SertBuild::build(int id, bool is_ship)
         cursor=sertTable->cellAt(0,3).firstCursorPosition();
         cursor.setBlockFormat(formatCenter);
         cursor.setCharFormat(textBoldFormat);
-        insertText(cursor,tr("Дата"),tr("Date"),true);
+        insertText(cursor,tr("Дата выдачи"),tr("Date of issue"),true);
         for(int i=0; i<data->sertModel->rowCount(); i++){
             QString vid=data->sertModel->data(data->sertModel->index(i,1)).toString();
             QString vid_en=data->sertModel->data(data->sertModel->index(i,5)).toString();
@@ -442,7 +442,7 @@ void SertBuild::build(int id, bool is_ship)
     cursor.setCharFormat(textBoldFormat);
     QDate date;
     date=(is_ship)? data->dateVidSert : QDate::currentDate();
-    insertText(cursor,tr("Дата"),tr("Date"),false);
+    insertText(cursor,tr("Дата выдачи сертификата"),tr("Date of issue of the certificate"),false);
     cursor.insertText(tr(": "),textBoldFormat);
     cursor.setCharFormat(textNormalFormat);
     insertDate(cursor,date,false);
@@ -556,7 +556,7 @@ void SertBuild::insertDate(QTextCursor &c, const QDate &date, bool newpar)
     QLocale lrus(QLocale::Russian);
     QLocale leng(QLocale::English);
     if (l_rus && !l_en){
-        c.insertText(lrus.toString(date,"dd.MM.yy"));
+        c.insertText(lrus.toString(date,"dd.MM.yyyy"));
     }
     if (l_en){
         if (l_rus){

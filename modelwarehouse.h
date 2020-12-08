@@ -83,6 +83,18 @@ private slots:
     void calcSum();
 };
 
+class ModelPackCex : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPackCex(QObject *parent=0);
+    void refresh(int id_part);
+signals:
+    void sigSum(QString sum);
+private slots:
+    void calcSum();
+};
+
 class ModelNakl : public DbTableModel
 {
     Q_OBJECT

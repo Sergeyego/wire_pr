@@ -108,7 +108,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addEmptyLock(ui->cmdLblSpool);
     push->addEmptyLock(ui->groupBoxShip);
     push->addEmptyLock(ui->tableViewNam);
-    push->addEmptyLock(ui->groupBoxDef);
+    push->addEmptyLock(ui->tableViewOutCex);
     push->addEmptyLock(ui->tableViewInCex);
     push->addEmptyLock(ui->comboBoxPack);
     push->addEmptyLock(ui->toolButtonAddPack);
@@ -140,7 +140,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewInCex->setColumnHidden(0,true);
     ui->tableViewInCex->setColumnHidden(1,true);
     ui->tableViewInCex->setColumnWidth(2,85);
-    ui->tableViewInCex->setColumnWidth(3,80);
+    ui->tableViewInCex->setColumnWidth(3,70);
      ui->tableViewInCex->setColumnWidth(4,120);
 
     modelOutCex = new ModelOutCex(this);
@@ -148,8 +148,16 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewOutCex->setColumnHidden(0,true);
     ui->tableViewOutCex->setColumnHidden(1,true);
     ui->tableViewOutCex->setColumnWidth(2,85);
-    ui->tableViewOutCex->setColumnWidth(3,80);
+    ui->tableViewOutCex->setColumnWidth(3,70);
     ui->tableViewOutCex->setColumnWidth(4,120);
+
+    modelPackCex = new ModelPackCex(this);
+    ui->tableViewPack->setModel(modelPackCex);
+    ui->tableViewPack->setColumnHidden(0,true);
+    ui->tableViewPack->setColumnHidden(1,true);
+    ui->tableViewPack->setColumnWidth(2,85);
+    ui->tableViewPack->setColumnWidth(3,70);
+
 
     connect(ui->cmdUpdate,SIGNAL(clicked()),modelPart,SLOT(select()));
     connect(ui->dateEditBeg,SIGNAL(dateChanged(QDate)),modelPart,SLOT(setDateBeg(QDate)));
@@ -170,6 +178,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(modelOutCex,SIGNAL(sigSum(QString)),this,SLOT(setOutItogo(QString)));
     connect(modelNamCex,SIGNAL(sigSum(QString)),this,SLOT(setNamItogo(QString)));
     connect(modelShip,SIGNAL(sigSum(QString)),this,SLOT(setShipItogo(QString)));
+    connect(modelPackCex,SIGNAL(sigSum(QString)),ui->labelPackProd,SLOT(setText(QString)));
     connect(ui->cmdLblSpool,SIGNAL(clicked(bool)),this,SLOT(lblEd()));
     connect(ui->cmdLblPack,SIGNAL(clicked(bool)),this,SLOT(lblGroup()));
     connect(ui->tableViewShip,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showSertShip(QModelIndex)));
@@ -181,10 +190,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
 
     ui->tableViewShip->setModel(modelShip);
     ui->tableViewShip->verticalHeader()->hide();
-    ui->tableViewShip->setColumnWidth(0,80);
-    ui->tableViewShip->setColumnWidth(1,50);
-    ui->tableViewShip->setColumnWidth(2,190);
-    ui->tableViewShip->setColumnWidth(3,80);
+    ui->tableViewShip->resizeColumnsToContents();
     ui->tableViewShip->setMenuEnabled(false);
     ui->tableViewShip->setColumnHidden(4,true);
 }
@@ -213,7 +219,7 @@ void FormPart::saveSettings()
 void FormPart::blockShip(bool val)
 {
     ui->tableViewNam->setDisabled(val);
-    ui->groupBoxDef->setDisabled(val);
+    ui->tableViewOutCex->setDisabled(val);
     ui->groupBoxShip->setDisabled(val);
     ui->tableViewInCex->setDisabled(val);
     ui->cmdSert->setDisabled(val);
@@ -288,6 +294,8 @@ void FormPart::updShip()
     modelNamCex->refresh(id_p);
     modelInCex->refresh(id_p);
     modelOutCex->refresh(id_p);
+    modelPackCex->refresh(id_p);
+    ui->tableViewShip->resizeColumnsToContents();
 }
 
 void FormPart::addPack()
@@ -338,7 +346,7 @@ void FormPart::setAddItogo(QString s)
 
 void FormPart::setOutItogo(QString s)
 {
-    ui->groupBoxDef->setTitle(s);
+    ui->labelDef->setText(s);
 }
 
 void FormPart::setNamItogo(QString s)

@@ -33,11 +33,12 @@ private:
     ModelChemSert *chemModel;
     ModelWirePartiMech *mechModel;
     PartPackModel *partPackModel;
-    /*SrcChemModel*/ModelChemSrc *srsChemModel;
+    ModelChemSrc *srsChemModel;
     ModelShipment *modelShip;
     ModelInCex *modelInCex;
     ModelOutCex *modelOutCex;
     ModelNamCex *modelNamCex;
+    ModelPackCex *modelPackCex;
     void loadSettings();
     void saveSettings();
     SertBuild *sert;

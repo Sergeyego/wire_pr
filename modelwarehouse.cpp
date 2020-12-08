@@ -215,7 +215,7 @@ void ModelInCex::calcSum()
         sum+=data(index(i,3),Qt::EditRole).toDouble();
     }
     QString s;
-    s = (sum>0)? (tr("Упаковка итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Упаковка");
+    s = (sum>0)? (tr("Намотка итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Намотка");
     emit sigSum(s);
 }
 
@@ -360,7 +360,7 @@ void ModelNamCex::calcSum()
         sum+=data(index(i,3),Qt::EditRole).toDouble();
     }
     QString s;
-    s = (sum>0)? (tr("Намотка итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Намотка");
+    s = (sum>0)? (tr("Производство итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Производство");
     emit sigSum(s);
 }
 
@@ -615,4 +615,33 @@ void ModelNaklGenCont::refresh(QDate dat, int id_type)
         }
     }
     emit sigSum(tr("Итого по накладной ")+QLocale().toString(sum,'f',2)+tr(" кг"));
+}
+
+ModelPackCex::ModelPackCex(QObject *parent) : DbTableModel("wire_parti_pack",parent)
+{
+    addColumn("id",tr("id"),true,TYPE_INT);
+    addColumn("id_part",tr("id_part"),false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("kvo",tr("Масса, кг"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,2,this));
+    setSort("wire_parti_pack.dat");
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPackCex::refresh(int id_part)
+{
+    setDefaultValue(1,id_part);
+    setFilter("wire_parti_pack.id_part = "+QString::number(id_part));
+    select();
+}
+
+void ModelPackCex::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,3),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (tr("Упаковка итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Упаковка");
+    emit sigSum(s);
 }

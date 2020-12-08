@@ -10,12 +10,28 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().dayOfYear()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    modelPodtMech = new ModelPodtMech(this);
-    ui->tableViewMech->setModel(modelPodtMech);
-    ui->tableViewMech->setColumnHidden(0,true);
-    ui->tableViewMech->setColumnHidden(1,true);
-    ui->tableViewMech->setColumnWidth(2,150);
-    ui->tableViewMech->setColumnWidth(3,90);
+    //modelPodtMech = new ModelPodtMech(this);
+    //ui->tableViewMech->setModel(modelPodtMech);
+    //ui->tableViewMech->setColumnHidden(0,true);
+    //ui->tableViewMech->setColumnHidden(1,true);
+    //ui->tableViewMech->setColumnWidth(2,150);
+    //ui->tableViewMech->setColumnWidth(3,90);
+
+    modelPodtIn = new ModelPodtCex(this);
+    ui->tableViewPodtIn->setModel(modelPodtIn);
+    ui->tableViewPodtIn->setColumnHidden(0,true);
+    ui->tableViewPodtIn->setColumnHidden(1,true);
+    ui->tableViewPodtIn->setColumnHidden(2,true);
+    ui->tableViewPodtIn->setColumnWidth(3,100);
+    ui->tableViewPodtIn->setColumnWidth(4,100);
+
+    modelPodtOut = new ModelPodtCex(this);
+    ui->tableViewPodtOut->setModel(modelPodtOut);
+    ui->tableViewPodtOut->setColumnHidden(0,true);
+    ui->tableViewPodtOut->setColumnHidden(1,true);
+    ui->tableViewPodtOut->setColumnHidden(2,true);
+    ui->tableViewPodtOut->setColumnWidth(3,100);
+    ui->tableViewPodtOut->setColumnWidth(4,100);
 
     modelCont = new ModelPodtCont(this);
     ui->tableViewCont->setModel(modelCont);
@@ -50,12 +66,14 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addMapping(ui->comboBoxSrs,3);
     push->addMapping(ui->comboBoxDiam,4);
     push->addMapping(ui->comboBoxLine,5);
-    push->addMapping(ui->textEditComment,6);
+    push->addMapping(ui->lineEditComm,6);
     push->addLock(ui->dateEditBeg);
     push->addLock(ui->dateEditEnd);
     push->addLock(ui->cmdUpd);
     push->addEmptyLock(ui->tableViewCont);
-    push->addEmptyLock(ui->tableViewMech);
+    push->addEmptyLock(ui->tableViewPodtIn);
+    push->addEmptyLock(ui->tableViewPodtOut);
+    //push->addEmptyLock(ui->tableViewMech);
     push->addUnLock(ui->toolButtonSrc);
     push->addLock(ui->pushButtonFltPodt);
 
@@ -64,6 +82,8 @@ FormPodt::FormPodt(QWidget *parent) :
     connect(modelCont,SIGNAL(sigSum(QString)),this,SLOT(setContItogo(QString)));
     connect(ui->toolButtonSrc,SIGNAL(clicked(bool)),this,SLOT(fltSrc()));
     connect(ui->pushButtonFltPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
+    connect(modelPodtIn,SIGNAL(sigSum(QString)),this,SLOT(setInItogo(QString)));
+    connect(modelPodtOut,SIGNAL(sigSum(QString)),this,SLOT(setOutItogo(QString)));
 
     refresh();
 }
@@ -100,10 +120,12 @@ void FormPodt::updPart(int index)
     modelCont->setDefaultValue(2,date);
     modelCont->refresh(id_podt);
     modelPodtPart->refresh(id_podt);
-    modelPodtMech->refresh(id_podt);
+    //modelPodtMech->refresh(id_podt);
     ui->tableViewPart->resizeToContents();
     modelPodtAnn->refresh(id_podt);
     ui->tableViewAnn->resizeToContents();
+    modelPodtIn->refresh(id_podt,1);
+    modelPodtOut->refresh(id_podt,2);
 }
 
 void FormPodt::setContItogo(QString s)
@@ -121,4 +143,14 @@ void FormPodt::fltPodt()
 {
     DialogFlt d(tr("подтяжки"),Models::instance()->relPodt);
     d.exec();
+}
+
+void FormPodt::setInItogo(QString s)
+{
+    ui->groupBoxPodtIn->setTitle(s);
+}
+
+void FormPodt::setOutItogo(QString s)
+{
+    ui->groupBoxPodtOut->setTitle(s);
 }

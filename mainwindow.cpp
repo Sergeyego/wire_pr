@@ -31,6 +31,11 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
     perepackCube = new CubeWidget(27);
     podtCube = new CubeWidget(28);
 
+    formFixPodt = new FormFixPodt();
+    formPressencePodt = new FormPresencePodt();
+    formNaklPodt = new FormNaklPodt();
+    formReportPodt = new FormReportPodt();
+
     loadSettings();
 
     tabWidget->addTabAction(formPart,ui->actionPart);
@@ -53,6 +58,10 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
     tabWidget->addTabAction(perepackCube,ui->actionPerepackCube);
     tabWidget->addTabAction(formNakl,ui->actionNakl);
     tabWidget->addTabAction(podtCube,ui->actionCubePodt);
+    tabWidget->addTabAction(formFixPodt,ui->actionFixPodt);
+    tabWidget->addTabAction(formPressencePodt,ui->actionPrecensePodt);
+    tabWidget->addTabAction(formNaklPodt,ui->actionPodtNakl);
+    tabWidget->addTabAction(formReportPodt,ui->actionReportPodt);
     tabWidget->loadSettings();
 
     connect(ui->actionExit,SIGNAL(triggered(bool)),this,SLOT(close()));
@@ -82,6 +91,10 @@ MainWindow::~MainWindow()
     delete formLbl;
     delete perepackCube;
     delete formNakl;
+    delete formFixPodt;
+    delete formPressencePodt;
+    delete formNaklPodt;
+    delete formReportPodt;
     delete Models::instance();
     delete ui;
 }

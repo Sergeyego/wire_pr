@@ -64,7 +64,11 @@ SOURCES += main.cpp\
     olap/olapmodel.cpp \
     olap/tableview.cpp \
     modelstu.cpp \
-    qr/qrencode.cpp
+    qr/qrencode.cpp \
+    formfixpodt.cpp \
+    formpresencepodt.cpp \
+    formnaklpodt.cpp \
+    formreportpodt.cpp
 
 HEADERS  += mainwindow.h \
     tabwidget.h \
@@ -106,7 +110,11 @@ HEADERS  += mainwindow.h \
     olap/olapmodel.h \
     olap/tableview.h \
     modelstu.h \
-    qr/qrencode.h
+    qr/qrencode.h \
+    formfixpodt.h \
+    formpresencepodt.h \
+    formnaklpodt.h \
+    formreportpodt.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -130,7 +138,11 @@ FORMS    += mainwindow.ui \
     formnakl.ui \
     db/dblogin.ui \
     olap/axiswidget.ui \
-    olap/cubewidget.ui
+    olap/cubewidget.ui \
+    formfixpodt.ui \
+    formpresencepodt.ui \
+    formnaklpodt.ui \
+    formreportpodt.ui
 
 RESOURCES += \
     res.qrc

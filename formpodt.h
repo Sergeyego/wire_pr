@@ -29,8 +29,10 @@ private:
     void loadSettings();
     void saveSettings();
     ModelPodtCont *modelCont;
-    ModelPodtMech *modelPodtMech;
+    //ModelPodtMech *modelPodtMech;
     ModelPodtAnn *modelPodtAnn;
+    ModelPodtCex *modelPodtIn;
+    ModelPodtCex *modelPodtOut;
 
 private slots:
     void refresh();
@@ -38,6 +40,8 @@ private slots:
     void setContItogo(QString s);
     void fltSrc();
     void fltPodt();
+    void setInItogo(QString s);
+    void setOutItogo(QString s);
 };
 
 #endif // FORMPODT_H

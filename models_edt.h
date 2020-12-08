@@ -106,4 +106,16 @@ public:
 public slots:
     void updRels(QModelIndex index);
 };
+
+class ModelPodtCex : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodtCex(QObject *parent=0);
+    void refresh(int id_podt, int id_op);
+private slots:
+    void calcSum();
+signals:
+    void sigSum(QString sum);
+};
 #endif // MODELS_EDT_H

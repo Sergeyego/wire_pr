@@ -66,7 +66,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewProvChem->verticalHeader()->hide();
     ui->tableViewProvChem->setColumnHidden(0,true);
     ui->tableViewProvChem->setColumnWidth(1,100);
-    ui->tableViewProvChem->setColumnWidth(2,100);
+    ui->tableViewProvChem->setColumnWidth(2,90);
     ui->tableViewProvChem->setMenuEnabled(false);
 
 
@@ -74,7 +74,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewWirePartChem->setColumnHidden(0,true);
     ui->tableViewWirePartChem->setColumnHidden(1,true);
     ui->tableViewWirePartChem->setColumnWidth(2,100);
-    ui->tableViewWirePartChem->setColumnWidth(3,100);
+    ui->tableViewWirePartChem->setColumnWidth(3,90);
 
 
     ui->tableViewWirePartMech->setModel(mechModel);
@@ -107,9 +107,9 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addEmptyLock(ui->cmdLblPack);
     push->addEmptyLock(ui->cmdLblSpool);
     push->addEmptyLock(ui->groupBoxShip);
-    push->addEmptyLock(ui->groupBoxAdd);
+    push->addEmptyLock(ui->tableViewNam);
     push->addEmptyLock(ui->groupBoxDef);
-    push->addEmptyLock(ui->groupBoxNam);
+    push->addEmptyLock(ui->tableViewInCex);
     push->addEmptyLock(ui->comboBoxPack);
     push->addEmptyLock(ui->toolButtonAddPack);
     push->addEmptyLock(ui->toolButtonDelPack);
@@ -212,10 +212,10 @@ void FormPart::saveSettings()
 
 void FormPart::blockShip(bool val)
 {
-    ui->groupBoxAdd->setDisabled(val);
+    ui->tableViewNam->setDisabled(val);
     ui->groupBoxDef->setDisabled(val);
     ui->groupBoxShip->setDisabled(val);
-    ui->groupBoxNam->setDisabled(val);
+    ui->tableViewInCex->setDisabled(val);
     ui->cmdSert->setDisabled(val);
     ui->cmdLblPack->setDisabled(val);
     ui->cmdLblSpool->setDisabled(val);
@@ -333,7 +333,7 @@ void FormPart::edtPack()
 
 void FormPart::setAddItogo(QString s)
 {
-    ui->groupBoxAdd->setTitle(s);
+    ui->labelNam->setText(s);
 }
 
 void FormPart::setOutItogo(QString s)
@@ -343,7 +343,7 @@ void FormPart::setOutItogo(QString s)
 
 void FormPart::setNamItogo(QString s)
 {
-    ui->groupBoxNam->setTitle(s);
+    ui->labelProd->setText(s);
 }
 
 void FormPart::setShipItogo(QString s)

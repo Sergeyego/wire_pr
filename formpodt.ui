@@ -6,99 +6,105 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1020</width>
+    <width>1263</width>
     <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Подтяжки</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>С</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="DateEdit" name="dateEditBeg"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>По</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="DateEdit" name="dateEditEnd"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cmdUpd">
-       <property name="toolTip">
-        <string>Обновить список подтяжек</string>
-       </property>
-       <property name="text">
-        <string>Обновить</string>
-       </property>
-       <property name="icon">
-        <iconset theme="view-refresh">
-         <normaloff>.</normaloff>.</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonFltPodt">
-       <property name="toolTip">
-        <string>Фильтр исходных протяжек</string>
-       </property>
-       <property name="text">
-        <string>Фильтр исходных протяжек</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
+  <layout class="QVBoxLayout" name="verticalLayout_10">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTableView" name="tableView">
-      <property name="minimumSize">
-       <size>
-        <width>540</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>С</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="DateEdit" name="dateEditBeg"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>По</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="DateEdit" name="dateEditEnd"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdUpd">
+           <property name="toolTip">
+            <string>Обновить список подтяжек</string>
+           </property>
+           <property name="text">
+            <string>Обновить</string>
+           </property>
+           <property name="icon">
+            <iconset theme="view-refresh">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonFltPodt">
+           <property name="toolTip">
+            <string>Фильтр исходных протяжек</string>
+           </property>
+           <property name="text">
+            <string>Фильтр исходных протяжек</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableView" name="tableView">
+         <property name="minimumSize">
+          <size>
+           <width>540</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -228,30 +234,34 @@
            </property>
           </spacer>
          </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Комментарий</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="5">
+          <widget class="QLineEdit" name="lineEditComm"/>
+         </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QGroupBox" name="groupBox_3">
-           <property name="title">
-            <string>Комментарий</string>
+          <widget class="QGroupBox" name="groupBoxCont">
+           <property name="minimumSize">
+            <size>
+             <width>500</width>
+             <height>0</height>
+            </size>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QPlainTextEdit" name="textEditComment"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBoxMech">
            <property name="title">
-            <string>Испытание после протяжки</string>
+            <string>Поступление</string>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
-             <widget class="DbViewer" name="tableViewMech"/>
+             <widget class="DbViewer" name="tableViewCont"/>
             </item>
            </layout>
           </widget>
@@ -259,16 +269,32 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBoxCont">
-         <property name="title">
-          <string>Поступление</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="DbViewer" name="tableViewCont"/>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QGroupBox" name="groupBoxPodtIn">
+           <property name="title">
+            <string>Приход</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="DbViewer" name="tableViewPodtIn"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxPodtOut">
+           <property name="title">
+            <string>Расход</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="DbViewer" name="tableViewPodtOut"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -358,8 +384,6 @@
   <tabstop>comboBoxSrs</tabstop>
   <tabstop>comboBoxLine</tabstop>
   <tabstop>comboBoxDiam</tabstop>
-  <tabstop>textEditComment</tabstop>
-  <tabstop>tableViewMech</tabstop>
   <tabstop>tableViewCont</tabstop>
   <tabstop>tableViewAnn</tabstop>
   <tabstop>tableViewPart</tabstop>

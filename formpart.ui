@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1020</width>
+    <width>1009</width>
     <height>735</height>
    </rect>
   </property>
@@ -442,39 +442,53 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBoxTu">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>150</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Нормативная документация</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_12">
-          <item>
-           <widget class="DbViewer" name="tableViewSrcTu">
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonCopyTu">
-            <property name="toolTip">
-             <string>Копировать значения в сертификат</string>
-            </property>
-            <property name="text">
-             <string>-&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="DbViewer" name="tableViewPartiTu"/>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QGroupBox" name="groupBoxTu">
+           <property name="title">
+            <string>Нормативная документация</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <widget class="DbViewer" name="tableViewSrcTu">
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="toolButtonCopyTu">
+                <property name="toolTip">
+                 <string>Копировать значения в сертификат</string>
+                </property>
+                <property name="text">
+                 <string>-&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="DbViewer" name="tableViewPartiTu"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxShip">
+           <property name="title">
+            <string>Отгрузки</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="DbViewer" name="tableViewShip"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTabWidget" name="tabWidget">
@@ -485,67 +499,61 @@
           <attribute name="title">
            <string>Поступление</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
+          <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QGroupBox" name="groupBoxNam">
-               <property name="minimumSize">
-                <size>
-                 <width>440</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="title">
-                <string>Намотка</string>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <item>
-                 <widget class="DbViewer" name="tableViewNam"/>
-                </item>
-               </layout>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="QLabel" name="labelProd">
+                 <property name="text">
+                  <string>Производство</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="DbViewer" name="tableViewNam"/>
+               </item>
+              </layout>
              </item>
              <item>
-              <widget class="QGroupBox" name="groupBoxAdd">
-               <property name="title">
-                <string>Упаковка</string>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <item>
-                 <widget class="DbViewer" name="tableViewInCex"/>
-                </item>
-               </layout>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QLabel" name="labelNam">
+                 <property name="text">
+                  <string>Намотка</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="DbViewer" name="tableViewInCex"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <widget class="QLabel" name="labelPackProd">
+                 <property name="text">
+                  <string>Упаковка</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="DbViewer" name="tableView"/>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_11">
              <item>
-              <widget class="QGroupBox" name="groupBoxShip">
-               <property name="minimumSize">
-                <size>
-                 <width>440</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="title">
-                <string>Отгрузки</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_2">
-                <item>
-                 <widget class="DbViewer" name="tableViewShip"/>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
               <widget class="QGroupBox" name="groupBoxDef">
                <property name="title">
                 <string>Списание</string>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_3">
+               <layout class="QVBoxLayout" name="verticalLayout_9">
                 <item>
                  <widget class="DbViewer" name="tableViewOutCex"/>
                 </item>
@@ -568,17 +576,16 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="DbViewer" name="tableViewMechReal">
-                <property name="maximumSize">
-                 <size>
-                  <width>270</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-               </widget>
+               <widget class="DbViewer" name="tableViewMechReal"/>
               </item>
               <item>
                <widget class="DbViewer" name="tableViewProvChem">
+                <property name="maximumSize">
+                 <size>
+                  <width>240</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="editTriggers">
                  <set>QAbstractItemView::NoEditTriggers</set>
                 </property>
@@ -595,7 +602,14 @@
                </widget>
               </item>
               <item>
-               <widget class="DbViewer" name="tableViewWirePartChem"/>
+               <widget class="DbViewer" name="tableViewWirePartChem">
+                <property name="maximumSize">
+                 <size>
+                  <width>240</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

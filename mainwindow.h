@@ -21,6 +21,10 @@
 #include "formedtline.h"
 #include "formlbl.h"
 #include "formnakl.h"
+#include "formfixpodt.h"
+#include "formpresencepodt.h"
+#include "formnaklpodt.h"
+#include "formreportpodt.h"
 
 namespace Ui {
 class MainWindow;
@@ -57,6 +61,10 @@ private:
     FormEdtLine *formLine;
     FormLbl *formLbl;
     FormNakl *formNakl;
+    FormFixPodt *formFixPodt;
+    FormPresencePodt *formPressencePodt;
+    FormNaklPodt *formNaklPodt;
+    FormReportPodt *formReportPodt;
 
     void loadSettings();
     void saveSettings();

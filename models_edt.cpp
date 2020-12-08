@@ -369,3 +369,35 @@ void ModelEan::updRels(QModelIndex index)
         }
     }
 }
+
+ModelPodtCex::ModelPodtCex(QObject *parent) : DbTableModel("wire_podt_cex",parent)
+{
+    addColumn("id","id",true,TYPE_INT);
+    addColumn("id_podt","id_podt",false,TYPE_INT);
+    addColumn("id_op","id_op",false,TYPE_INT);
+    addColumn("dat",tr("Дата"),false,TYPE_DATE);
+    addColumn("kvo",tr("Кол-во, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,2,this));
+    setSort("wire_podt_cex.dat");
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPodtCex::refresh(int id_podt, int id_op)
+{
+    setDefaultValue(1,id_podt);
+    setDefaultValue(2,id_op);
+    setFilter(QString("wire_podt_cex.id_podt = %1 and wire_podt_cex.id_op = %2").arg(id_podt).arg(id_op));
+    select();
+}
+
+void ModelPodtCex::calcSum()
+{
+    double sum=0;
+    QString title= (defaultTmpRow.at(2)==1) ? tr("Приход") : tr("Расход");
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,4),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (title + tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : title;
+    emit sigSum(s);
+}

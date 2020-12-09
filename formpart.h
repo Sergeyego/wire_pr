@@ -47,6 +47,8 @@ private:
     ModelMechReal *modelMechReal;
     ModelGostSrc *modelGostSrc;
     ModelGostPart *modelGostPart;
+    ModelStockCex *modelStockCex;
+    ModelPerepackCex *modelPerepackCex;
 
 private slots:
     void updData(int row);

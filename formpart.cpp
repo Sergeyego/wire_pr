@@ -158,6 +158,11 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewPack->setColumnWidth(2,85);
     ui->tableViewPack->setColumnWidth(3,70);
 
+    modelStockCex = new ModelStockCex(this);
+    ui->tableViewStock->setModel(modelStockCex);
+
+    modelPerepackCex = new ModelPerepackCex(this);
+    ui->tableViewPerepack->setModel(modelPerepackCex);
 
     connect(ui->cmdUpdate,SIGNAL(clicked()),modelPart,SLOT(select()));
     connect(ui->dateEditBeg,SIGNAL(dateChanged(QDate)),modelPart,SLOT(setDateBeg(QDate)));
@@ -179,6 +184,8 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(modelNamCex,SIGNAL(sigSum(QString)),this,SLOT(setNamItogo(QString)));
     connect(modelShip,SIGNAL(sigSum(QString)),this,SLOT(setShipItogo(QString)));
     connect(modelPackCex,SIGNAL(sigSum(QString)),ui->labelPackProd,SLOT(setText(QString)));
+    connect(modelStockCex,SIGNAL(sigSum(QString)),ui->labelStock,SLOT(setText(QString)));
+    connect(modelPerepackCex,SIGNAL(sigSum(QString)),ui->labelPerepack,SLOT(setText(QString)));
     connect(ui->cmdLblSpool,SIGNAL(clicked(bool)),this,SLOT(lblEd()));
     connect(ui->cmdLblPack,SIGNAL(clicked(bool)),this,SLOT(lblGroup()));
     connect(ui->tableViewShip,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showSertShip(QModelIndex)));
@@ -222,6 +229,7 @@ void FormPart::blockShip(bool val)
     ui->tableViewOutCex->setDisabled(val);
     ui->groupBoxShip->setDisabled(val);
     ui->tableViewInCex->setDisabled(val);
+    ui->tableViewPack->setDisabled(val);
     ui->cmdSert->setDisabled(val);
     ui->cmdLblPack->setDisabled(val);
     ui->cmdLblSpool->setDisabled(val);
@@ -295,7 +303,11 @@ void FormPart::updShip()
     modelInCex->refresh(id_p);
     modelOutCex->refresh(id_p);
     modelPackCex->refresh(id_p);
+    modelStockCex->refresh(id_p);
+    modelPerepackCex->refresh(id_p);
     ui->tableViewShip->resizeColumnsToContents();
+    ui->tableViewStock->resizeColumnsToContents();
+    ui->tableViewPerepack->resizeColumnsToContents();
 }
 
 void FormPart::addPack()

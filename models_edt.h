@@ -118,4 +118,31 @@ private slots:
 signals:
     void sigSum(QString sum);
 };
+
+class ModelStockCex : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelStockCex(QObject *parent=0);
+    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+public slots:
+    void refresh(int id_part);
+    void calcSum();
+signals:
+    void sigSum(QString sum);
+};
+
+class ModelPerepackCex : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelPerepackCex(QObject *parent=0);
+    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+public slots:
+    void refresh(int id_part);
+    void calcSum();
+signals:
+    void sigSum(QString sum);
+};
+
 #endif // MODELS_EDT_H

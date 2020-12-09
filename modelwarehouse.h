@@ -194,4 +194,23 @@ signals:
     void sigSum(QString sum);
 };
 
+class ModelNaklPodt : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelNaklPodt(QObject *parent=0);
+    void refresh(QDate beg, QDate end, int id_type);
+};
+
+class ModelNaklPodtCont : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelNaklPodtCont(QObject *parent=0);
+    void refresh(QDate dat, int id_type);
+    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+signals:
+    void sigSum(QString sum);
+};
+
 #endif // MODELWAREHOUSE_H

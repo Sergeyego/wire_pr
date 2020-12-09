@@ -645,3 +645,76 @@ void ModelPackCex::calcSum()
     s = (sum>0)? (tr("Упаковка итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Упаковка");
     emit sigSum(s);
 }
+
+ModelNaklPodt::ModelNaklPodt(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelNaklPodt::refresh(QDate beg, QDate end, int id_type)
+{
+    QSqlQuery query;
+    query.prepare("select distinct date_part('doy',dat), dat, id_op "
+                  "from wire_podt_cex "
+                  "where dat between :d1 and :d2 and id_op = :t "
+                  "order by dat");
+    query.bindValue(":d1",beg);
+    query.bindValue(":d2",end);
+    query.bindValue(":t",id_type);
+    query.exec();
+    this->setQuery(query);
+    if (lastError().isValid()){
+        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+    } else {
+        setHeaderData(0, Qt::Horizontal,tr("Номер"));
+        setHeaderData(1, Qt::Horizontal,tr("Дата"));
+        setHeaderData(2, Qt::Horizontal,tr("Тип"));
+    }
+}
+
+ModelNaklPodtCont::ModelNaklPodtCont(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelNaklPodtCont::refresh(QDate dat, int id_type)
+{
+    double sum=0.0;
+    QSqlQuery query;
+    query.prepare("select coalesce(P2.nam, p.nam), d.sdim, wp.n_s, wpc.kvo "
+                  "from wire_podt_cex wpc "
+                  "inner join wire_podt wp on wp.id =wpc.id_podt "
+                  "inner join prov_buht pb on pb.id=wp.id_buht "
+                  "inner join prov_prih pp on pp.id =pb.id_prih "
+                  "inner join provol p on p.id = pp.id_pr "
+                  "inner join diam d on d.id = wp.id_diam "
+                  "left join provol p2 on p2.id = p.id_base "
+                  "where (wpc.id_op = :t) and wpc.dat = :d ");
+    query.bindValue(":t",id_type);
+    query.bindValue(":d",dat);
+    query.exec();
+    this->setQuery(query);
+    if (lastError().isValid()){
+        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+    } else {
+        setHeaderData(0, Qt::Horizontal,tr("Марка"));
+        setHeaderData(1, Qt::Horizontal,tr("Диаметр"));
+        setHeaderData(2, Qt::Horizontal,tr("Партия"));
+        setHeaderData(3, Qt::Horizontal,tr("Масса"));
+        for (int i=0; i<rowCount(); i++){
+            sum+=this->data(this->index(i,3),Qt::EditRole).toDouble();
+        }
+    }
+    emit sigSum(tr("Итого по накладной ")+QLocale().toString(sum,'f',2)+tr(" кг"));
+}
+
+QVariant ModelNaklPodtCont::data(const QModelIndex &item, int role) const
+{
+    if (role==Qt::DisplayRole && item.column()==3){
+        return QLocale().toString(QSqlQueryModel::data(item,role).toDouble(),'f',2);
+    }
+    if (role==Qt::TextAlignmentRole && item.column()==3){
+        return int(Qt::AlignRight | Qt::AlignVCenter);
+    }
+    return QSqlQueryModel::data(item,role);
+}

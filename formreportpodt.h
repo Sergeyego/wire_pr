@@ -2,6 +2,7 @@
 #define FORMREPORTPODT_H
 
 #include <QWidget>
+#include "modelpresence.h"
 
 namespace Ui {
 class FormReportPodt;
@@ -17,6 +18,11 @@ public:
 
 private:
     Ui::FormReportPodt *ui;
+    ModelReportPodt *modelReport;
+
+private slots:
+    void upd();
+    void save();
 };
 
 #endif // FORMREPORTPODT_H

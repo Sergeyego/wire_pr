@@ -373,7 +373,9 @@ ModelPodt::ModelPodt(QObject *parent) : DbTableModel("wire_podt",parent)
     addColumn("id_diam",tr("Ф"),false,TYPE_STRING,NULL,Models::instance()->relDiam);
     addColumn("id_line",tr("Стан"),false,TYPE_STRING,NULL,Models::instance()->relLine);
     addColumn("comment",tr("Комментарий"),false,TYPE_STRING);
+    addColumn("id_type",tr("Тип"),false,TYPE_STRING,NULL,Models::instance()->relPodtType);
     setSort("dat,n_s");
+    setDefaultValue(7,1);
     connect(this,SIGNAL(sigUpd()),Models::instance()->relPodt->model(),SLOT(refresh()));
 }
 

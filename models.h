@@ -40,6 +40,7 @@ public:
     DbRelation *relVedPix;
     DbRelation *relWireType;
     DbRelation *relEan;
+    DbRelation *relPodtType;
 
 public slots:
     void refresh();

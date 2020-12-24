@@ -271,7 +271,7 @@ void ModelPresencePodt::refresh(QDate date, bool bypart)
         if (lastError().isValid()){
             QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
         } else {
-            setHeaderData(0, Qt::Horizontal,tr("Партия"));
+            setHeaderData(0, Qt::Horizontal,tr("Партия подт."));
             setHeaderData(1, Qt::Horizontal,tr("Марка проволоки"));
             setHeaderData(2, Qt::Horizontal,tr("Ф"));
             setHeaderData(3, Qt::Horizontal,tr("Наличие, кг"));
@@ -352,4 +352,122 @@ QVariant ModelPresencePodt::data(const QModelIndex &index, int role) const
 int ModelPresencePodt::rowCount(const QModelIndex &parent) const
 {
      return (QSqlQueryModel::rowCount(parent)==0)? 0 : QSqlQueryModel::rowCount(parent)+1;
+}
+
+ModelReportPodt::ModelReportPodt(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart)
+{
+    this->clear();
+    by_Part=bypart;
+    if (by_Part){
+        setQuery("select wp.n_s ||'-'||date_part('year',wp.dat) as part, coalesce(p2.nam,p.nam) as wnam, d.sdim, n.beg, n.pr, n.rs, n.cor, n.ost "
+                 "from wire_calc_podt_report('"+ begDate.toString("yyyy.MM.dd")+"','"+endDate.toString("yyyy.MM.dd")+"') as n "
+                 "inner join wire_podt wp on wp.id=n.id "
+                 "inner join prov_buht pb on pb.id=wp.id_buht "
+                 "inner join prov_prih pp on pp.id =pb.id_prih "
+                 "inner join provol p on p.id = pp.id_pr "
+                 "inner join diam d on d.id = wp.id_diam "
+                 "left join provol p2 on p2.id = p.id_base "
+                 "order by wnam, d.sdim, wp.n_s, wp.dat");
+        if (lastError().isValid()){
+            QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+        } else {
+            setHeaderData(0, Qt::Horizontal,tr("Партия подт."));
+            setHeaderData(1, Qt::Horizontal,tr("Марка проволоки"));
+            setHeaderData(2, Qt::Horizontal,tr("Ф"));
+            setHeaderData(3, Qt::Horizontal,tr("Нал. на нач."));
+            setHeaderData(4, Qt::Horizontal,tr("Приход"));
+            setHeaderData(5, Qt::Horizontal,tr("Расход"));
+            setHeaderData(6, Qt::Horizontal,tr("Корр.(+/-)"));
+            setHeaderData(7, Qt::Horizontal,tr("Ост. на конец"));
+        }
+    } else {
+        setQuery("select coalesce(p2.nam,p.nam) as wnam, d.sdim, sum(n.beg), sum(n.pr), sum(n.rs), sum(n.cor), sum(n.ost) "
+                 "from wire_calc_podt_report('"+ begDate.toString("yyyy.MM.dd")+"','"+endDate.toString("yyyy.MM.dd")+"') as n "
+                 "inner join wire_podt wp on wp.id=n.id "
+                 "inner join prov_buht pb on pb.id=wp.id_buht "
+                 "inner join prov_prih pp on pp.id =pb.id_prih "
+                 "inner join provol p on p.id = pp.id_pr "
+                 "inner join diam d on d.id = wp.id_diam "
+                 "left join provol p2 on p2.id = p.id_base "
+                 "group by wnam, d.sdim "
+                 "order by wnam, d.sdim");
+        if (lastError().isValid()){
+            QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+        } else {
+            setHeaderData(0, Qt::Horizontal,tr("Марка проволоки"));
+            setHeaderData(1, Qt::Horizontal,tr("Ф"));
+            setHeaderData(2, Qt::Horizontal,tr("Нал. на нач."));
+            setHeaderData(3, Qt::Horizontal,tr("Приход"));
+            setHeaderData(4, Qt::Horizontal,tr("Расход"));
+            setHeaderData(5, Qt::Horizontal,tr("Корр.(+/-)"));
+            setHeaderData(6, Qt::Horizontal,tr("Ост. на конец"));
+        }
+    }
+}
+
+QVariant ModelReportPodt::data(const QModelIndex &index, int role) const
+{
+    if (index.row()>=rowCount()|| index.row()<0 || index.column()>=columnCount() || index.column()<0) return QVariant();
+
+    QVariant value;
+
+    if ((index.row()==QSqlQueryModel::rowCount()) && (role==Qt::DisplayRole || role==Qt::EditRole)){
+        if (index.column()==0) {
+            value= tr("Итого");
+        } else if ((index.column()>= 3 && by_Part)||(index.column() >= 2 && !by_Part)) {
+            double sum=0.0;
+            for (int i=0; i<QSqlQueryModel::rowCount(); i++){
+                QModelIndex cs=this->index(i,index.column());
+                sum+=(QSqlQueryModel::data(cs).toDouble());
+            }
+            value=sum;
+        } else value=QVariant();
+
+    } else {
+        value = (index.row()==QSqlQueryModel::rowCount()) ? QVariant() : QSqlQueryModel::data(index, role);
+    }
+    switch (role) {
+        case Qt::DisplayRole:
+        {
+            if((index.column() >=3 && by_Part)||(index.column() >= 2 && !by_Part))
+                if (value!=0.0){
+                    return QLocale().toString(value.toDouble(),'f',2);
+                } else {
+                    return QVariant();
+                }
+            else
+                return value;
+        }
+
+        case Qt::EditRole:
+        {
+            return value;
+        }
+
+        case Qt::TextAlignmentRole:
+        {
+             if((index.column()>=3 && by_Part)||(index.column() >= 2 && !by_Part))
+                 return int(Qt::AlignRight | Qt::AlignVCenter);
+             else return int(Qt::AlignLeft | Qt::AlignVCenter);
+        }
+
+        case Qt::BackgroundColorRole:
+        {
+            double val1= by_Part ? data(this->index(index.row(),3),Qt::EditRole).toDouble() :  data(this->index(index.row(),2),Qt::EditRole).toDouble();
+            double val2= by_Part ? data(this->index(index.row(),7),Qt::EditRole).toDouble() :  data(this->index(index.row(),6),Qt::EditRole).toDouble();
+            return (val1>=0 && val2>=0) ? value : QVariant(QColor(255,170,170));
+        }
+
+    }
+    return value;
+}
+
+int ModelReportPodt::rowCount(const QModelIndex &parent) const
+{
+    return (QSqlQueryModel::rowCount(parent)==0)? 0 : QSqlQueryModel::rowCount(parent)+1;
 }

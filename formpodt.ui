@@ -107,40 +107,14 @@
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>Номер</string>
+            <string>Тип</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEditNum">
-           <property name="maximumSize">
-            <size>
-             <width>150</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Дата</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="DateEdit" name="dateEdit"/>
-         </item>
-         <item row="0" column="4" colspan="2">
+         <item row="0" column="6" colspan="2">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -166,10 +140,10 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="4">
+         <item row="1" column="1" colspan="6">
           <widget class="QComboBox" name="comboBoxSrs"/>
          </item>
-         <item row="1" column="5">
+         <item row="1" column="7">
           <widget class="QToolButton" name="toolButtonSrc">
            <property name="enabled">
             <bool>false</bool>
@@ -221,7 +195,53 @@
          <item row="2" column="3">
           <widget class="QComboBox" name="comboBoxDiam"/>
          </item>
-         <item row="2" column="4" colspan="2">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Комментарий</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="7">
+          <widget class="QLineEdit" name="lineEditComm"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Номер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEditNum">
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Дата</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="DateEdit" name="dateEdit"/>
+         </item>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="comboBoxType"/>
+         </item>
+         <item row="2" column="4" colspan="4">
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -233,16 +253,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Комментарий</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1" colspan="5">
-          <widget class="QLineEdit" name="lineEditComm"/>
          </item>
         </layout>
        </item>
@@ -368,14 +378,14 @@
    <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
-   <class>DbViewer</class>
-   <extends>QTableView</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
+   <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

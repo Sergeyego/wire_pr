@@ -27,6 +27,13 @@
       <widget class="QComboBox" name="comboBoxDat"/>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButtonUpd">
+       <property name="text">
+        <string>Обновить</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonFlt">
        <property name="text">
         <string>Фильтр подтяжек</string>

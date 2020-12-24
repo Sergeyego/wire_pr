@@ -67,6 +67,7 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addMapping(ui->comboBoxDiam,4);
     push->addMapping(ui->comboBoxLine,5);
     push->addMapping(ui->lineEditComm,6);
+    push->addMapping(ui->comboBoxType,7);
     push->addLock(ui->dateEditBeg);
     push->addLock(ui->dateEditEnd);
     push->addLock(ui->cmdUpd);

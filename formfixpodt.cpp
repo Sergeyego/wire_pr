@@ -24,13 +24,14 @@ FormFixPodt::FormFixPodt(QWidget *parent) :
     modelFix->setDefaultValue(0,ui->dateEdit->date());
 
     ui->tableView->setModel(modelFix);
-    ui->tableView->setColumnWidth(0,80);
+    ui->tableView->setColumnHidden(0,true);
     ui->tableView->setColumnWidth(1,300);
     ui->tableView->setColumnWidth(2,80);
 
     connect(ui->comboBoxDat,SIGNAL(currentIndexChanged(int)),this,SLOT(updFixData(int)));
     connect(ui->pushButtonFlt,SIGNAL(clicked(bool)),this,SLOT(setFltPodt()));
     connect(ui->pushButtonFix,SIGNAL(clicked(bool)),this,SLOT(fixNewOst()));
+    connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(updFix()));
 
     updFix();
 }

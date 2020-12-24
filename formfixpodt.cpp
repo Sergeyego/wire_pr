@@ -71,5 +71,34 @@ void FormFixPodt::setFltPodt()
 
 void FormFixPodt::fixNewOst()
 {
-    updFix();
+    QDate d=ui->dateEdit->date();
+    if (d.day()!=d.daysInMonth()){
+        QMessageBox::information(this,tr("Внимание"),tr("Дата должна быть последним числом месяца!"),QMessageBox::Cancel);
+    } else {
+        int n=QMessageBox::question(this,tr("Подтвердите действие"),tr("Зафиксировать остатки на ")+d.toString("dd.MM.yy")+tr("?"),QMessageBox::Yes,QMessageBox::No);
+        if (n==QMessageBox::Yes){
+            delOst(d);
+            QSqlQuery query;
+            query.prepare("insert into wire_podt_ost (dat, id_podt, kvo) (select :d1, p.id, p.ost from wire_calc_podt(:d2) as p)");
+            query.bindValue(":d1",d);
+            query.bindValue(":d2",d);
+            if (!query.exec()){
+                QMessageBox::critical(this,"Error",query.lastError().text(),QMessageBox::Cancel);
+            } else {
+                updFix();
+            }
+        }
+    }
+}
+
+void FormFixPodt::delOst(QDate date)
+{
+    QSqlQuery query;
+    query.prepare("delete from wire_podt_ost where dat = :d ");
+    query.bindValue(":d",date);
+    if (!query.exec()){
+        QMessageBox::critical(this,"Error",query.lastError().text(),QMessageBox::Cancel);
+    } else {
+        updFix();
+    }
 }

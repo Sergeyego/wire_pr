@@ -2,6 +2,7 @@
 #define FORMPRESENCEPODT_H
 
 #include <QWidget>
+#include "modelpresence.h"
 
 namespace Ui {
 class FormPresencePodt;
@@ -17,6 +18,11 @@ public:
 
 private:
     Ui::FormPresencePodt *ui;
+    ModelPresencePodt *modelPresence;
+
+private slots:
+    void upd();
+    void save();
 };
 
 #endif // FORMPRESENCEPODT_H

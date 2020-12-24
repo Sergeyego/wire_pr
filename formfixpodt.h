@@ -29,6 +29,7 @@ private slots:
     void updFixData(int index);
     void setFltPodt();
     void fixNewOst();
+    void delOst(QDate date);
 
 };
 

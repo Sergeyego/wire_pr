@@ -20,6 +20,9 @@ FormNaklPodt::FormNaklPodt(QWidget *parent) :
         ui->comboBoxType->setModelColumn(1);
     }
 
+    ui->comboBoxVid->setModel(Models::instance()->relPodtType->model());
+    ui->comboBoxVid->setModelColumn(1);
+
     modelNaklPodt = new ModelNaklPodt(this);
     ui->tableViewNakl->setModel(modelNaklPodt);
 
@@ -28,6 +31,7 @@ FormNaklPodt::FormNaklPodt(QWidget *parent) :
 
     connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(refreshNakl()));
     connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(refreshNakl()));
+    connect(ui->comboBoxVid,SIGNAL(currentIndexChanged(int)),this,SLOT(refreshNakl()));
     connect(ui->tableViewNakl->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(refreshCont(QModelIndex)));
     connect(ui->pushButtonPrint,SIGNAL(clicked(bool)),this,SLOT(printNakl()));
     connect(modelNaklPodtCont,SIGNAL(sigSum(QString)),ui->labelItogo,SLOT(setText(QString)));
@@ -57,7 +61,8 @@ void FormNaklPodt::refreshNakl()
 {
     int r=ui->comboBoxType->currentIndex();
     int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(r,0),Qt::EditRole).toInt();
-    modelNaklPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),id_type);
+    int id_vid=ui->comboBoxVid->model()->data(ui->comboBoxVid->model()->index(ui->comboBoxVid->currentIndex(),0),Qt::EditRole).toInt();
+    modelNaklPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),id_type,id_vid);
     if (modelNaklPodt->rowCount()){
         ui->tableViewNakl->setColumnHidden(2,true);
         ui->tableViewNakl->setColumnWidth(0,100);
@@ -84,10 +89,11 @@ void FormNaklPodt::printNakl()
     int row=ui->tableViewNakl->currentIndex().row();
     QDate dat=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,1),Qt::EditRole).toDate();
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,2),Qt::EditRole).toInt();
+    int id_vid=ui->comboBoxVid->model()->data(ui->comboBoxVid->model()->index(ui->comboBoxVid->currentIndex(),0),Qt::EditRole).toInt();
     QTcpSocket tcpSocket;
     tcpSocket.connectToHost("127.0.0.1", 5555);
     if (tcpSocket.waitForConnected()) {
-        tcpSocket.write((QString("%1:%2:%3:%4").arg(1).arg(3).arg(dat.toString("dd.MM.yyyy")).arg(id_type)).toLocal8Bit().data());
+        tcpSocket.write((QString("%1:%2:%3:%4-%5").arg(1).arg(3).arg(dat.toString("dd.MM.yyyy")).arg(id_type).arg(id_vid)).toLocal8Bit().data());
         tcpSocket.waitForBytesWritten();
         tcpSocket.disconnectFromHost();
     } else {

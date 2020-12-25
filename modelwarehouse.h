@@ -199,7 +199,7 @@ class ModelNaklPodt : public QSqlQueryModel
     Q_OBJECT
 public:
     ModelNaklPodt(QObject *parent=0);
-    void refresh(QDate beg, QDate end, int id_type);
+    void refresh(QDate beg, QDate end, int id_type, int id_podt_type);
 };
 
 class ModelNaklPodtCont : public QSqlQueryModel

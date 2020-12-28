@@ -110,7 +110,7 @@ class ModelPerepack : public DbTableModel
 public:
     ModelPerepack(QObject *parent=0);
     void refresh(int id_nakl);
-    bool submitRow();
+    bool submit();
 public slots:
     void refreshPart();
 };

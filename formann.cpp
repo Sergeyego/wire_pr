@@ -12,9 +12,10 @@ FormAnn::FormAnn(QWidget *parent) :
     relBuht = new DbRelation(Models::instance()->relPodt->model(),0,2,this);
 
     modelMechSrc = new DbTableModel("prov_mech",this);
-    modelMechSrc->addColumn("id_buht",tr("id_buht"),true,TYPE_INT);
-    modelMechSrc->addColumn("id_par",tr("Параметр"),true,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    modelMechSrc->addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
+    modelMechSrc->addColumn("id_buht",tr("id_buht"));
+    modelMechSrc->addColumn("id_par",tr("Параметр"),Models::instance()->relMechTbl);
+    modelMechSrc->addColumn("kvo",tr("Значение"));
+    modelMechSrc->setDecimals(2,3);
     modelMechSrc->setDefaultValue(1,1);
     ui->tableViewMechSrc->setModel(modelMechSrc);
     ui->tableViewMechSrc->setColumnHidden(0,true);
@@ -29,10 +30,11 @@ FormAnn::FormAnn(QWidget *parent) :
     ui->tableViewPodtMech->setColumnWidth(3,90);
 
     modelMechAnn = new DbTableModel("wire_ann_mech",this);
-    modelMechAnn->addColumn("id",tr("id"),true,TYPE_INT);
-    modelMechAnn->addColumn("id_ann_cont",tr("id_ann_cont"),false,TYPE_INT);
-    modelMechAnn->addColumn("id_mech",tr("Параметр"),false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    modelMechAnn->addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-999999999,999999999,2,this));
+    modelMechAnn->addColumn("id",tr("id"));
+    modelMechAnn->addColumn("id_ann_cont",tr("id_ann_cont"));
+    modelMechAnn->addColumn("id_mech",tr("Параметр"),Models::instance()->relMechTbl);
+    modelMechAnn->addColumn("kvo",tr("Значение"));
+    modelMechAnn->setDecimals(3,3);
     modelMechAnn->setDefaultValue(2,1);
     modelMechAnn->setSort("wire_ann_mech.id_mech, wire_ann_mech.kvo");
     ui->tableViewMechAnn->setModel(modelMechAnn);
@@ -42,11 +44,11 @@ FormAnn::FormAnn(QWidget *parent) :
     ui->tableViewMechAnn->setColumnWidth(3,90);
 
     modelCont = new DbTableModel("wire_ann_cont",this);
-    modelCont->addColumn("id",tr("id"),true,TYPE_INT);
-    modelCont->addColumn("id_ann",tr("id_ann"),false,TYPE_INT);
-    modelCont->addColumn("id_podt",tr("Подтяжка"),false,TYPE_STRING,NULL,Models::instance()->relPodt);
-    modelCont->addColumn("num",tr("NN"),false,TYPE_INT,new QIntValidator(0,10,this));
-    modelCont->addColumn("kvo",tr("Масса, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,1,this));
+    modelCont->addColumn("id",tr("id"));
+    modelCont->addColumn("id_ann",tr("id_ann"));
+    modelCont->addColumn("id_podt",tr("Подтяжка"),Models::instance()->relPodt);
+    modelCont->addColumn("num",tr("NN"));
+    modelCont->addColumn("kvo",tr("Масса, кг"));
     modelCont->setSort("wire_ann_cont.num");
     ui->tableViewCont->setModel(modelCont);
     ui->tableViewCont->setColumnHidden(0,true);

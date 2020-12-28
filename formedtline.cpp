@@ -7,9 +7,9 @@ FormEdtLine::FormEdtLine(QWidget *parent) :
 {
     ui->setupUi(this);
     modelLine = new DbTableModel("wire_line",this);
-    modelLine->addColumn("id",tr("id"),true,TYPE_INT);
-    modelLine->addColumn("nam",tr("Наименование"),false,TYPE_STRING);
-    modelLine->addColumn("snam",tr("Крат. наименование"),false,TYPE_STRING);
+    modelLine->addColumn("id",tr("id"));
+    modelLine->addColumn("nam",tr("Наименование"));
+    modelLine->addColumn("snam",tr("Крат. наименование"));
     modelLine->setSort("wire_line.nam");
     modelLine->select();
     ui->tableView->setModel(modelLine);

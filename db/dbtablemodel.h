@@ -13,23 +13,16 @@
 #include <QValidator>
 #include <QSortFilterProxyModel>
 #include <QLocale>
-
-enum {
-    TYPE_VARIANT = 0,
-    TYPE_STRING,
-    TYPE_INT,
-    TYPE_DOUBLE,
-    TYPE_DATE,
-    TYPE_BOOL,
-    TYPE_INTBOOL
-};
+#include <QSqlDriver>
+#include <QSqlRecord>
+#include <QSqlIndex>
 
 class DbRelationalModel : public QSqlQueryModel{
     Q_OBJECT
 public:
     DbRelationalModel(QObject *parent=0);
     DbRelationalModel(QString query, QObject *parent=0);
-    void setQuery(const QString &query, const QSqlDatabase &db=QSqlDatabase());
+    bool setQuery(const QString &query, const QSqlDatabase &db=QSqlDatabase());
 signals:
     void sigRefresh();
 public slots:
@@ -42,32 +35,34 @@ class DbRelation : public QObject
 {
     Q_OBJECT
 public:
-    DbRelation(DbRelationalModel *queryModel, int key, int disp, QObject *parent=0);
+    DbRelation(QAbstractItemModel *queryModel, int key, int disp, QObject *parent=0);
     DbRelation(const QString &query, int key, int disp, QObject *parent=0);
     QVariant data(QString key);
-    DbRelationalModel *model() const;
+    QModelIndex modelIndex(QString key);
+    QAbstractItemModel *model() const;
     QSortFilterProxyModel *proxyModel() const;
     int columnKey();
     int columnDisplay();
 private:
-    DbRelationalModel *relQueryModel;
+    QAbstractItemModel *relQueryModel;
     QSortFilterProxyModel *filterModel;
     QHash <QString, QModelIndex> dict;
     int keyCol;
     int dispCol;
 private slots:
     void reHash();
+public slots:
+    void refreshModel();
 };
 
 typedef struct
 {
     QString name;
     QString display;
-    bool isPk;
-    int type;
     DbRelation *relation;
     QVector<QVariant> data;
     QValidator *validator;
+    Qt::ItemFlags flags;
 } col;
 
 
@@ -126,21 +121,25 @@ public:
     int columnCount(const QModelIndex &parent=QModelIndex()) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool addColumn(QString name, QString display, bool isPk, int type, QValidator *validator=NULL, DbRelation *relation=NULL);
-    bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+    bool addColumn(QString name, QString display, DbRelation *relation=NULL);
+    virtual bool removeRow(int row, const QModelIndex &parent = QModelIndex());
     void setFilter(QString s);
     void setSort(QString s);
     void setSuffix(QString s);
     bool isAdd();
     bool isEdt();
-    void escAdd();
-    virtual bool submitRow();
+    bool isEmpty();
     virtual bool insertRow(int row, const QModelIndex &parent=QModelIndex());
     DbRelation *relation(int column) const;
-    int columnType(int column) const;
+    QVariant::Type columnType(int column) const;
+    QVariant nullVal(int column) const;
     int currentEdtRow();
     QValidator* validator(int column) const;
+    void setValidator(int column, QValidator *validator);
     void setDefaultValue(int column, QVariant value);
+    void setColumnFlags(int column, Qt::ItemFlags flags);
+    QVariant defaultValue(int column);
+    bool setDecimals(int column, int dec);
 
 protected:
     QString tableName;
@@ -148,14 +147,16 @@ protected:
     QString sort;
     QString suffix;
     QVector<QVariant> defaultTmpRow;
-    bool insertDb();
-    bool updateDb();
-    bool deleteDb(int row);
+    virtual bool insertDb();
+    virtual bool updateDb();
+    virtual bool deleteDb(int row);
     
 private:
     MData *modelData;
     DataEditor *editor;
     bool block;
+    QSqlIndex pkList;
+    QSqlRecord defaultRecord;
 
 signals:
     void sigUpd();
@@ -163,6 +164,8 @@ signals:
     
 public slots:
     virtual bool select();
+    virtual void revert();
+    virtual bool submit();
 };
 
 

@@ -16,8 +16,8 @@ FormReport::FormReport(QWidget *parent) :
     ui->tableView->setModel(modelReport);
 
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(updReport()));
-    connect(ui->radioButtonMar,SIGNAL(clicked(bool)),this,SLOT(updReport()));
-    connect(ui->radioButtonPart,SIGNAL(clicked(bool)),this,SLOT(updReport()));
+    //connect(ui->radioButtonMar,SIGNAL(clicked(bool)),this,SLOT(updReport()));
+    //connect(ui->radioButtonPart,SIGNAL(clicked(bool)),this,SLOT(updReport()));
     connect(ui->cmdSave,SIGNAL(clicked(bool)),this,SLOT(save()));
 }
 

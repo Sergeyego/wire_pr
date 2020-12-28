@@ -201,10 +201,16 @@
    </item>
    <item>
     <widget class="QSplitter" name="splitter">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="TableView" name="tableViewNakl">
+     <widget class="DbViewer" name="tableViewNakl">
       <property name="maximumSize">
        <size>
         <width>300</width>
@@ -221,7 +227,7 @@
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="DbViewer" name="tableViewPerePack">
@@ -266,11 +272,6 @@
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
-   <class>TableView</class>
-   <extends>QTableView</extends>
-   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

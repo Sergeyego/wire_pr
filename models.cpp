@@ -118,7 +118,7 @@ Models *Models::instance()
 void Models::refresh()
 {
     for (int i=0; i < rels.size(); ++i) {
-        rels.at(i)->model()->refresh();
+        rels.at(i)->refreshModel();
     }
     emit sigRefresh();
 }

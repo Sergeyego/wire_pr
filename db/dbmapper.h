@@ -23,6 +23,8 @@ public:
     bool isLock();
     void addMapping(QWidget *widget, int section);
     int currentIndex();
+    void setDefaultFocus(int n);
+    void setItemDelegate(QAbstractItemDelegate *delegate);
     
 private:
     QVector <QWidget*> lock1;
@@ -37,6 +39,7 @@ private:
     QPushButton *cmdDel;
     QHBoxLayout *mainLayout;
     bool isEdt;
+    int defaultFocus;
 
 public slots:
     void refresh();
@@ -55,6 +58,7 @@ private slots:
 
 signals:
     void currentIndexChanged(int index);
+    void lockChanged(bool l);
 };
 
 #endif // DBMAPPER_H

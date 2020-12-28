@@ -10,15 +10,17 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewWire->verticalHeader()->setDefaultSectionSize(ui->tableViewWire->verticalHeader()->fontMetrics().height()*1.5);
 
     modelChemTu = new DbTableModel("wire_chem_tu",this);
-    modelChemTu->addColumn("id_provol","id_provol",true,TYPE_INT);
-    modelChemTu->addColumn("id_chem",QString::fromUtf8("Элемент"),true,TYPE_STRING,NULL,Models::instance()->relChemTbl);
-    modelChemTu->addColumn("min",QString::fromUtf8("Минимум, %"),false,TYPE_DOUBLE,new QDoubleValidator(0,100,3,this));
-    modelChemTu->addColumn("max",QString::fromUtf8("Максимум, %"),false,TYPE_DOUBLE,new QDoubleValidator(0,100,3,this));
+    modelChemTu->addColumn("id_provol","id_provol");
+    modelChemTu->addColumn("id_chem",QString::fromUtf8("Элемент"),Models::instance()->relChemTbl);
+    modelChemTu->addColumn("min",QString::fromUtf8("Минимум, %"));
+    modelChemTu->addColumn("max",QString::fromUtf8("Максимум, %"));
     modelChemTu->setSort("wire_chem_tu.id_chem");
+    modelChemTu->setDecimals(2,3);
+    modelChemTu->setDecimals(3,3);
 
     modelDim = new DbTableModel("wire_diams",this);
-    modelDim->addColumn("id_wire","id_wire",true,TYPE_INT);
-    modelDim->addColumn("id_diam",QString::fromUtf8("Диаметр"),true,TYPE_STRING,NULL,Models::instance()->relDiam);
+    modelDim->addColumn("id_wire","id_wire");
+    modelDim->addColumn("id_diam",QString::fromUtf8("Диаметр"),Models::instance()->relDiam);
     modelDim->setSuffix("inner join diam on wire_diams.id_diam=diam.id");
     modelDim->setSort("diam.sdim");
     ui->tableViewDiam->setModel(modelDim);
@@ -47,9 +49,9 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     }
 
     modelKr = new DbTableModel("wire_kr",this);
-    modelKr->addColumn("id_prov",tr("id_prov"),true,TYPE_INT);
-    modelKr->addColumn("dat",tr("Дата"),true,TYPE_DATE);
-    modelKr->addColumn("val",tr("Значение"),false,TYPE_INT,new QIntValidator(0,1000000,this));
+    modelKr->addColumn("id_prov",tr("id_prov"));
+    modelKr->addColumn("dat",tr("Дата"));
+    modelKr->addColumn("val",tr("Значение"));
     modelKr->setSort("wire_kr.dat");
     ui->tableViewKr->setModel(modelKr);
     ui->tableViewKr->setColumnHidden(0,true);
@@ -57,24 +59,24 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     ui->tableViewKr->setColumnWidth(2,100);
 
     modelGost = new DbTableModel("wire_gost",this);
-    modelGost->addColumn("id","id",true,TYPE_INT);
-    modelGost->addColumn("id_provol","id_provol",false,TYPE_INT);
-    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),false,TYPE_STRING,NULL,Models::instance()->relNewGost);
+    modelGost->addColumn("id","id");
+    modelGost->addColumn("id_provol","id_provol");
+    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),Models::instance()->relNewGost);
     ui->tableViewTu->setModel(modelGost);
     ui->tableViewTu->setColumnHidden(0,true);
     ui->tableViewTu->setColumnHidden(1,true);
     ui->tableViewTu->setColumnWidth(2,200);
 
     modelWire = new DbTableModel("provol",this);
-    modelWire->addColumn("id","id",true,TYPE_INT);
-    modelWire->addColumn("nam",tr("Название"),false,TYPE_STRING);
-    modelWire->addColumn("is_w",tr("3 Цех"),false,TYPE_INTBOOL);
-    modelWire->addColumn("nerzh",tr("Нержавейка"),false,TYPE_INTBOOL);
-    modelWire->addColumn("is_cored",tr("Порошковая"),false,TYPE_BOOL);
-    modelWire->addColumn("description",tr("Описание"),false,TYPE_STRING);
-    modelWire->addColumn("katalog",tr("Каталог"),false,TYPE_BOOL);
-    modelWire->addColumn("id_base",tr("Базовая марка"),false,TYPE_STRING,NULL,Models::instance()->relProvol);
-    modelWire->addColumn("id_type",tr("Тип"),false,TYPE_STRING,NULL,Models::instance()->relWireType);
+    modelWire->addColumn("id","id");
+    modelWire->addColumn("nam",tr("Название"));
+    modelWire->addColumn("is_w",tr("3 Цех"));
+    modelWire->addColumn("nerzh",tr("Нержавейка"));
+    modelWire->addColumn("is_cored",tr("Порошковая"));
+    modelWire->addColumn("description",tr("Описание"));
+    modelWire->addColumn("katalog",tr("Каталог"));
+    modelWire->addColumn("id_base",tr("Базовая марка"),Models::instance()->relProvol);
+    modelWire->addColumn("id_type",tr("Тип"),Models::instance()->relWireType);
     modelWire->setSort("provol.nam");
 
     ui->tableViewWire->setModel(modelWire);

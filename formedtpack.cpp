@@ -7,11 +7,11 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
 {
     ui->setupUi(this);
     modelPack = new DbTableModel("wire_pack_kind",this);
-    modelPack->addColumn("id",tr("id"),true,TYPE_INT);
-    modelPack->addColumn("nam",tr("Наименование"),false,TYPE_STRING);
-    modelPack->addColumn("short",tr("Крат. наименование"),false,TYPE_STRING);
-    modelPack->addColumn("short_en",tr("Наименование анг."),false,TYPE_STRING);
-    modelPack->addColumn("id_pack_def",tr("Упаковка по умолчанию"),false,TYPE_STRING,NULL,Models::instance()->relPackType);
+    modelPack->addColumn("id",tr("id"));
+    modelPack->addColumn("nam",tr("Наименование"));
+    modelPack->addColumn("short",tr("Крат. наименование"));
+    modelPack->addColumn("short_en",tr("Наименование анг."));
+    modelPack->addColumn("id_pack_def",tr("Упаковка по умолчанию"),Models::instance()->relPackType);
     modelPack->setSort("wire_pack_kind.nam");
     modelPack->select();
     ui->tableView->setModel(modelPack);
@@ -22,11 +22,11 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     ui->tableView->setColumnWidth(4,250);
 
     modelPackType = new DbTableModel("wire_pack",this);
-    modelPackType->addColumn("id",tr("id"),true,TYPE_INT);
-    modelPackType->addColumn("pack_ed",tr("Единичная упаковка"),false,TYPE_STRING);
-    modelPackType->addColumn("pack_group",tr("Групповая упаковка"),false,TYPE_STRING);
-    modelPackType->addColumn("mas_ed",tr("Масса ед., кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,999999999,3,this));
-    modelPackType->addColumn("mas_group",tr("Масса гр., кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,999999999,3,this));
+    modelPackType->addColumn("id",tr("id"));
+    modelPackType->addColumn("pack_ed",tr("Единичная упаковка"));
+    modelPackType->addColumn("pack_group",tr("Групповая упаковка"));
+    modelPackType->addColumn("mas_ed",tr("Масса ед., кг"));
+    modelPackType->addColumn("mas_group",tr("Масса гр., кг"));
     modelPackType->setSort("wire_pack.pack_ed");
     modelPackType->select();
     ui->tableViewType->setModel(modelPackType);

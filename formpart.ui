@@ -74,7 +74,7 @@
         </layout>
        </item>
        <item>
-        <widget class="TableView" name="tableViewPart">
+        <widget class="DbViewer" name="tableViewPart">
          <property name="selectionMode">
           <enum>QAbstractItemView::SingleSelection</enum>
          </property>

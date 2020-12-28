@@ -11,8 +11,8 @@ FormPresence::FormPresence(QWidget *parent) :
     ui->tableView->setModel(modelPresence);
 
     connect(ui->cmdRefresh,SIGNAL(clicked(bool)),this,SLOT(updPresence()));
-    connect(ui->radioButtonMar,SIGNAL(clicked(bool)),this,SLOT(updPresence()));
-    connect(ui->radioButtonPart,SIGNAL(clicked(bool)),this,SLOT(updPresence()));
+    //connect(ui->radioButtonMar,SIGNAL(clicked(bool)),this,SLOT(updPresence()));
+    //connect(ui->radioButtonPart,SIGNAL(clicked(bool)),this,SLOT(updPresence()));
     connect(ui->cmdSave,SIGNAL(clicked(bool)),this,SLOT(save()));
 }
 

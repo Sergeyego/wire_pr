@@ -8,9 +8,9 @@ FormRoute::FormRoute(QWidget *parent) :
     ui->setupUi(this);
 
     modelRoute = new DbTableModel("wire_route",this);
-    modelRoute->addColumn("id","id",true,TYPE_INT);
-    modelRoute->addColumn("nam",tr("Название"),false,TYPE_STRING);
-    modelRoute->addColumn("data",tr("Маршрут"),false,TYPE_STRING);
+    modelRoute->addColumn("id","id");
+    modelRoute->addColumn("nam",tr("Название"));
+    modelRoute->addColumn("data",tr("Маршрут"));
     modelRoute->setSort("nam");
 
     draw = new Drawing(ui->lineEditRoute,this);

@@ -27,9 +27,10 @@ public:
              const QStyleOptionViewItem &option,
              const QModelIndex &index) const;
      bool eventFilter(QObject *object, QEvent *event);
+
 signals:
      void createEdt(const QModelIndex index) const;
- };
+};
 
 class CustomCompletter : public QCompleter
 {
@@ -48,4 +49,22 @@ public:
     void keyPressEvent(QKeyEvent *e);
 };
 
+class CustomCalendarWidget : public QCalendarWidget
+{
+    Q_OBJECT
+public:
+    CustomCalendarWidget(QWidget *parent = 0);
+    virtual void showEvent(QShowEvent *event);
+signals:
+    void shown();
+};
+
+class CustomDateEdit : public QDateEdit{
+    Q_OBJECT
+public:
+    CustomDateEdit(QWidget *parent=0);
+private slots:
+    void txtChangeSlot(QString txt);
+    void shVid();
+};
 #endif // DBDELEGATE_H

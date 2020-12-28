@@ -3,27 +3,23 @@
 ModelPart::ModelPart(QObject *parent):DbTableModel("wire_parti_m",parent)
 {
     id_prov=-1;
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("n_s",tr("№"),false,TYPE_STRING);
-    addColumn("dat",tr("Дата"),false,TYPE_DATE);
-    addColumn("id_source",tr("Источник"), false,TYPE_STRING,NULL,Models::instance()->relSource);
-    addColumn("id_buht",tr("Исх. партия"),false,TYPE_STRING,NULL,Models::instance()->relSrcPart);
-    addColumn("id_provol",tr("Марка"),false,TYPE_STRING,NULL,Models::instance()->relProvol);
-    addColumn("id_diam",tr("Ф"),false,TYPE_STRING,NULL,Models::instance()->relDiam);
-    addColumn("id_type",tr("Стан"),false,TYPE_STRING,NULL,Models::instance()->relLine);
-    addColumn("comment",tr("Комментарий"),false,TYPE_STRING);
-    addColumn("id_empl",tr("Волочильщик"),false,TYPE_STRING,NULL,Models::instance()->relVol);
-    addColumn("kvo",tr("Масса"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,1,this));
-    addColumn("id_podt",tr("Подтяжка"),false,TYPE_STRING,NULL, Models::instance()->relPodt);
+    addColumn("id","id");
+    addColumn("n_s",tr("№"));
+    addColumn("dat",tr("Дата"));
+    addColumn("id_source",tr("Источник"),Models::instance()->relSource);
+    addColumn("id_buht",tr("Исх. партия"),Models::instance()->relSrcPart);
+    addColumn("id_provol",tr("Марка"),Models::instance()->relProvol);
+    addColumn("id_diam",tr("Ф"),Models::instance()->relDiam);
+    addColumn("id_type",tr("Стан"),Models::instance()->relLine);
+    addColumn("comment",tr("Комментарий"));
+    addColumn("id_empl",tr("Волочильщик"),Models::instance()->relVol);
+    addColumn("kvo",tr("Масса"));
+    addColumn("id_podt",tr("Подтяжка"),Models::instance()->relPodt);
     setSort("dat,n_s");
     setDefaultValue(10,0);
     connect(this,SIGNAL(sigUpd()),Models::instance()->relWirePart->model(),SLOT(refresh()));
 }
 
-bool ModelPart::submitRow()
-{
-    return DbTableModel::submitRow();
-}
 
 bool ModelPart::insertRow(int row, const QModelIndex &parent)
 {
@@ -115,14 +111,16 @@ void ModelPart::refreshState()
 
 ModelWirePartiMech::ModelWirePartiMech(QObject *parent):DbTableModel("wire_parti_mech",parent)
 {
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("id_part","id_part",false,TYPE_INT);
-    addColumn("id_mech",tr("Параметр"),false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    addColumn("value",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-9999999,9999999,3,this));
-    addColumn("value_max",tr("Значение-2"),false,TYPE_DOUBLE,new QDoubleValidator(-9999999,9999999,3,this));
-    addColumn("id_cat",tr("Категория"),false,TYPE_STRING,NULL,Models::instance()->relMechCat);
+    addColumn("id","id");
+    addColumn("id_part","id_part");
+    addColumn("id_mech",tr("Параметр"),Models::instance()->relMechTbl);
+    addColumn("value",tr("Значение"));
+    addColumn("value_max",tr("Значение-2"));
+    addColumn("id_cat",tr("Категория"),Models::instance()->relMechCat);
     setSuffix("inner join mech_tbl on wire_parti_mech.id_mech=mech_tbl.id");
     setSort("mech_tbl.nam");
+    setDecimals(3,3);
+    setDecimals(4,3);
 }
 
 void ModelWirePartiMech::refresh(int id_part)
@@ -179,7 +177,7 @@ bool PartPackModel::addPack(int id_pack, int id_type)
     if (!ok){
         QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
     } else {
-        Models::instance()->relWirePart->model()->refresh();
+        Models::instance()->relWirePart->refreshModel();
     }
     return ok;
 }
@@ -193,7 +191,7 @@ bool PartPackModel::delPack(int id)
     if (!ok){
         QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
     } else {
-        Models::instance()->relWirePart->model()->refresh();
+        Models::instance()->relWirePart->refreshModel();
     }
     return ok;
 }
@@ -209,22 +207,25 @@ bool PartPackModel::edtPack(int id, int id_pack_new, int id_type_new)
     if (!ok){
         QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
     } else {
-        Models::instance()->relWirePart->model()->refresh();
+        Models::instance()->relWirePart->refreshModel();
     }
     return ok;
 }
 
 ModelAnn::ModelAnn(QObject *parent) : DbTableModel("wire_ann",parent)
 {
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("n_s",tr("№"),false,TYPE_STRING);
-    addColumn("dat",tr("Дата"),false,TYPE_DATE);
-    addColumn("id_wire_oven",tr("Стенд"),false,TYPE_STRING,NULL,Models::instance()->relOven);
-    addColumn("time_blow",tr("Время продувки"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,1,this));
-    addColumn("temp",tr("Температура"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,1,this));
-    addColumn("time_ex",tr("Время выдержки"),false,TYPE_DOUBLE, new QDoubleValidator(0,999999999,1,this));
-    addColumn("note",tr("Комментарий"),false,TYPE_STRING);
+    addColumn("id","id");
+    addColumn("n_s",tr("№"));
+    addColumn("dat",tr("Дата"));
+    addColumn("id_wire_oven",tr("Стенд"),Models::instance()->relOven);
+    addColumn("time_blow",tr("Время продувки"));
+    addColumn("temp",tr("Температура"));
+    addColumn("time_ex",tr("Время выдержки"));
+    addColumn("note",tr("Комментарий"));
     setSort("wire_ann.dat, wire_ann.n_s");
+    setDecimals(4,0);
+    setDecimals(5,0);
+    setDecimals(6,0);
 }
 
 void ModelAnn::refresh(QDate beg, QDate end)
@@ -244,10 +245,11 @@ bool ModelAnn::insertRow(int row, const QModelIndex &parent)
 
 ModelPodtMech::ModelPodtMech(QObject *parent) : DbTableModel("wire_podt_mech", parent)
 {
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("id_podt","id_podt",false,TYPE_INT);
-    addColumn("id_mech",tr("Параметр"),false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-9999999,9999999,3,this));
+    addColumn("id","id");
+    addColumn("id_podt","id_podt");
+    addColumn("id_mech",tr("Параметр"),Models::instance()->relMechTbl);
+    addColumn("kvo",tr("Значение"));
+    setDecimals(3,3);
     setDefaultValue(2,1);
     setSort("wire_podt_mech.id_mech, wire_podt_mech.kvo");
 }
@@ -261,10 +263,11 @@ void ModelPodtMech::refresh(int id_podt)
 
 ModelMechReal::ModelMechReal(QObject *parent) : DbTableModel("wire_mech",parent)
 {
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("id_part","id_part",false,TYPE_INT);
-    addColumn("id_mech",tr("Параметр"),false,TYPE_STRING,NULL,Models::instance()->relMechTbl);
-    addColumn("kvo",tr("Значение"),false,TYPE_DOUBLE,new QDoubleValidator(-9999999,9999999,3,this));
+    addColumn("id","id");
+    addColumn("id_part","id_part");
+    addColumn("id_mech",tr("Параметр"),Models::instance()->relMechTbl);
+    addColumn("kvo",tr("Значение"));
+    setDecimals(3,3);
     setDefaultValue(2,1);
     setSort("wire_mech.id_mech, wire_mech.kvo");
 }
@@ -295,8 +298,8 @@ void ModelGostSrc::refresh(int id_part)
 
 ModelGostPart::ModelGostPart(QObject *parent) : DbTableModel("wire_parti_gost",parent)
 {
-    addColumn("id_parti","id_parti",true,TYPE_INT);
-    addColumn("id_gost",QString::fromUtf8("Наименование"),true,TYPE_STRING,NULL,Models::instance()->relNewGost);
+    addColumn("id_parti","id_parti");
+    addColumn("id_gost",QString::fromUtf8("Наименование"),Models::instance()->relNewGost);
     setSuffix("inner join gost_new as gn on gn.id = wire_parti_gost.id_gost");
     setSort("gn.nam");
 }
@@ -325,12 +328,12 @@ void ModelGostPart::copyTu()
 
 ModelEan::ModelEan(QObject *parent) : DbTableModel("wire_ean",parent)
 {
-    addColumn("id_prov","id_prov",true,TYPE_STRING);
-    addColumn("id_diam",tr("Диаметр"),true,TYPE_STRING,NULL,Models::instance()->relDiam);
-    addColumn("id_spool",tr("Носитель"),true,TYPE_STRING,NULL,Models::instance()->relPack);
-    addColumn("id_pack",tr("Упаковка (ед., групп.)"),true,TYPE_STRING,NULL,Models::instance()->relPackType);
-    addColumn("ean_ed",tr("Штрих код (ед.)"),false,TYPE_STRING,NULL,Models::instance()->relEan);
-    addColumn("ean_group",tr("Штрих код (гр.)"),false,TYPE_STRING,NULL,Models::instance()->relEan);
+    addColumn("id_prov","id_prov");
+    addColumn("id_diam",tr("Диаметр"),Models::instance()->relDiam);
+    addColumn("id_spool",tr("Носитель"),Models::instance()->relPack);
+    addColumn("id_pack",tr("Упаковка (ед., групп.)"),Models::instance()->relPackType);
+    addColumn("ean_ed",tr("Штрих код (ед.)"),Models::instance()->relEan);
+    addColumn("ean_group",tr("Штрих код (гр.)"),Models::instance()->relEan);
     setSuffix("inner join diam on wire_ean.id_diam=diam.id");
     setSort("diam.sdim");
 }
@@ -372,11 +375,11 @@ void ModelEan::updRels(QModelIndex index)
 
 ModelPodtCex::ModelPodtCex(QObject *parent) : DbTableModel("wire_podt_cex",parent)
 {
-    addColumn("id","id",true,TYPE_INT);
-    addColumn("id_podt","id_podt",false,TYPE_INT);
-    addColumn("id_op","id_op",false,TYPE_INT);
-    addColumn("dat",tr("Дата"),false,TYPE_DATE);
-    addColumn("kvo",tr("Кол-во, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,2,this));
+    addColumn("id","id");
+    addColumn("id_podt","id_podt");
+    addColumn("id_op","id_op");
+    addColumn("dat",tr("Дата"));
+    addColumn("kvo",tr("Кол-во, кг"));
     setSort("wire_podt_cex.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));

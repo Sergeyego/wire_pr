@@ -11,9 +11,9 @@ FormFixPodt::FormFixPodt(QWidget *parent) :
     ui->comboBoxDat->setModel(modelDat);
 
     modelFix = new DbTableModel("wire_podt_ost",this);
-    modelFix->addColumn("dat",tr("Дата"),true,TYPE_DATE);
-    modelFix->addColumn("id_podt",tr("Подтяжка"),true,TYPE_STRING,NULL,Models::instance()->relPodt);
-    modelFix->addColumn("kvo",tr("Кол-во, кг"),false,TYPE_DOUBLE,new QDoubleValidator(0,1000000,2,this));
+    modelFix->addColumn("dat",tr("Дата"));
+    modelFix->addColumn("id_podt",tr("Подтяжка"),Models::instance()->relPodt);
+    modelFix->addColumn("kvo",tr("Кол-во, кг"));
     modelFix->setSuffix("inner join wire_podt as wp on wp.id = wire_podt_ost.id_podt "
                         "inner join prov_buht as h on wp.id_buht=h.id "
                         "inner join prov_prih as p on p.id=h.id_prih "

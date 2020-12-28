@@ -8,7 +8,6 @@ class ModelPart : public DbTableModel
     Q_OBJECT
 public:
     ModelPart(QObject *parent=0);
-    bool submitRow();
     bool insertRow(int row, const QModelIndex &parent);
     QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);

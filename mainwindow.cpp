@@ -1,68 +1,44 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QString key, QWidget *parent) :
+MainWindow::MainWindow(QString k, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    tabWidget = new TabWidget(this);
-    this->setCentralWidget(tabWidget);
+    key=k;
 
-    formPart = new FormPart(key==QString("srt"));
-    formRoute = new FormRoute();
-    formShip = new FormShip();
-    formWarehouse = new FormWarehouse();
-    formEdtWire = new FormEdtWire();
-    checkForm = new CheckForm();
-    formPerePack = new FormPerePack();
-    formPresence = new FormPresence();
-    formReport = new FormReport();
-    formPodt = new FormPodt();
-    formAnn = new FormAnn();
-    formPack = new FormEdtPack();
-    formLine = new FormEdtLine();
-    formLbl = new FormLbl();
-    formNakl = new FormNakl();
+    actAction(ui->actionEdtWire,&MainWindow::edtWire);
+    actAction(ui->actionSpool,&MainWindow::edtSpool);
+    actAction(ui->actionRoute,&MainWindow::edtRoute);
+    actAction(ui->actionLine,&MainWindow::edtLine);
 
-    addCube = new CubeWidget(25);
-    namCube = new CubeWidget(24);
-    srcCube = new CubeWidget(26);
-    perepackCube = new CubeWidget(27);
-    podtCube = new CubeWidget(28);
+    actAction(ui->actionPodt,&MainWindow::podtPart);
+    actAction(ui->actionPrecensePodt,&MainWindow::podtPresence);
+    actAction(ui->actionReportPodt,&MainWindow::podtReport);
+    actAction(ui->actionFixPodt,&MainWindow::podtFix);
+    actAction(ui->actionPodtNakl,&MainWindow::podtNakl);
 
-    formFixPodt = new FormFixPodt();
-    formPressencePodt = new FormPresencePodt();
-    formNaklPodt = new FormNaklPodt();
-    formReportPodt = new FormReportPodt();
+    actAction(ui->actionAnn,&MainWindow::wireAnn);
+    actAction(ui->actionPart,&MainWindow::wirePart);
+    actAction(ui->actionLbl,&MainWindow::wireLbl);
+
+    actAction(ui->actionPerepack,&MainWindow::perepack);
+    actAction(ui->actionPrecense,&MainWindow::presence);
+    actAction(ui->actionReport,&MainWindow::report);
+    actAction(ui->actionWarehouse,&MainWindow::warehouse);
+    actAction(ui->actionNakl,&MainWindow::nakl);
+
+    actAction(ui->actionCubeSpool,&MainWindow::cubeNam);
+    actAction(ui->actionCubeAdd,&MainWindow::cubePost);
+    actAction(ui->actionCubeSrc,&MainWindow::cubeRas);
+    actAction(ui->actionCubePerepack,&MainWindow::cubePerepack);
+    actAction(ui->actionCubePodt,&MainWindow::cubePodt);
+
+    actAction(ui->actionShip,&MainWindow::sert);
+    actAction(ui->actionCod,&MainWindow::check);
 
     loadSettings();
-
-    tabWidget->addTabAction(formPart,ui->actionPart);
-    tabWidget->addTabAction(formRoute,ui->actionRoute);
-    tabWidget->addTabAction(formShip,ui->actionShip);
-    tabWidget->addTabAction(formWarehouse,ui->actionWarehouse);
-    tabWidget->addTabAction(formEdtWire,ui->actionEdtWire);
-    tabWidget->addTabAction(checkForm,ui->actionCod);
-    tabWidget->addTabAction(formPerePack,ui->actionPerepack);
-    tabWidget->addTabAction(formPresence,ui->actionPrecense);
-    tabWidget->addTabAction(formReport,ui->actionPeport);
-    tabWidget->addTabAction(formPodt,ui->actionPodt);
-    tabWidget->addTabAction(addCube,ui->actionAdd);
-    tabWidget->addTabAction(namCube,ui->actionAnSpool);
-    tabWidget->addTabAction(srcCube,ui->actionSrc);
-    tabWidget->addTabAction(formAnn,ui->actionAnn);
-    tabWidget->addTabAction(formPack,ui->actionSpool);
-    tabWidget->addTabAction(formLine,ui->actionLine);
-    tabWidget->addTabAction(formLbl,ui->actionLbl);
-    tabWidget->addTabAction(perepackCube,ui->actionPerepackCube);
-    tabWidget->addTabAction(formNakl,ui->actionNakl);
-    tabWidget->addTabAction(podtCube,ui->actionCubePodt);
-    tabWidget->addTabAction(formFixPodt,ui->actionFixPodt);
-    tabWidget->addTabAction(formPressencePodt,ui->actionPrecensePodt);
-    tabWidget->addTabAction(formNaklPodt,ui->actionPodtNakl);
-    tabWidget->addTabAction(formReportPodt,ui->actionReportPodt);
-    tabWidget->loadSettings();
 
     connect(ui->actionExit,SIGNAL(triggered(bool)),this,SLOT(close()));
     connect(ui->actionRefresh,SIGNAL(triggered(bool)),Models::instance(),SLOT(refresh()));
@@ -70,31 +46,7 @@ MainWindow::MainWindow(QString key, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    tabWidget->saveSettings();
     saveSettings();
-    delete formWarehouse;
-    delete formShip;
-    delete formRoute;
-    delete formPart;
-    delete formEdtWire;
-    delete checkForm;
-    delete formPerePack;
-    delete formPresence;
-    delete formReport;
-    delete addCube;
-    delete formPodt;
-    delete namCube;
-    delete srcCube;
-    delete formAnn;
-    delete formPack;
-    delete formLine;
-    delete formLbl;
-    delete perepackCube;
-    delete formNakl;
-    delete formFixPodt;
-    delete formPressencePodt;
-    delete formNaklPodt;
-    delete formReportPodt;
     delete Models::instance();
     delete ui;
 }
@@ -104,6 +56,22 @@ void MainWindow::loadSettings()
     QSettings settings("szsm", "wire_pr");
     this->restoreGeometry(settings.value("main_geometry").toByteArray());
     this->restoreState(settings.value("main_state").toByteArray());
+    QString opentab=settings.value("main_opentab").toString();
+    QString current=settings.value("main_currenttab").toString();
+
+    if (opentab.isEmpty()){
+        ui->actionPart->trigger();
+    } else {
+        QStringList l=opentab.split("|");
+        foreach (QString a, l) {
+            if (actions.contains(a)){
+                actions.value(a)->trigger();
+            }
+        }
+    }
+    QTimer::singleShot(500, [this, current]() {
+        setActiveSubWindow(current);
+    });
 }
 
 void MainWindow::saveSettings()
@@ -111,4 +79,224 @@ void MainWindow::saveSettings()
     QSettings settings("szsm", "wire_pr");
     settings.setValue("main_state", this->saveState());
     settings.setValue("main_geometry", this->saveGeometry());
+    QString opentab, currenttab;
+    foreach (QMdiSubWindow *w, ui->mdiArea->subWindowList()) {
+        if (!opentab.isEmpty()){
+            opentab+="|";
+        }
+        opentab+=w->windowTitle();
+        if (w==ui->mdiArea->currentSubWindow()){
+            currenttab=w->windowTitle();
+        }
+    }
+    settings.setValue("main_opentab", opentab);
+    settings.setValue("main_currenttab",currenttab);
+}
+
+bool MainWindow::exist(QObject *a)
+{
+    bool b=false;
+    QAction *action = qobject_cast<QAction *>(a);
+    if (action){
+        b=setActiveSubWindow(action->text());
+    }
+    return b;
+}
+
+void MainWindow::actAction(QAction *a, void (MainWindow::*sl)())
+{
+    connect(a, &QAction::triggered, this, sl);
+    actions.insert(a->text(),a);
+}
+
+void MainWindow::addSubWindow(QWidget *w, QObject *a)
+{
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    QAction *action = qobject_cast<QAction *>(a);
+    if (action){
+        w->setWindowTitle(action->text());
+    }
+    QMdiSubWindow *s=ui->mdiArea->addSubWindow(w);
+    s->showMaximized();
+}
+
+bool MainWindow::setActiveSubWindow(QString t)
+{
+    bool b=false;
+    foreach (QMdiSubWindow *w, ui->mdiArea->subWindowList()) {
+        if (w->windowTitle()==t){
+            ui->mdiArea->setActiveSubWindow(w);
+            b = true;
+            break;
+        }
+    }
+    return b;
+}
+
+void MainWindow::edtWire()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormEdtWire(),sender());
+    }
+}
+
+void MainWindow::edtSpool()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormEdtPack(),sender());
+    }
+}
+
+void MainWindow::edtRoute()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormRoute(),sender());
+    }
+}
+
+void MainWindow::edtLine()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormEdtLine(),sender());
+    }
+}
+
+void MainWindow::podtPart()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPodt(),sender());
+    }
+}
+
+void MainWindow::podtPresence()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPresencePodt(),sender());
+    }
+}
+
+void MainWindow::podtReport()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormReportPodt(),sender());
+    }
+}
+
+void MainWindow::podtFix()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormFixPodt(),sender());
+    }
+}
+
+void MainWindow::podtNakl()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormNaklPodt(),sender());
+    }
+}
+
+void MainWindow::wireAnn()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormAnn(),sender());
+    }
+}
+
+void MainWindow::wirePart()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPart(key==QString("srt")),sender());
+    }
+}
+
+void MainWindow::wireLbl()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormLbl(),sender());
+    }
+}
+
+void MainWindow::perepack()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPerePack(),sender());
+    }
+}
+
+void MainWindow::presence()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPresence(),sender());
+    }
+}
+
+void MainWindow::report()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormReport(),sender());
+    }
+}
+
+void MainWindow::warehouse()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormWarehouse(),sender());
+    }
+}
+
+void MainWindow::nakl()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormNakl(),sender());
+    }
+}
+
+void MainWindow::cubeNam()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(24),sender());
+    }
+}
+
+void MainWindow::cubePost()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(25),sender());
+    }
+}
+
+void MainWindow::cubeRas()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(26),sender());
+    }
+}
+
+void MainWindow::cubePerepack()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(27),sender());
+    }
+}
+
+void MainWindow::cubePodt()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(28),sender());
+    }
+}
+
+void MainWindow::sert()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormShip(),sender());
+    }
+}
+
+void MainWindow::check()
+{
+    if (!exist(sender())){
+        addSubWindow(new CheckForm(),sender());
+    }
 }

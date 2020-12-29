@@ -2,18 +2,10 @@
 <ui version="4.0">
  <class>FormRoute</class>
  <widget class="QWidget" name="FormRoute">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>968</width>
-    <height>696</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Маршруты волочения</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -28,7 +20,7 @@
       </property>
      </widget>
      <widget class="QWidget" name="layoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayoutRoue">
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">

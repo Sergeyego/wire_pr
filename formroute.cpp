@@ -21,7 +21,7 @@ FormRoute::FormRoute(QWidget *parent) :
     //ui->tableViewRoute->setColumnWidth(1,150);
     //ui->tableViewRoute->setColumnWidth(2,140);
     ui->tableViewRoute->setFocus();
-    ui->verticalLayout->insertWidget(1,draw);
+    ui->verticalLayoutRoue->insertWidget(1,draw);
 
     push = new DbMapper(ui->tableViewRoute,this);
     push->addMapping(ui->lineEditName,1);

@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    tabwidget.cpp \
     checkform.cpp \
     dialogotk.cpp \
     dialogpack.cpp \
@@ -71,7 +70,6 @@ SOURCES += main.cpp\
     formreportpodt.cpp
 
 HEADERS  += mainwindow.h \
-    tabwidget.h \
     checkform.h \
     dialogotk.h \
     dialogpack.h \

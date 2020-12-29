@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QDebug>
-#include "tabwidget.h"
 #include "formpart.h"
 #include "models.h"
 #include "formroute.h"
@@ -25,6 +24,7 @@
 #include "formpresencepodt.h"
 #include "formnaklpodt.h"
 #include "formreportpodt.h"
+#include <QMdiSubWindow>
 
 namespace Ui {
 class MainWindow;
@@ -35,39 +35,46 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QString key, QWidget *parent = 0);
+    explicit MainWindow(QString k, QWidget *parent = 0);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
-    TabWidget *tabWidget;
-    FormPart *formPart;
-    FormRoute *formRoute;
-    FormShip *formShip;
-    FormWarehouse *formWarehouse;
-    FormEdtWire *formEdtWire;
-    CheckForm *checkForm;
-    FormPerePack *formPerePack;
-    FormPresence *formPresence;
-    FormReport *formReport;
-    CubeWidget *addCube;
-    CubeWidget *namCube;
-    CubeWidget *srcCube;
-    CubeWidget *perepackCube;
-    CubeWidget *podtCube;
-    FormPodt *formPodt;
-    FormAnn *formAnn;
-    FormEdtPack *formPack;
-    FormEdtLine *formLine;
-    FormLbl *formLbl;
-    FormNakl *formNakl;
-    FormFixPodt *formFixPodt;
-    FormPresencePodt *formPressencePodt;
-    FormNaklPodt *formNaklPodt;
-    FormReportPodt *formReportPodt;
+    QString key;
 
     void loadSettings();
     void saveSettings();
+    bool exist(QObject *a);
+    void actAction(QAction *a, void (MainWindow::*sl)());
+    void addSubWindow(QWidget *w, QObject *a);
+    bool setActiveSubWindow(QString t);
+    QMap <QString,QAction*> actions;
+
+private slots:
+    void edtWire();
+    void edtSpool();
+    void edtRoute();
+    void edtLine();
+    void podtPart();
+    void podtPresence();
+    void podtReport();
+    void podtFix();
+    void podtNakl();
+    void wireAnn();
+    void wirePart();
+    void wireLbl();
+    void perepack();
+    void presence();
+    void report();
+    void warehouse();
+    void nakl();
+    void cubeNam();
+    void cubePost();
+    void cubeRas();
+    void cubePerepack();
+    void cubePodt();
+    void sert();
+    void check();
 };
 
 #endif // MAINWINDOW_H

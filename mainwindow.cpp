@@ -40,6 +40,8 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
 
     loadSettings();
 
+    connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
+
     connect(ui->actionExit,SIGNAL(triggered(bool)),this,SLOT(close()));
     connect(ui->actionRefresh,SIGNAL(triggered(bool)),Models::instance(),SLOT(refresh()));
 }
@@ -69,9 +71,7 @@ void MainWindow::loadSettings()
             }
         }
     }
-    QTimer::singleShot(500, [this, current]() {
-        setActiveSubWindow(current);
-    });
+    setActiveSubWindow(current);
 }
 
 void MainWindow::saveSettings()
@@ -80,15 +80,13 @@ void MainWindow::saveSettings()
     settings.setValue("main_state", this->saveState());
     settings.setValue("main_geometry", this->saveGeometry());
     QString opentab, currenttab;
-    foreach (QMdiSubWindow *w, ui->mdiArea->subWindowList()) {
+    for (int i=0; i<ui->tabWidget->count(); i++){
         if (!opentab.isEmpty()){
             opentab+="|";
         }
-        opentab+=w->windowTitle();
-        if (w==ui->mdiArea->currentSubWindow()){
-            currenttab=w->windowTitle();
-        }
+        opentab+=ui->tabWidget->tabText(i);
     }
+    currenttab=ui->tabWidget->tabText(ui->tabWidget->currentIndex());
     settings.setValue("main_opentab", opentab);
     settings.setValue("main_currenttab",currenttab);
 }
@@ -116,21 +114,26 @@ void MainWindow::addSubWindow(QWidget *w, QObject *a)
     if (action){
         w->setWindowTitle(action->text());
     }
-    QMdiSubWindow *s=ui->mdiArea->addSubWindow(w);
-    s->showMaximized();
+    ui->tabWidget->addTab(w,w->windowTitle());
+    ui->tabWidget->setCurrentWidget(w);
 }
 
 bool MainWindow::setActiveSubWindow(QString t)
 {
     bool b=false;
-    foreach (QMdiSubWindow *w, ui->mdiArea->subWindowList()) {
-        if (w->windowTitle()==t){
-            ui->mdiArea->setActiveSubWindow(w);
-            b = true;
+    for (int i=0; i<ui->tabWidget->count(); i++){
+        if (ui->tabWidget->tabText(i)==t){
+            ui->tabWidget->setCurrentIndex(i);
+            b=true;
             break;
         }
     }
     return b;
+}
+
+void MainWindow::closeTab(int index)
+{
+    ui->tabWidget->widget(index)->close();
 }
 
 void MainWindow::edtWire()

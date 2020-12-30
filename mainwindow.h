@@ -51,6 +51,8 @@ private:
     QMap <QString,QAction*> actions;
 
 private slots:
+    void closeTab(int index);
+
     void edtWire();
     void edtSpool();
     void edtRoute();

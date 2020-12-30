@@ -41,6 +41,9 @@ public:
     DbRelation *relWireType;
     DbRelation *relEan;
     DbRelation *relPodtType;
+    DbRelation *relEd;
+    DbRelation *relMatr;
+    DbRelation *relRasxVid;
 
 public slots:
     void refresh();

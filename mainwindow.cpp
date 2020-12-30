@@ -12,12 +12,14 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionSpool,&MainWindow::edtSpool);
     actAction(ui->actionRoute,&MainWindow::edtRoute);
     actAction(ui->actionLine,&MainWindow::edtLine);
+    actAction(ui->actionMatr,&MainWindow::edtMatr);
 
     actAction(ui->actionPodt,&MainWindow::podtPart);
     actAction(ui->actionPrecensePodt,&MainWindow::podtPresence);
     actAction(ui->actionReportPodt,&MainWindow::podtReport);
     actAction(ui->actionFixPodt,&MainWindow::podtFix);
     actAction(ui->actionPodtNakl,&MainWindow::podtNakl);
+    actAction(ui->actionPodtNorm,&MainWindow::podtNorm);
 
     actAction(ui->actionAnn,&MainWindow::wireAnn);
     actAction(ui->actionPart,&MainWindow::wirePart);
@@ -164,6 +166,13 @@ void MainWindow::edtLine()
     }
 }
 
+void MainWindow::edtMatr()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormMatr(),sender());
+    }
+}
+
 void MainWindow::podtPart()
 {
     if (!exist(sender())){
@@ -196,6 +205,13 @@ void MainWindow::podtNakl()
 {
     if (!exist(sender())){
         addSubWindow(new FormNaklPodt(),sender());
+    }
+}
+
+void MainWindow::podtNorm()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormPodtNorn(),sender());
     }
 }
 

@@ -62,7 +62,11 @@ Models::Models(QObject *parent) :
     relVedPix = new DbRelation(new DbRelationalModel(QString("select id, simb from zvd_ved"),this),0,1,this);
     relWireType = new DbRelation(new DbRelationalModel(QString("select id, nam from provol_type order by id"), this),0,1,this);
     relEan = new DbRelation(new DbRelationalModel(QString("select ean from eans order by ean"), this),0,0,this);
-    relPodtType = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_podt_type order by id"), this),0,1,this);
+    relPodtType = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_podt_type order by id"), this),0,1,this);    
+    relEd = new DbRelation(new DbRelationalModel(QString("select id, nam from units order by id"), this),0,1,this);
+    relMatr = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_matr order by nam"), this),0,1,this);
+    relRasxVid = new DbRelation(new DbRelationalModel(QString("select id, nam from rasx_vid order by id"), this),0,1,this);
+
 
     rels.push_back(relProvol);
     rels.push_back(relDiam);
@@ -93,6 +97,9 @@ Models::Models(QObject *parent) :
     rels.push_back(relWireType);
     rels.push_back(relEan);
     rels.push_back(relPodtType);
+    rels.push_back(relEd);
+    rels.push_back(relMatr);
+    rels.push_back(relRasxVid);
 
     int year=QDate::currentDate().year();
 

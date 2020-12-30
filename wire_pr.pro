@@ -67,7 +67,9 @@ SOURCES += main.cpp\
     formfixpodt.cpp \
     formpresencepodt.cpp \
     formnaklpodt.cpp \
-    formreportpodt.cpp
+    formreportpodt.cpp \
+    formmatr.cpp \
+    formpodtnorn.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
@@ -112,7 +114,9 @@ HEADERS  += mainwindow.h \
     formfixpodt.h \
     formpresencepodt.h \
     formnaklpodt.h \
-    formreportpodt.h
+    formreportpodt.h \
+    formmatr.h \
+    formpodtnorn.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -140,7 +144,9 @@ FORMS    += mainwindow.ui \
     formfixpodt.ui \
     formpresencepodt.ui \
     formnaklpodt.ui \
-    formreportpodt.ui
+    formreportpodt.ui \
+    formmatr.ui \
+    formpodtnorn.ui
 
 RESOURCES += \
     res.qrc

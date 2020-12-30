@@ -24,6 +24,8 @@
 #include "formpresencepodt.h"
 #include "formnaklpodt.h"
 #include "formreportpodt.h"
+#include "formmatr.h"
+#include "formpodtnorn.h"
 #include <QMdiSubWindow>
 
 namespace Ui {
@@ -57,11 +59,13 @@ private slots:
     void edtSpool();
     void edtRoute();
     void edtLine();
+    void edtMatr();
     void podtPart();
     void podtPresence();
     void podtReport();
     void podtFix();
     void podtNakl();
+    void podtNorm();
     void wireAnn();
     void wirePart();
     void wireLbl();

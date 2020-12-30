@@ -53,6 +53,7 @@
     <addaction name="actionSpool"/>
     <addaction name="actionRoute"/>
     <addaction name="actionLine"/>
+    <addaction name="actionMatr"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -104,6 +105,7 @@
     <addaction name="actionReportPodt"/>
     <addaction name="actionFixPodt"/>
     <addaction name="actionPodtNakl"/>
+    <addaction name="actionPodtNorm"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -289,6 +291,16 @@
    </property>
    <property name="shortcut">
     <string>F11</string>
+   </property>
+  </action>
+  <action name="actionMatr">
+   <property name="text">
+    <string>Материалы</string>
+   </property>
+  </action>
+  <action name="actionPodtNorm">
+   <property name="text">
+    <string>Расход материалов на подтяжку</string>
    </property>
   </action>
  </widget>

@@ -733,7 +733,7 @@ ModelPodtProd::ModelPodtProd(QObject *parent) : QSqlQueryModel(parent)
 void ModelPodtProd::refresh(QDate beg, QDate end)
 {
     QSqlQuery query;
-    query.prepare("select p.id_type, pp.id_pr, pp.id_dim, p.id_diam, wpt.nam, pr.nam, d.sdim, dp.sdim, sum(pc.kvo) "
+    query.prepare("select p.id_type, pp.id_pr, coalesce(wps.id_diam,pp.id_dim), p.id_diam, wpt.nam, pr.nam, coalesce(ds.sdim,d.sdim) as fromdim, dp.sdim, sum(pc.kvo) "
                   "from wire_podt_cont as pc "
                   "inner join wire_podt as p on pc.id_podt=p.id "
                   "inner join prov_buht as b on p.id_buht=b.id "
@@ -742,9 +742,11 @@ void ModelPodtProd::refresh(QDate beg, QDate end)
                   "inner join diam as d on pp.id_dim=d.id "
                   "inner join diam as dp on p.id_diam=dp.id "
                   "inner join wire_podt_type wpt on wpt.id=p.id_type "
+                  "left join wire_podt as wps on wps.id=pc.id_podt_src "
+                  "left join diam as ds on ds.id=wps.id_diam "
                   "where pc.dat between :d1 and :d2 "
-                  "group by p.id_type, pp.id_pr, pp.id_dim, p.id_diam, wpt.nam, pr.nam, d.sdim, dp.sdim "
-                  "order by wpt.nam, pr.nam, d.sdim, dp.sdim");
+                  "group by p.id_type, pp.id_pr, pp.id_dim, p.id_diam, wpt.nam, pr.nam, d.sdim, dp.sdim, wps.id_diam, ds.sdim "
+                  "order by wpt.nam, pr.nam, fromdim, dp.sdim");
     query.bindValue(":d1",beg);
     query.bindValue(":d2",end);
     if (query.exec()){

@@ -56,6 +56,12 @@ FormPodtNorn::~FormPodtNorn()
     delete ui;
 }
 
+QVariant FormPodtNorn::currentData(int column)
+{
+    int row=ui->tableViewPodt->currentIndex().row();
+    return ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(row,column),Qt::EditRole);
+}
+
 void FormPodtNorn::upd()
 {
     modelPodtProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date());
@@ -64,12 +70,12 @@ void FormPodtNorn::upd()
     }
 }
 
-void FormPodtNorn::updNorm(QModelIndex ind)
+void FormPodtNorn::updNorm(QModelIndex /*ind*/)
 {
-    int id_type=ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(ind.row(),0),Qt::EditRole).toInt();
-    int id_provol=ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(ind.row(),1),Qt::EditRole).toInt();
-    int id_src_diam=ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(ind.row(),2),Qt::EditRole).toInt();
-    int id_diam=ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(ind.row(),3),Qt::EditRole).toInt();
+    int id_type=currentData(0).toInt();
+    int id_provol=currentData(1).toInt();
+    int id_src_diam=currentData(2).toInt();
+    int id_diam=currentData(3).toInt();
     modelNorm->setDefaultValue(0,id_type);
     modelNorm->setDefaultValue(1,id_provol);
     modelNorm->setDefaultValue(2,id_src_diam);
@@ -80,10 +86,41 @@ void FormPodtNorn::updNorm(QModelIndex ind)
 
 void FormPodtNorn::copy()
 {
-
+    buf.clear();
+    for (int i=0; i<modelNorm->rowCount();i++){
+        mnorm m;
+        m.id_matr=modelNorm->data(modelNorm->index(i,4),Qt::EditRole).toInt();
+        m.kvo=modelNorm->data(modelNorm->index(i,5),Qt::EditRole).toDouble();
+        m.id_vid=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toInt();
+        buf.push_back(m);
+    }
+    ui->pushButtonPaste->setEnabled(true);
 }
 
 void FormPodtNorn::paste()
 {
-
+    int id_type=currentData(0).toInt();
+    int id_provol=currentData(1).toInt();
+    int id_src_diam=currentData(2).toInt();
+    int id_diam=currentData(3).toInt();
+    QString err;
+    foreach (mnorm m, buf) {
+        QSqlQuery query;
+        query.prepare("insert into wire_podt_norm (id_podt_type, id_provol, id_src_diam, id_diam, id_matr, kvo, id_vid) values "
+                      "(:id_podt_type, :id_provol, :id_src_diam, :id_diam, :id_matr, :kvo, :id_vid)");
+        query.bindValue(":id_podt_type",id_type);
+        query.bindValue(":id_provol",id_provol);
+        query.bindValue(":id_src_diam",id_src_diam);
+        query.bindValue(":id_diam",id_diam);
+        query.bindValue(":id_matr",m.id_matr);
+        query.bindValue(":kvo",m.kvo);
+        query.bindValue(":id_vid",m.id_vid);
+        if (!query.exec()){
+            err=query.lastError().text();
+        }
+    }
+    if (!err.isEmpty()){
+        QMessageBox::critical(this,tr("Ошибка"),err,QMessageBox::Ok);
+    }
+    modelNorm->select();
 }

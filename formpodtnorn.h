@@ -30,6 +30,7 @@ private:
     ModelPodtProd *modelPodtProd;
     DbTableModel *modelNorm;
     QVector<mnorm> buf;
+    QVariant currentData(int column);
 
 private slots:
     void upd();

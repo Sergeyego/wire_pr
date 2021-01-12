@@ -324,6 +324,8 @@ bool ModelPerepack::submit()
         } else {
             QMessageBox::critical(NULL,"Error",query.lastError().text(),QMessageBox::Cancel);
         }
+    } else {
+        ok=DbTableModel::submit();
     }
     return ok;
 }

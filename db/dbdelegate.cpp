@@ -161,12 +161,11 @@ void DbDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, co
             QComboBox *combo = qobject_cast<QComboBox *>(editor);
             if (combo) {
                 QString text=combo->currentText();
-                QVariant v;
-                int pos=combo->findText(text);
-                if (pos>=0){
-                    combo->setCurrentIndex(pos);
-                    v=combo->model()->data(combo->model()->index(combo->currentIndex(),sqlModel->relation(index.column())->columnKey()),Qt::EditRole);
-                } else if (!text.isEmpty()) {
+                if (text==model->data(index,Qt::DisplayRole).toString()){
+                    return;
+                }
+                QVariant v=sqlModel->relation(index.column())->key(combo->currentText());
+                if (v.isNull() && !text.isEmpty()){
                     QSortFilterProxyModel *fmodel = qobject_cast<QSortFilterProxyModel *>(combo->model());
                     if (fmodel){
                         DbTableModel *m = qobject_cast<DbTableModel *>(fmodel->sourceModel());

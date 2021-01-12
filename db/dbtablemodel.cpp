@@ -705,6 +705,18 @@ int DbRelation::columnDisplay()
     return dispCol;
 }
 
+QVariant DbRelation::key(QString data)
+{
+    QVariant key;
+    for (int i=0; i<relQueryModel->rowCount(); i++){
+        if (relQueryModel->data(relQueryModel->index(i,dispCol),Qt::EditRole).toString()==data){
+            key=relQueryModel->data(relQueryModel->index(i,keyCol),Qt::EditRole);
+            break;
+        }
+    }
+    return key;
+}
+
 void DbRelation::reHash()
 {
     dict.clear();

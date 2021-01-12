@@ -43,6 +43,7 @@ public:
     QSortFilterProxyModel *proxyModel() const;
     int columnKey();
     int columnDisplay();
+    QVariant key(QString data);
 private:
     QAbstractItemModel *relQueryModel;
     QSortFilterProxyModel *filterModel;

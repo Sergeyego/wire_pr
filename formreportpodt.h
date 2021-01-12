@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "modelpresence.h"
+#include "models.h"
 
 namespace Ui {
 class FormReportPodt;

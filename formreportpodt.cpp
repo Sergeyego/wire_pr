@@ -9,6 +9,9 @@ FormReportPodt::FormReportPodt(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
+    ui->comboBoxType->setModel(Models::instance()->relPodtType->model());
+    ui->comboBoxType->setModelColumn(1);
+
     modelReport = new ModelReportPodt(this);
     ui->tableView->setModel(modelReport);
 
@@ -23,7 +26,8 @@ FormReportPodt::~FormReportPodt()
 
 void FormReportPodt::upd()
 {
-    modelReport->refresh(ui->dateEditBeg->date().addDays(-1),ui->dateEditEnd->date(),ui->radioButtonPart->isChecked());
+    int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
+    modelReport->refresh(ui->dateEditBeg->date().addDays(-1),ui->dateEditEnd->date(),ui->radioButtonPart->isChecked(),id_type);
     ui->tableView->resizeToContents();
 }
 

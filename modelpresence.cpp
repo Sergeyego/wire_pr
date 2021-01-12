@@ -253,7 +253,7 @@ ModelPresencePodt::ModelPresencePodt(QObject *parent) : QSqlQueryModel(parent)
 
 }
 
-void ModelPresencePodt::refresh(QDate date, bool bypart)
+void ModelPresencePodt::refresh(QDate date, bool bypart, int id_type)
 {
     QSqlQueryModel::clear();
     sum=0;
@@ -267,6 +267,7 @@ void ModelPresencePodt::refresh(QDate date, bool bypart)
                  "inner join provol p on p.id = pp.id_pr "
                  "inner join diam d on d.id = wp.id_diam "
                  "left join provol p2 on p2.id = p.id_base "
+                 "where wp.id_type = "+QString::number(id_type)+" "
                  "order by wnam, d.sdim, wp.n_s, wp.dat");
         if (lastError().isValid()){
             QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
@@ -286,6 +287,7 @@ void ModelPresencePodt::refresh(QDate date, bool bypart)
                  "inner join provol p on p.id = pp.id_pr "
                  "inner join diam d on d.id = wp.id_diam "
                  "left join provol p2 on p2.id = p.id_base "
+                 "where wp.id_type = "+QString::number(id_type)+" "
                  "group by wnam, d.sdim "
                  "order by wnam, d.sdim");
         if (lastError().isValid()){
@@ -359,7 +361,7 @@ ModelReportPodt::ModelReportPodt(QObject *parent) : QSqlQueryModel(parent)
 
 }
 
-void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart)
+void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart, int id_type)
 {
     this->clear();
     by_Part=bypart;
@@ -372,6 +374,7 @@ void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart)
                  "inner join provol p on p.id = pp.id_pr "
                  "inner join diam d on d.id = wp.id_diam "
                  "left join provol p2 on p2.id = p.id_base "
+                 "where wp.id_type = "+QString::number(id_type)+" "
                  "order by wnam, d.sdim, wp.n_s, wp.dat");
         if (lastError().isValid()){
             QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
@@ -394,6 +397,7 @@ void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart)
                  "inner join provol p on p.id = pp.id_pr "
                  "inner join diam d on d.id = wp.id_diam "
                  "left join provol p2 on p2.id = p.id_base "
+                 "where wp.id_type = "+QString::number(id_type)+" "
                  "group by wnam, d.sdim "
                  "order by wnam, d.sdim");
         if (lastError().isValid()){

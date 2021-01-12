@@ -34,6 +34,9 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="comboBoxType"/>
+     </item>
+     <item>
       <widget class="QRadioButton" name="radioButtonMark">
        <property name="text">
         <string>По маркам</string>

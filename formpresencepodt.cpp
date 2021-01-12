@@ -8,6 +8,9 @@ FormPresencePodt::FormPresencePodt(QWidget *parent) :
     ui->setupUi(this);
     ui->dateEdit->setDate(QDate::currentDate());
 
+    ui->comboBoxType->setModel(Models::instance()->relPodtType->model());
+    ui->comboBoxType->setModelColumn(1);
+
     modelPresence = new ModelPresencePodt(this);
     ui->tableView->setModel(modelPresence);
 
@@ -22,7 +25,8 @@ FormPresencePodt::~FormPresencePodt()
 
 void FormPresencePodt::upd()
 {
-    modelPresence->refresh(ui->dateEdit->date(),ui->radioButtonPart->isChecked());
+    int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
+    modelPresence->refresh(ui->dateEdit->date(),ui->radioButtonPart->isChecked(),id_type);
     ui->tableView->resizeToContents();
 }
 

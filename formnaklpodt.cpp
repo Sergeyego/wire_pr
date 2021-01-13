@@ -59,17 +59,17 @@ void FormNaklPodt::saveSettings()
 
 void FormNaklPodt::refreshNakl()
 {
-    int r=ui->comboBoxType->currentIndex();
-    int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(r,0),Qt::EditRole).toInt();
+    int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
     int id_vid=ui->comboBoxVid->model()->data(ui->comboBoxVid->model()->index(ui->comboBoxVid->currentIndex(),0),Qt::EditRole).toInt();
     modelNaklPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),id_type,id_vid);
     if (modelNaklPodt->rowCount()){
         ui->tableViewNakl->setColumnHidden(2,true);
+        ui->tableViewNakl->setColumnHidden(3,true);
         ui->tableViewNakl->setColumnWidth(0,100);
         ui->tableViewNakl->setColumnWidth(1,100);
         ui->tableViewNakl->selectRow(0);
     } else {
-        modelNaklPodtCont->refresh(QDate(),-1);
+        modelNaklPodtCont->refresh(QDate(),-1,-1);
     }
 }
 
@@ -77,7 +77,9 @@ void FormNaklPodt::refreshCont(QModelIndex index)
 {
     QDate dat=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),1),Qt::EditRole).toDate();
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),2),Qt::EditRole).toInt();
-    modelNaklPodtCont->refresh(dat,id_type);
+    int id_podt_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),3),Qt::EditRole).toInt();
+    //qDebug()<<id_type;
+    modelNaklPodtCont->refresh(dat,id_type,id_podt_type);
     ui->tableViewCont->setColumnWidth(1,120);
     ui->tableViewCont->setColumnWidth(2,100);
     ui->tableViewCont->setColumnWidth(3,100);

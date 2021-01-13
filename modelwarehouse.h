@@ -207,7 +207,7 @@ class ModelNaklPodtCont : public QSqlQueryModel
     Q_OBJECT
 public:
     ModelNaklPodtCont(QObject *parent=0);
-    void refresh(QDate dat, int id_type);
+    void refresh(QDate dat, int id_type, int id_podt_type);
     QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
 signals:
     void sigSum(QString sum);

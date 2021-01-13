@@ -658,7 +658,7 @@ ModelNaklPodt::ModelNaklPodt(QObject *parent) : QSqlQueryModel(parent)
 void ModelNaklPodt::refresh(QDate beg, QDate end, int id_type, int id_podt_type)
 {
     QSqlQuery query;
-    query.prepare("select distinct date_part('doy',wpc.dat), wpc.dat, wpc.id_op "
+    query.prepare("select distinct date_part('doy',wpc.dat), wpc.dat, wpc.id_op, wp.id_type "
                   "from wire_podt_cex as wpc "
                   "inner join wire_podt as wp on wp.id=wpc.id_podt "
                   "where wpc.dat between :d1 and :d2 and wpc.id_op = :t and wp.id_type = :pt "
@@ -683,7 +683,7 @@ ModelNaklPodtCont::ModelNaklPodtCont(QObject *parent) : QSqlQueryModel(parent)
 
 }
 
-void ModelNaklPodtCont::refresh(QDate dat, int id_type)
+void ModelNaklPodtCont::refresh(QDate dat, int id_type, int id_podt_type)
 {
     double sum=0.0;
     QSqlQuery query;
@@ -695,8 +695,9 @@ void ModelNaklPodtCont::refresh(QDate dat, int id_type)
                   "inner join provol p on p.id = pp.id_pr "
                   "inner join diam d on d.id = wp.id_diam "
                   "left join provol p2 on p2.id = p.id_base "
-                  "where (wpc.id_op = :t) and wpc.dat = :d ");
-    query.bindValue(":t",id_type);
+                  "where wpc.id_op = :op and wp.id_type = :t and wpc.dat = :d ");
+    query.bindValue(":op",id_type);
+    query.bindValue(":t",id_podt_type);
     query.bindValue(":d",dat);
     query.exec();
     this->setQuery(query);

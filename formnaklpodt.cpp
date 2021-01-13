@@ -78,7 +78,6 @@ void FormNaklPodt::refreshCont(QModelIndex index)
     QDate dat=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),1),Qt::EditRole).toDate();
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),2),Qt::EditRole).toInt();
     int id_podt_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),3),Qt::EditRole).toInt();
-    //qDebug()<<id_type;
     modelNaklPodtCont->refresh(dat,id_type,id_podt_type);
     ui->tableViewCont->setColumnWidth(1,120);
     ui->tableViewCont->setColumnWidth(2,100);

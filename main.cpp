@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/images/wire.png"));
 
-    QString key="srt";
+    QString key="";
     if (argc>1){
         key=QString(argv[1]);
     }

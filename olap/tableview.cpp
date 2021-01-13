@@ -144,12 +144,16 @@ void TableView::save(QString fnam, int dec, bool fitToHeight, Qt::ScreenOrientat
             }
         }
 
-        QDir dir(QDir::homePath());
+        QSettings settings("szsm", QApplication::applicationName());
+        QDir dir(settings.value("savePath",QDir::homePath()).toString());
         QString filename = QFileDialog::getSaveFileName(nullptr,QString::fromUtf8("Сохранить документ"),
                                                         dir.path()+"/"+fnam+".xlsx",
                                                         QString::fromUtf8("Documents (*.xlsx)") );
         if (!filename.isEmpty()){
             xlsx.saveAs(filename);
+            QFile file(filename);
+            QFileInfo info(file);
+            settings.setValue("savePath",info.path());
         }
     }
 }

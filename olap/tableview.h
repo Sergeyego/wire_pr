@@ -6,6 +6,8 @@
 #include <QHeaderView>
 #include <QDir>
 #include <QFileDialog>
+#include <QSettings>
+#include <QApplication>
 #include "xlsx/xlsxdocument.h"
 
 using namespace QXlsx;

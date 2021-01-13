@@ -218,7 +218,7 @@ class ModelPodtProd : public QSqlQueryModel
     Q_OBJECT
 public:
     ModelPodtProd(QObject *parent);
-    void refresh(QDate beg, QDate end);
+    void refresh(QDate beg, QDate end, int id_type);
     QVariant data(const QModelIndex &item, int role) const;
     bool ready();
 private:

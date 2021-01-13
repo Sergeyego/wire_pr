@@ -4,10 +4,10 @@ OlapModel::OlapModel(QStringList axes, int dec, QObject *parent) :
     QAbstractTableModel(parent)
 {
     decimal=dec;
-    tSum = new Sum(tr("Сумма"),this);
-    tAvg = new Avg(tr("Среднее"),this);
-    tMin = new Min(tr("Минимум"),this);
-    tMax = new Max(tr("Максимум"),this);
+    tSum = new Sum(QString::fromUtf8("Сумма"),this);
+    tAvg = new Avg(QString::fromUtf8("Среднее"),this);
+    tMin = new Min(QString::fromUtf8("Минимум"),this);
+    tMax = new Max(QString::fromUtf8("Максимум"),this);
     pTtl=tSum;
     hCube = new hyper_cube;
     n=axes.size();
@@ -65,18 +65,29 @@ QVariant OlapModel::headerData(int section, Qt::Orientation orientation, int rol
     return QAbstractTableModel::headerData(section,orientation,role);
 }
 
-void OlapModel::setQuery(QString query)
+void OlapModel::setQuery(QString query, double sum)
 {
     QSqlQuery qu;
     s_keys vk(n);
     hCube->setN(n);
     qu.prepare(query);
     if(qu.exec()){
+        double sumfact=0.0;
+        if (sum>0){
+            while (qu.next()) {
+               sumfact+=qu.value(n).toDouble();
+            }
+            qu.seek(-1);
+        }
         while (qu.next()) {
             for(int i=0; i<n; i++){
                 vk[i] = qu.value(i).toString() + '\n';
             }
-            hCube->add(vk, qu.value(n).toDouble());
+            double s=qu.value(n).toDouble();
+            if (sum>0 && sumfact!=0.0){
+                s=s*(sum/sumfact);
+            }
+            hCube->add(vk, s);
         }
     } else {
         QMessageBox::critical(NULL,"Error",qu.lastError().text(),QMessageBox::Ok);

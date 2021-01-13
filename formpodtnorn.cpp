@@ -10,6 +10,9 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
+    ui->comboBoxType->setModel(Models::instance()->relPodtType->model());
+    ui->comboBoxType->setModelColumn(1);
+
     modelNorm = new DbTableModel("wire_podt_norm",this);
     modelNorm->addColumn("id_podt_type","id_podt_type");
     modelNorm->addColumn("id_provol","id_provol");
@@ -48,7 +51,8 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(upd()));
     connect(ui->pushButtonCopy,SIGNAL(clicked(bool)),this,SLOT(copy()));
     connect(ui->pushButtonPaste,SIGNAL(clicked(bool)),this,SLOT(paste()));
-
+    connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
+    connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
 }
 
 FormPodtNorn::~FormPodtNorn()
@@ -62,9 +66,23 @@ QVariant FormPodtNorn::currentData(int column)
     return ui->tableViewPodt->model()->data(ui->tableViewPodt->model()->index(row,column),Qt::EditRole);
 }
 
+int FormPodtNorn::getIdType()
+{
+    return ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
+}
+
+bool FormPodtNorn::ready()
+{
+    bool ok=modelPodtProd->ready();
+    if (!ok){
+        QMessageBox::information(this,QString::fromUtf8("Предупреждение"),QString::fromUtf8("Не для всех марок указаны нормы!"),QMessageBox::Ok);
+    }
+    return ok;
+}
+
 void FormPodtNorn::upd()
 {
-    modelPodtProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date());
+    modelPodtProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),getIdType());
     if (ui->tableViewPodt->model()->rowCount()){
         ui->tableViewPodt->selectRow(0);
     }
@@ -123,4 +141,28 @@ void FormPodtNorn::paste()
         QMessageBox::critical(this,tr("Ошибка"),err,QMessageBox::Ok);
     }
     modelNorm->select();
+}
+
+void FormPodtNorn::report()
+{
+    upd();
+    int id_olap=-1;
+    int id_type=getIdType();
+    if (id_type==1){
+        id_olap=35;
+    } else if (id_type==2){
+        id_olap=37;
+    }
+    if (id_olap>0 && ready()){
+        CubeWidget *w = new CubeWidget(id_olap);
+        w->setRange(ui->dateEditBeg->date(),ui->dateEditEnd->date(),true);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    }
+}
+
+void FormPodtNorn::save()
+{
+    QString title=ui->comboBoxType->currentText()+" с "+ui->dateEditBeg->date().toString("dd.MM.yyyy")+" по "+ui->dateEditEnd->date().toString("dd.MM.yyyy");
+    ui->tableViewPodt->save(title,1,true);
 }

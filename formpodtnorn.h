@@ -5,6 +5,7 @@
 #include "modelwarehouse.h"
 #include "db/dbtablemodel.h"
 #include "models.h"
+#include "olap/cubewidget.h"
 
 namespace Ui {
 class FormPodtNorn;
@@ -31,12 +32,16 @@ private:
     DbTableModel *modelNorm;
     QVector<mnorm> buf;
     QVariant currentData(int column);
+    int getIdType();
+    bool ready();
 
 private slots:
     void upd();
     void updNorm(QModelIndex ind);
     void copy();
     void paste();
+    void report();
+    void save();
 };
 
 #endif // FORMPODTNORN_H

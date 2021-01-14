@@ -1,0 +1,141 @@
+#include "formnorm.h"
+#include "ui_formnorm.h"
+
+FormNorm::FormNorm(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::FormNorm)
+{
+    ui->setupUi(this);
+
+    ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
+    ui->dateEditEnd->setDate(QDate::currentDate());
+
+    ui->comboBoxType->setModel(Models::instance()->relAddType->model());
+    ui->comboBoxType->setModelColumn(1);
+
+    modelNorm = new DbTableModel("wire_norm",this);
+    modelNorm->addColumn("id_add_type","id_add_type");
+    modelNorm->addColumn("id_line","id_line");
+    modelNorm->addColumn("id_provol","id_provol");
+    modelNorm->addColumn("id_diam","id_diam");
+    modelNorm->addColumn("id_spool","id_spool");
+    modelNorm->addColumn("id_pack","id_pack");
+    modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
+    modelNorm->addColumn("kvo",tr("Норма"));
+    modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
+
+    modelNorm->setSort("id_vid, id_matr");
+    modelNorm->setDecimals(7,2);
+
+    ui->tableViewNorm->setModel(modelNorm);
+    for (int i=0; i<=5; i++){
+        ui->tableViewNorm->setColumnHidden(i,true);
+    }
+    ui->tableViewNorm->setColumnWidth(6,330);
+    ui->tableViewNorm->setColumnWidth(7,80);
+    ui->tableViewNorm->setColumnWidth(8,200);
+
+    modelProd = new ModelProd(this);
+    ui->tableViewProd->setModel(modelProd);
+
+    connect(ui->tableViewProd->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updNorm(QModelIndex)));
+    upd();
+
+    connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(upd()));
+    connect(ui->pushButtonCopy,SIGNAL(clicked(bool)),this,SLOT(copy()));
+    connect(ui->pushButtonPaste,SIGNAL(clicked(bool)),this,SLOT(paste()));
+    connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
+    connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
+}
+
+FormNorm::~FormNorm()
+{
+    delete ui;
+}
+
+QVariant FormNorm::currentData(int column)
+{
+    int row=ui->tableViewProd->currentIndex().row();
+    return ui->tableViewProd->model()->data(ui->tableViewProd->model()->index(row,column),Qt::EditRole);
+}
+
+int FormNorm::getIdType()
+{
+    return ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
+}
+
+bool FormNorm::ready()
+{
+    bool ok=modelProd->ready();
+    if (!ok){
+        QMessageBox::information(this,QString::fromUtf8("Предупреждение"),QString::fromUtf8("Не для всех марок указаны нормы!"),QMessageBox::Ok);
+    }
+    return ok;
+}
+
+void FormNorm::upd()
+{
+    modelProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),getIdType());
+    if (ui->tableViewProd->model()->rowCount()){
+        ui->tableViewProd->selectRow(0);
+    }
+    for (int i=0; i<=5; i++){
+        ui->tableViewProd->setColumnHidden(i,true);
+    }
+    ui->tableViewProd->resizeToContents();
+}
+
+void FormNorm::updNorm(QModelIndex ind)
+{
+    int id_type=currentData(0).toInt();
+    int id_line=currentData(1).toInt();
+    int id_provol=currentData(2).toInt();
+    int id_diam=currentData(3).toInt();
+    int id_spool=currentData(4).toInt();
+    int id_pack=currentData(5).toInt();
+
+    modelNorm->setDefaultValue(0,id_type);
+    modelNorm->setDefaultValue(1,id_line);
+    modelNorm->setDefaultValue(2,id_provol);
+    modelNorm->setDefaultValue(3,id_diam);
+    modelNorm->setDefaultValue(4,id_spool);
+    modelNorm->setDefaultValue(5,id_pack);
+
+    modelNorm->setFilter(QString("id_add_type = %1 and id_line = %2 and id_provol = %3 and id_diam = %4 and id_spool = %5 and id_pack = %6")
+                         .arg(id_type).arg(id_line).arg(id_provol).arg(id_diam).arg(id_spool).arg(id_pack));
+    modelNorm->select();
+}
+
+void FormNorm::copy()
+{
+
+}
+
+void FormNorm::paste()
+{
+
+}
+
+void FormNorm::report()
+{
+    upd();
+    int id_olap=-1;
+    int id_type=getIdType();
+    if (id_type==1){
+        id_olap=35;
+    } else if (id_type==2){
+        id_olap=37;
+    }
+    if (id_olap>0 && ready()){
+        CubeWidget *w = new CubeWidget(id_olap);
+        w->setRange(ui->dateEditBeg->date(),ui->dateEditEnd->date(),true);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    }
+}
+
+void FormNorm::save()
+{
+    QString title=ui->comboBoxType->currentText()+" с "+ui->dateEditBeg->date().toString("dd.MM.yyyy")+" по "+ui->dateEditEnd->date().toString("dd.MM.yyyy");
+    ui->tableViewProd->save(title,1,true);
+}

@@ -26,6 +26,7 @@
 #include "formreportpodt.h"
 #include "formmatr.h"
 #include "formpodtnorn.h"
+#include "formnorm.h"
 #include <QMdiSubWindow>
 
 namespace Ui {
@@ -74,6 +75,7 @@ private slots:
     void report();
     void warehouse();
     void nakl();
+    void norm();
     void cubeNam();
     void cubePost();
     void cubeRas();

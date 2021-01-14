@@ -38,7 +38,7 @@ Models::Models(QObject *parent) :
     relMechCat = new DbRelation(new DbRelationalModel(QString("select id, nam from mech_category order by nam"), this),0,1,this);
     relType = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_type order by nam"), this),0,1,this);
     relCause = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type where koef=-1 order by nam"), this),0,1,this);
-    relAddType = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type where koef=1 order by nam"), this),0,1,this);
+    relAddType = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type where koef=1 order by id"), this),0,1,this);
     relPodt = new DbRelation(new DbRelationalModel(QString("select pd.id, pd.n_s || '-'|| date_part('year',pd.dat) ||' '||r.nam ||' '||d.sdim || ' ('||  h.n_plav || ')' as str, h.id, date_part('year',pd.dat) as year "
                                               "from wire_podt as pd "
                                               "inner join prov_buht as h on pd.id_buht=h.id "

@@ -70,7 +70,8 @@ SOURCES += main.cpp\
     formnaklpodt.cpp \
     formreportpodt.cpp \
     formmatr.cpp \
-    formpodtnorn.cpp
+    formpodtnorn.cpp \
+    formnorm.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
@@ -117,7 +118,8 @@ HEADERS  += mainwindow.h \
     formnaklpodt.h \
     formreportpodt.h \
     formmatr.h \
-    formpodtnorn.h
+    formpodtnorn.h \
+    formnorm.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -147,7 +149,8 @@ FORMS    += mainwindow.ui \
     formnaklpodt.ui \
     formreportpodt.ui \
     formmatr.ui \
-    formpodtnorn.ui
+    formpodtnorn.ui \
+    formnorm.ui
 
 RESOURCES += \
     res.qrc

@@ -745,9 +745,10 @@ void ModelPodtProd::refresh(QDate beg, QDate end, int id_type)
                   "inner join wire_podt_type wpt on wpt.id=p.id_type "
                   "left join wire_podt as wps on wps.id=pc.id_podt_src "
                   "left join diam as ds on ds.id=wps.id_diam "
-                  "where p.id_type = "+QString::number(id_type)+" and pc.dat between :d1 and :d2 "
+                  "where p.id_type = :id_type and pc.dat between :d1 and :d2 "
                   "group by p.id_type, pp.id_pr, pp.id_dim, p.id_diam, wpt.nam, pr.nam, d.sdim, dp.sdim, wps.id_diam, ds.sdim "
                   "order by wpt.nam, pr.nam, fromdim, dp.sdim");
+    query.bindValue(":id_type",id_type);
     query.bindValue(":d1",beg);
     query.bindValue(":d2",end);
     if (query.exec()){
@@ -816,4 +817,67 @@ void ModelPodtProd::updState()
     } else {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
     }
+}
+
+ModelProd::ModelProd(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelProd::refresh(QDate beg, QDate end, int id_type)
+{
+    QSqlQuery query;
+    query.prepare("select w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, "
+                  "sum(w.m_netto) "
+                  "from wire_in_cex_data w "
+                  "inner join wire_in_cex_type t on w.id_type=t.id and t.koef=1 "
+                  "inner join wire_parti p on w.id_wparti=p.id "
+                  "inner join wire_parti_m m on p.id_m=m.id "
+                  "inner join wire_line as l on m.id_type=l.id "
+                  "inner join provol pr on pr.id=m.id_provol "
+                  "inner join diam d on d.id=m.id_diam "
+                  "inner join wire_pack_kind k on p.id_pack=k.id "
+                  "inner join wire_pack wp on wp.id=p.id_pack_type "
+                  "where w.id_type = :id_type and w.dat between :d1 and :d2 "
+                  "group by w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed "
+                  "order by t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed");
+    query.bindValue(":id_type",id_type);
+    query.bindValue(":d1",beg);
+    query.bindValue(":d2",end);
+    if (query.exec()){
+        setQuery(query);
+        setHeaderData(6,Qt::Horizontal,QString::fromUtf8("Тип продукции"));
+        setHeaderData(7,Qt::Horizontal,QString::fromUtf8("Стан"));
+        setHeaderData(8,Qt::Horizontal,QString::fromUtf8("Марка"));
+        setHeaderData(9,Qt::Horizontal,QString::fromUtf8("Диам."));
+        setHeaderData(10,Qt::Horizontal,QString::fromUtf8("Носитель"));
+        setHeaderData(11,Qt::Horizontal,QString::fromUtf8("Упаковка"));
+        setHeaderData(12,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
+        updState();
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
+    }
+}
+
+QVariant ModelProd::data(const QModelIndex &item, int role) const
+{
+    if (role==Qt::DisplayRole && item.column()==12){
+        return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
+    }
+    if (role==Qt::TextAlignmentRole && item.column()==12){
+        return int(Qt::AlignRight | Qt::AlignVCenter);
+    }
+    return QSqlQueryModel::data(item,role);
+}
+
+bool ModelProd::ready()
+{
+
+}
+
+void ModelProd::updState()
+{
+
 }

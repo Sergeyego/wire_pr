@@ -863,6 +863,16 @@ void ModelProd::refresh(QDate beg, QDate end, int id_type)
 
 QVariant ModelProd::data(const QModelIndex &item, int role) const
 {
+    if (role==Qt::BackgroundColorRole){
+        QString s;
+        for (int i=0; i<=5; i++){
+            if (!s.isEmpty()){
+                s+=":";
+            }
+            s+=this->data(this->index(item.row(),i),Qt::EditRole).toString();
+        }
+        return exList.contains(s) ? QVariant(QColor(255,255,255)) : QVariant(QColor(255,170,170));
+    }
     if (role==Qt::DisplayRole && item.column()==12){
         return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
     }
@@ -874,10 +884,64 @@ QVariant ModelProd::data(const QModelIndex &item, int role) const
 
 bool ModelProd::ready()
 {
-
+    bool ok=true;
+    for (int i=0; i<rowCount(); i++){
+        QString s;
+        for (int j=0; j<=5; j++){
+            if (!s.isEmpty()){
+                s+=":";
+            }
+            s+=this->data(this->index(i,j),Qt::EditRole).toString();
+        }
+        ok=ok && exList.contains(s);
+        if (!ok){
+            break;
+        }
+    }
+    return ok;
 }
 
 void ModelProd::updState()
 {
+    QSqlQuery query;
+    query.prepare("select distinct id_add_type||':'||id_line||':'||id_provol||':'||id_diam||':'||id_spool||':'||id_pack as nam from wire_norm order by nam");
+    if (query.exec()){
+        exList.clear();
+        while(query.next()){
+            exList.push_back(query.value(0).toString());
+        }
+        emit dataChanged(this->index(0,0),this->index(rowCount()-1,columnCount()-1));
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
+    }
+}
 
+ModelPodtVol::ModelPodtVol(QObject *parent) : DbTableModel("wire_podt_out",parent)
+{
+    addColumn("id_podt",tr("id_podt"));
+    addColumn("dat",tr("Дата"));
+    addColumn("kvo",tr("Масса, кг"));
+    addColumn("id_line",tr("Линия"),Models::instance()->relLine);
+    addColumn("id_vol",tr("Волочильщик"),Models::instance()->relVol);
+    setSort("wire_podt_out.dat");
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPodtVol::refresh(int id_part)
+{
+    setDefaultValue(0,id_part);
+    setFilter("wire_podt_out.id_podt = "+QString::number(id_part));
+    select();
+}
+
+void ModelPodtVol::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,2),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (tr("Волочение итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Волочение");
+    emit sigSum(s);
 }

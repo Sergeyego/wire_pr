@@ -23,7 +23,7 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
 
     modelNorm->setSort("id_vid, id_matr");
-    modelNorm->setDecimals(5,2);
+    modelNorm->setDecimals(5,3);
 
     ui->tableViewNorm->setModel(modelNorm);
     for (int i=0; i<=3; i++){
@@ -53,6 +53,7 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     connect(ui->pushButtonPaste,SIGNAL(clicked(bool)),this,SLOT(paste()));
     connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
     connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
+    connect(modelNorm,SIGNAL(sigUpd()),modelPodtProd,SLOT(updState()));
 }
 
 FormPodtNorn::~FormPodtNorn()
@@ -141,6 +142,7 @@ void FormPodtNorn::paste()
         QMessageBox::critical(this,tr("Ошибка"),err,QMessageBox::Ok);
     }
     modelNorm->select();
+    modelPodtProd->updState();
 }
 
 void FormPodtNorn::report()

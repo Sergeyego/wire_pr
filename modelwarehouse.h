@@ -159,6 +159,18 @@ private slots:
     void calcSum();
 };
 
+class ModelPodtVol : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodtVol(QObject *parent=0);
+    void refresh(int id_part);
+signals:
+    void sigSum(QString sum);
+private slots:
+    void calcSum();
+};
+
 class ModelPodtNext : public QSqlQueryModel
 {
     Q_OBJECT

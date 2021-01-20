@@ -22,25 +22,33 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableViewPodtIn->setColumnHidden(0,true);
     ui->tableViewPodtIn->setColumnHidden(1,true);
     ui->tableViewPodtIn->setColumnHidden(2,true);
-    ui->tableViewPodtIn->setColumnWidth(3,100);
-    ui->tableViewPodtIn->setColumnWidth(4,100);
+    ui->tableViewPodtIn->setColumnWidth(3,90);
+    ui->tableViewPodtIn->setColumnWidth(4,80);
 
     modelPodtOut = new ModelPodtCex(this);
     ui->tableViewPodtOut->setModel(modelPodtOut);
     ui->tableViewPodtOut->setColumnHidden(0,true);
     ui->tableViewPodtOut->setColumnHidden(1,true);
     ui->tableViewPodtOut->setColumnHidden(2,true);
-    ui->tableViewPodtOut->setColumnWidth(3,100);
-    ui->tableViewPodtOut->setColumnWidth(4,100);
+    ui->tableViewPodtOut->setColumnWidth(3,90);
+    ui->tableViewPodtOut->setColumnWidth(4,80);
 
     modelCont = new ModelPodtCont(this);
     ui->tableViewCont->setModel(modelCont);
     ui->tableViewCont->setColumnHidden(0,true);
     ui->tableViewCont->setColumnHidden(1,true);
     ui->tableViewCont->setColumnWidth(2,90);
-    ui->tableViewCont->setColumnWidth(3,90);
+    ui->tableViewCont->setColumnWidth(3,80);
     ui->tableViewCont->setColumnWidth(4,150);
     ui->tableViewCont->setColumnWidth(5,320);
+
+    modelPodtVol = new ModelPodtVol(this);
+    ui->tableViewVol->setModel(modelPodtVol);
+    ui->tableViewVol->setColumnHidden(0,true);
+    ui->tableViewVol->setColumnWidth(1,90);
+    ui->tableViewVol->setColumnWidth(2,80);
+    ui->tableViewVol->setColumnWidth(3,140);
+    ui->tableViewVol->setColumnWidth(4,150);
 
     modelPodt = new ModelPodt(this);
     ui->tableView->verticalHeader()->setDefaultSectionSize(ui->tableView->verticalHeader()->fontMetrics().height()*1.5);
@@ -81,6 +89,7 @@ FormPodt::FormPodt(QWidget *parent) :
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(refresh()));
     connect(push,SIGNAL(currentIndexChanged(int)),this,SLOT(updPart(int)));
     connect(modelCont,SIGNAL(sigSum(QString)),this,SLOT(setContItogo(QString)));
+    connect(modelPodtVol,SIGNAL(sigSum(QString)),this,SLOT(setVolItogo(QString)));
     connect(ui->toolButtonSrc,SIGNAL(clicked(bool)),this,SLOT(fltSrc()));
     connect(ui->pushButtonFltPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
     connect(modelPodtIn,SIGNAL(sigSum(QString)),this,SLOT(setInItogo(QString)));
@@ -120,6 +129,7 @@ void FormPodt::updPart(int index)
     QDate date=ui->tableView->model()->data(ui->tableView->model()->index(index,2),Qt::EditRole).toDate();
     modelCont->setDefaultValue(2,date);
     modelCont->refresh(id_podt);
+    modelPodtVol->refresh(id_podt);
     modelPodtPart->refresh(id_podt);
     //modelPodtMech->refresh(id_podt);
     ui->tableViewPart->resizeToContents();
@@ -132,6 +142,11 @@ void FormPodt::updPart(int index)
 void FormPodt::setContItogo(QString s)
 {
     ui->groupBoxCont->setTitle(s);
+}
+
+void FormPodt::setVolItogo(QString s)
+{
+    ui->groupBoxVol->setTitle(s);
 }
 
 void FormPodt::fltSrc()

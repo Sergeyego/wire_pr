@@ -29,6 +29,7 @@ private:
     void loadSettings();
     void saveSettings();
     ModelPodtCont *modelCont;
+    ModelPodtVol *modelPodtVol;
     //ModelPodtMech *modelPodtMech;
     ModelPodtAnn *modelPodtAnn;
     ModelPodtCex *modelPodtIn;
@@ -38,6 +39,7 @@ private slots:
     void refresh();
     void updPart(int index);
     void setContItogo(QString s);
+    void setVolItogo(QString s);
     void fltSrc();
     void fltPodt();
     void setInItogo(QString s);

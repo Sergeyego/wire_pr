@@ -260,12 +260,6 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QGroupBox" name="groupBoxCont">
-           <property name="minimumSize">
-            <size>
-             <width>500</width>
-             <height>0</height>
-            </size>
-           </property>
            <property name="title">
             <string>Поступление</string>
            </property>
@@ -276,12 +270,14 @@
            </layout>
           </widget>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QGroupBox" name="groupBoxPodtIn">
+           <property name="maximumSize">
+            <size>
+             <width>240</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="title">
             <string>Приход</string>
            </property>
@@ -292,8 +288,30 @@
            </layout>
           </widget>
          </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QGroupBox" name="groupBoxVol">
+           <property name="title">
+            <string>Волочение</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="DbViewer" name="tableViewVol"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item>
           <widget class="QGroupBox" name="groupBoxPodtOut">
+           <property name="maximumSize">
+            <size>
+             <width>240</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="title">
             <string>Расход</string>
            </property>

@@ -25,7 +25,7 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
 
     modelNorm->setSort("id_vid, id_matr");
-    modelNorm->setDecimals(7,2);
+    modelNorm->setDecimals(7,3);
 
     ui->tableViewNorm->setModel(modelNorm);
     for (int i=0; i<=5; i++){
@@ -46,6 +46,7 @@ FormNorm::FormNorm(QWidget *parent) :
     connect(ui->pushButtonPaste,SIGNAL(clicked(bool)),this,SLOT(paste()));
     connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
     connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
+    connect(modelNorm,SIGNAL(sigUpd()),modelProd,SLOT(updState()));
 }
 
 FormNorm::~FormNorm()
@@ -108,12 +109,48 @@ void FormNorm::updNorm(QModelIndex ind)
 
 void FormNorm::copy()
 {
-
+    buf.clear();
+    for (int i=0; i<modelNorm->rowCount();i++){
+        pnorm m;
+        m.id_matr=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toInt();
+        m.kvo=modelNorm->data(modelNorm->index(i,7),Qt::EditRole).toDouble();
+        m.id_vid=modelNorm->data(modelNorm->index(i,8),Qt::EditRole).toInt();
+        buf.push_back(m);
+    }
+    ui->pushButtonPaste->setEnabled(true);
 }
 
 void FormNorm::paste()
 {
-
+    int id_type=currentData(0).toInt();
+    int id_line=currentData(1).toInt();
+    int id_provol=currentData(2).toInt();
+    int id_diam=currentData(3).toInt();
+    int id_spool=currentData(4).toInt();
+    int id_pack=currentData(5).toInt();
+    QString err;
+    foreach (pnorm m, buf) {
+        QSqlQuery query;
+        query.prepare("insert into wire_norm (id_add_type, id_line, id_provol, id_diam, id_spool, id_pack, id_matr, kvo, id_vid) values "
+                      "(:id_add_type, :id_line, :id_provol, :id_diam, :id_spool, :id_pack, :id_matr, :kvo, :id_vid)");
+        query.bindValue(":id_add_type",id_type);
+        query.bindValue(":id_line",id_line);
+        query.bindValue(":id_provol",id_provol);
+        query.bindValue(":id_diam",id_diam);
+        query.bindValue(":id_spool",id_spool);
+        query.bindValue(":id_pack",id_pack);
+        query.bindValue(":id_matr",m.id_matr);
+        query.bindValue(":kvo",m.kvo);
+        query.bindValue(":id_vid",m.id_vid);
+        if (!query.exec()){
+            err=query.lastError().text();
+        }
+    }
+    if (!err.isEmpty()){
+        QMessageBox::critical(this,tr("Ошибка"),err,QMessageBox::Ok);
+    }
+    modelNorm->select();
+    modelProd->updState();
 }
 
 void FormNorm::report()
@@ -121,10 +158,14 @@ void FormNorm::report()
     upd();
     int id_olap=-1;
     int id_type=getIdType();
-    if (id_type==1){
-        id_olap=35;
-    } else if (id_type==2){
-        id_olap=37;
+    if (id_type==3){
+        id_olap=39;
+    } else if (id_type==13){
+        id_olap=40;
+    } else if (id_type==20){
+        id_olap=41;
+    } else if (id_type==23){
+        id_olap=42;
     }
     if (id_olap>0 && ready()){
         CubeWidget *w = new CubeWidget(id_olap);

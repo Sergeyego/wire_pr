@@ -84,6 +84,7 @@ void FormNorm::upd()
         ui->tableViewProd->setColumnHidden(i,true);
     }
     ui->tableViewProd->resizeToContents();
+    calcSum();
 }
 
 void FormNorm::updNorm(QModelIndex ind)
@@ -179,4 +180,13 @@ void FormNorm::save()
 {
     QString title=ui->comboBoxType->currentText()+" с "+ui->dateEditBeg->date().toString("dd.MM.yyyy")+" по "+ui->dateEditEnd->date().toString("dd.MM.yyyy");
     ui->tableViewProd->save(title,1,true);
+}
+
+void FormNorm::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<modelProd->rowCount(); i++){
+        sum+=modelProd->data(modelProd->index(i,12),Qt::EditRole).toDouble();
+    }
+    ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
 }

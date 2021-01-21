@@ -41,6 +41,7 @@ private slots:
     void paste();
     void report();
     void save();
+    void calcSum();
 };
 
 #endif // FORMNORM_H

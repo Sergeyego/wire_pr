@@ -87,6 +87,7 @@ void FormPodtNorn::upd()
     if (ui->tableViewPodt->model()->rowCount()){
         ui->tableViewPodt->selectRow(0);
     }
+    calcSum();
 }
 
 void FormPodtNorn::updNorm(QModelIndex /*ind*/)
@@ -167,4 +168,13 @@ void FormPodtNorn::save()
 {
     QString title=ui->comboBoxType->currentText()+" с "+ui->dateEditBeg->date().toString("dd.MM.yyyy")+" по "+ui->dateEditEnd->date().toString("dd.MM.yyyy");
     ui->tableViewPodt->save(title,1,true);
+}
+
+void FormPodtNorn::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<modelPodtProd->rowCount(); i++){
+        sum+=modelPodtProd->data(modelPodtProd->index(i,8),Qt::EditRole).toDouble();
+    }
+    ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
 }

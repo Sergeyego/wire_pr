@@ -42,6 +42,7 @@ private slots:
     void paste();
     void report();
     void save();
+    void calcSum();
 };
 
 #endif // FORMPODTNORN_H

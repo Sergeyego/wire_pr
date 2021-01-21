@@ -79,6 +79,7 @@
      <string>Аналитика</string>
     </property>
     <addaction name="actionCubeSpool"/>
+    <addaction name="actionCubePack"/>
     <addaction name="actionCubeAdd"/>
     <addaction name="actionCubeSrc"/>
     <addaction name="actionCubePerepack"/>
@@ -307,6 +308,11 @@
   <action name="actionNorm">
    <property name="text">
     <string>Расход материалов на готовую продукцию</string>
+   </property>
+  </action>
+  <action name="actionCubePack">
+   <property name="text">
+    <string>Анализ упаковки</string>
    </property>
   </action>
  </widget>

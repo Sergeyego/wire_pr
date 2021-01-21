@@ -77,6 +77,7 @@ private slots:
     void nakl();
     void norm();
     void cubeNam();
+    void cubePack();
     void cubePost();
     void cubeRas();
     void cubePerepack();

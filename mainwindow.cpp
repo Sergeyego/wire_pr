@@ -33,6 +33,7 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionNorm,&MainWindow::norm);
 
     actAction(ui->actionCubeSpool,&MainWindow::cubeNam);
+    actAction(ui->actionCubePack,&MainWindow::cubePack);
     actAction(ui->actionCubeAdd,&MainWindow::cubePost);
     actAction(ui->actionCubeSrc,&MainWindow::cubeRas);
     actAction(ui->actionCubePerepack,&MainWindow::cubePerepack);
@@ -283,6 +284,13 @@ void MainWindow::cubeNam()
 {
     if (!exist(sender())){
         addSubWindow(new CubeWidget(24),sender());
+    }
+}
+
+void MainWindow::cubePack()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(43),sender());
     }
 }
 

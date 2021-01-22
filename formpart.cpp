@@ -115,6 +115,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addEmptyLock(ui->toolButtonDelPack);
     push->addEmptyLock(ui->toolButtonEdtPack);
     push->addEmptyLock(ui->groupBoxTu);
+    push->addEmptyLock(ui->tableViewPack);
     push->addUnLock(ui->toolButtonPodt);
     push->addUnLock(ui->toolButtonSrc);
 

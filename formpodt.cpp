@@ -82,6 +82,7 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addEmptyLock(ui->tableViewCont);
     push->addEmptyLock(ui->tableViewPodtIn);
     push->addEmptyLock(ui->tableViewPodtOut);
+    push->addEmptyLock(ui->tableViewVol);
     //push->addEmptyLock(ui->tableViewMech);
     push->addUnLock(ui->toolButtonSrc);
     push->addLock(ui->pushButtonFltPodt);

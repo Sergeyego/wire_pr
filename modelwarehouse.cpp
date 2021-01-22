@@ -921,6 +921,7 @@ ModelPodtVol::ModelPodtVol(QObject *parent) : DbTableModel("wire_podt_out",paren
     addColumn("id_podt",tr("id_podt"));
     addColumn("dat",tr("Дата"));
     addColumn("kvo",tr("Масса, кг"));
+    addColumn("kvo_defect",tr("Брак, кг"));
     addColumn("id_line",tr("Линия"),Models::instance()->relLine);
     addColumn("id_vol",tr("Волочильщик"),Models::instance()->relVol);
     setSort("wire_podt_out.dat");
@@ -943,5 +944,13 @@ void ModelPodtVol::calcSum()
     }
     QString s;
     s = (sum>0)? (tr("Волочение итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Волочение");
+
+    double def=0;
+    for (int i=0; i<rowCount(); i++){
+        def+=data(index(i,3),Qt::EditRole).toDouble();
+    }
+    if (def>0){
+        s+=(tr(" (Брак: ")+QLocale().toString(def,'f',2)+tr(" кг)"));
+    }
     emit sigSum(s);
 }

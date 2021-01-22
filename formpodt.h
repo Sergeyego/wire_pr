@@ -34,6 +34,7 @@ private:
     ModelPodtAnn *modelPodtAnn;
     ModelPodtCex *modelPodtIn;
     ModelPodtCex *modelPodtOut;
+    ModelPodtCex *modelPodtDef;
 
 private slots:
     void refresh();
@@ -44,6 +45,7 @@ private slots:
     void fltPodt();
     void setInItogo(QString s);
     void setOutItogo(QString s);
+    void setDefItogo(QString s);
 };
 
 #endif // FORMPODT_H

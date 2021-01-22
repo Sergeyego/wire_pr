@@ -44,6 +44,7 @@ public:
     DbRelation *relEd;
     DbRelation *relMatr;
     DbRelation *relRasxVid;
+    DbRelation *relPodtOp;
 
 public slots:
     void refresh();

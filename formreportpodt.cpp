@@ -27,7 +27,14 @@ FormReportPodt::~FormReportPodt()
 void FormReportPodt::upd()
 {
     int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
-    modelReport->refresh(ui->dateEditBeg->date().addDays(-1),ui->dateEditEnd->date(),ui->radioButtonPart->isChecked(),id_type);
+    int num=1;
+    if (ui->radioButtonMark->isChecked()){
+        num=2;
+    } else if (ui->radioButtonKat->isChecked()){
+        num=3;
+    }
+
+    modelReport->refresh(ui->dateEditBeg->date().addDays(-1),ui->dateEditEnd->date(),num,id_type);
     ui->tableView->resizeToContents();
 }
 

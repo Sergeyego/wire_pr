@@ -396,7 +396,7 @@ void ModelPodtCex::refresh(int id_podt, int id_op)
 void ModelPodtCex::calcSum()
 {
     double sum=0;
-    QString title= (defaultTmpRow.at(2)==1) ? tr("Приход") : tr("Расход");
+    QString title=Models::instance()->relPodtOp->data(defaultTmpRow.at(2).toString()).toString();
     for (int i=0; i<rowCount(); i++){
         sum+=data(index(i,4),Qt::EditRole).toDouble();
     }

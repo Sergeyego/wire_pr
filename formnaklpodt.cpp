@@ -11,14 +11,8 @@ FormNaklPodt::FormNaklPodt(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    modelType = new QSqlQueryModel(this);
-    modelType->setQuery("select id, nam from wire_podt_op order by id");
-    if (modelType->lastError().isValid()){
-        QMessageBox::critical(this,"Error",modelType->lastError().text(),QMessageBox::Cancel);
-    } else {
-        ui->comboBoxType->setModel(modelType);
-        ui->comboBoxType->setModelColumn(1);
-    }
+    ui->comboBoxType->setModel(Models::instance()->relPodtOp->model());
+    ui->comboBoxType->setModelColumn(1);
 
     ui->comboBoxVid->setModel(Models::instance()->relPodtType->model());
     ui->comboBoxVid->setModelColumn(1);

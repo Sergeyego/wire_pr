@@ -57,6 +57,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QRadioButton" name="radioButtonKat">
+       <property name="text">
+        <string>По катанке</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonUpd">
        <property name="text">
         <string>Обновить</string>

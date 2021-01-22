@@ -56,7 +56,7 @@ class ModelReportPodt : public QSqlQueryModel
     Q_OBJECT
 public:
     ModelReportPodt(QObject *parent = 0);
-    void refresh(QDate begDate, QDate endDate, bool bypart, int id_type);
+    void refresh(QDate begDate, QDate endDate, int num, int id_type);
     QVariant data(const QModelIndex &index,int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 

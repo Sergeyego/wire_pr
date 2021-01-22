@@ -361,11 +361,11 @@ ModelReportPodt::ModelReportPodt(QObject *parent) : QSqlQueryModel(parent)
 
 }
 
-void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart, int id_type)
+void ModelReportPodt::refresh(QDate begDate, QDate endDate, int num, int id_type)
 {
     this->clear();
-    by_Part=bypart;
-    if (by_Part){
+    by_Part=(num==1 || num==3);
+    if (num==1){
         setQuery("select wp.n_s ||'-'||date_part('year',wp.dat) as part, coalesce(p2.nam,p.nam) as wnam, d.sdim, n.beg, n.pr, n.rs, n.cor, n.ost "
                  "from wire_calc_podt_report('"+ begDate.toString("yyyy.MM.dd")+"','"+endDate.toString("yyyy.MM.dd")+"') as n "
                  "inner join wire_podt wp on wp.id=n.id "
@@ -385,10 +385,10 @@ void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart, int id_
             setHeaderData(3, Qt::Horizontal,tr("Нал. на нач."));
             setHeaderData(4, Qt::Horizontal,tr("Приход"));
             setHeaderData(5, Qt::Horizontal,tr("Расход"));
-            setHeaderData(6, Qt::Horizontal,tr("Корр.(+/-)"));
+            setHeaderData(6, Qt::Horizontal,tr("Брак"));
             setHeaderData(7, Qt::Horizontal,tr("Ост. на конец"));
         }
-    } else {
+    } else if (num==2) {
         setQuery("select coalesce(p2.nam,p.nam) as wnam, d.sdim, sum(n.beg), sum(n.pr), sum(n.rs), sum(n.cor), sum(n.ost) "
                  "from wire_calc_podt_report('"+ begDate.toString("yyyy.MM.dd")+"','"+endDate.toString("yyyy.MM.dd")+"') as n "
                  "inner join wire_podt wp on wp.id=n.id "
@@ -408,8 +408,33 @@ void ModelReportPodt::refresh(QDate begDate, QDate endDate, bool bypart, int id_
             setHeaderData(2, Qt::Horizontal,tr("Нал. на нач."));
             setHeaderData(3, Qt::Horizontal,tr("Приход"));
             setHeaderData(4, Qt::Horizontal,tr("Расход"));
-            setHeaderData(5, Qt::Horizontal,tr("Корр.(+/-)"));
+            setHeaderData(5, Qt::Horizontal,tr("Брак"));
             setHeaderData(6, Qt::Horizontal,tr("Ост. на конец"));
+        }
+    } else if (num==3){
+        setQuery("select p.nam||' ф'||d2.sdim, coalesce(p2.nam,p.nam) as wnam, d.sdim, sum(n.beg), sum(n.pr), sum(n.rs), sum(n.cor), sum(n.ost) "
+                 "from wire_calc_podt_report('"+ begDate.toString("yyyy.MM.dd")+"','"+endDate.toString("yyyy.MM.dd")+"') as n "
+                 "inner join wire_podt wp on wp.id=n.id "
+                 "inner join prov_buht pb on pb.id=wp.id_buht "
+                 "inner join prov_prih pp on pp.id =pb.id_prih "
+                 "inner join provol p on p.id = pp.id_pr "
+                 "inner join diam d on d.id = wp.id_diam "
+                 "inner join diam d2 on d2.id=pp.id_dim "
+                 "left join provol p2 on p2.id = p.id_base "
+                 "where wp.id_type =  "+QString::number(id_type)+" "
+                 "group by wnam, d.sdim, p.nam, d2.sdim "
+                 "order by p.nam, d2.sdim, wnam, d.sdim");
+        if (lastError().isValid()){
+            QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+        } else {
+            setHeaderData(0, Qt::Horizontal,tr("Катанка"));
+            setHeaderData(1, Qt::Horizontal,tr("Марка проволоки"));
+            setHeaderData(2, Qt::Horizontal,tr("Ф"));
+            setHeaderData(3, Qt::Horizontal,tr("Нал. на нач."));
+            setHeaderData(4, Qt::Horizontal,tr("Приход"));
+            setHeaderData(5, Qt::Horizontal,tr("Расход"));
+            setHeaderData(6, Qt::Horizontal,tr("Брак"));
+            setHeaderData(7, Qt::Horizontal,tr("Ост. на конец"));
         }
     }
 }

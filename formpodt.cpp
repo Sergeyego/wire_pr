@@ -33,6 +33,14 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableViewPodtOut->setColumnWidth(3,90);
     ui->tableViewPodtOut->setColumnWidth(4,80);
 
+    modelPodtDef = new ModelPodtCex(this);
+    ui->tableViewPodtDef->setModel(modelPodtDef);
+    ui->tableViewPodtDef->setColumnHidden(0,true);
+    ui->tableViewPodtDef->setColumnHidden(1,true);
+    ui->tableViewPodtDef->setColumnHidden(2,true);
+    ui->tableViewPodtDef->setColumnWidth(3,90);
+    ui->tableViewPodtDef->setColumnWidth(4,80);
+
     modelCont = new ModelPodtCont(this);
     ui->tableViewCont->setModel(modelCont);
     ui->tableViewCont->setColumnHidden(0,true);
@@ -47,8 +55,9 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableViewVol->setColumnHidden(0,true);
     ui->tableViewVol->setColumnWidth(1,90);
     ui->tableViewVol->setColumnWidth(2,80);
-    ui->tableViewVol->setColumnWidth(3,140);
-    ui->tableViewVol->setColumnWidth(4,150);
+    ui->tableViewVol->setColumnWidth(3,80);
+    ui->tableViewVol->setColumnWidth(4,140);
+    ui->tableViewVol->setColumnWidth(5,150);
 
     modelPodt = new ModelPodt(this);
     ui->tableView->verticalHeader()->setDefaultSectionSize(ui->tableView->verticalHeader()->fontMetrics().height()*1.5);
@@ -95,6 +104,7 @@ FormPodt::FormPodt(QWidget *parent) :
     connect(ui->pushButtonFltPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
     connect(modelPodtIn,SIGNAL(sigSum(QString)),this,SLOT(setInItogo(QString)));
     connect(modelPodtOut,SIGNAL(sigSum(QString)),this,SLOT(setOutItogo(QString)));
+    connect(modelPodtDef,SIGNAL(sigSum(QString)),this,SLOT(setDefItogo(QString)));
 
     refresh();
 }
@@ -138,6 +148,7 @@ void FormPodt::updPart(int index)
     ui->tableViewAnn->resizeToContents();
     modelPodtIn->refresh(id_podt,1);
     modelPodtOut->refresh(id_podt,2);
+    modelPodtDef->refresh(id_podt,3);
 }
 
 void FormPodt::setContItogo(QString s)
@@ -170,4 +181,9 @@ void FormPodt::setInItogo(QString s)
 void FormPodt::setOutItogo(QString s)
 {
     ui->groupBoxPodtOut->setTitle(s);
+}
+
+void FormPodt::setDefItogo(QString s)
+{
+    ui->groupBoxDef->setTitle(s);
 }

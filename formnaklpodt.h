@@ -21,7 +21,6 @@ private:
     Ui::FormNaklPodt *ui;
     ModelNaklPodt *modelNaklPodt;
     ModelNaklPodtCont *modelNaklPodtCont;
-    QSqlQueryModel *modelType;
     void loadSettings();
     void saveSettings();
 

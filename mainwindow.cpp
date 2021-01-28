@@ -38,6 +38,7 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionCubeSrc,&MainWindow::cubeRas);
     actAction(ui->actionCubePerepack,&MainWindow::cubePerepack);
     actAction(ui->actionCubePodt,&MainWindow::cubePodt);
+    actAction(ui->actionCubePodtOut,&MainWindow::cubePodtOut);
 
     actAction(ui->actionShip,&MainWindow::sert);
     actAction(ui->actionCod,&MainWindow::check);
@@ -319,6 +320,13 @@ void MainWindow::cubePodt()
 {
     if (!exist(sender())){
         addSubWindow(new CubeWidget(28),sender());
+    }
+}
+
+void MainWindow::cubePodtOut()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(45),sender());
     }
 }
 

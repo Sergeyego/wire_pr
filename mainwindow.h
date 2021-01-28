@@ -82,6 +82,7 @@ private slots:
     void cubeRas();
     void cubePerepack();
     void cubePodt();
+    void cubePodtOut();
     void sert();
     void check();
 };

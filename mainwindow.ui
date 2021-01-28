@@ -84,6 +84,7 @@
     <addaction name="actionCubeSrc"/>
     <addaction name="actionCubePerepack"/>
     <addaction name="actionCubePodt"/>
+    <addaction name="actionCubePodtOut"/>
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
@@ -313,6 +314,11 @@
   <action name="actionCubePack">
    <property name="text">
     <string>Анализ упаковки</string>
+   </property>
+  </action>
+  <action name="actionCubePodtOut">
+   <property name="text">
+    <string>Анализ расхода подтяжек</string>
    </property>
   </action>
  </widget>

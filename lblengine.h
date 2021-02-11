@@ -14,6 +14,7 @@
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QDir>
+#include <QDesktopServices>
 
 class LblEngine : public QObject
 {
@@ -32,6 +33,7 @@ private:
     QDomElement newText(QString x, QString y, QString w, QString h, QString text, int size, bool bold, QDomDocument *doc);
     QDomElement newRect(QString x, QString y, QString w, QString h, QDomDocument *doc);
     QDomElement newLine(QString x, QString y, QString dx, QString dy, QDomDocument *doc);
+    void openSysFile(QString fname);
 
 signals:
 

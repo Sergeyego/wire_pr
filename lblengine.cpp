@@ -92,7 +92,7 @@ void LblEngine::createLblEd(QString text, QString barcode)
         QTextStream stream( &file );
         doc.save(stream,1);
         file.close();
-        system("./runlbl.sh&");
+        openSysFile(file.fileName());
     }
 }
 
@@ -181,7 +181,7 @@ void LblEngine::createLblGroup(int id_part)
             QTextStream stream( &file );
             doc.save(stream,1);
             file.close();
-            system("./runlbl.sh&");
+            openSysFile(file.fileName());
         }
 
 
@@ -291,4 +291,11 @@ QDomElement LblEngine::newLine(QString x, QString y, QString dx, QString dy, QDo
     l.setAttribute("a4",0);
     l.setAttribute("a5",0);
     return l;
+}
+
+void LblEngine::openSysFile(QString fname)
+{
+    //system("./runlbl.sh&");
+    QFileInfo fileInfo(fname);
+    QDesktopServices::openUrl((QUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()))));
 }

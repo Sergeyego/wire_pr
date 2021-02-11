@@ -11,6 +11,10 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
         ui->groupBoxMech->hide();
     }
 
+    ui->toolButtonAddPack->setIcon(style()->standardIcon(QStyle::SP_FileDialogNewFolder));
+    ui->toolButtonDelPack->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
+    ui->toolButtonEdtPack->setIcon(style()->standardIcon(QStyle::SP_FileDialogListView));
+
     sert=new SertBuild(this);
     editor=new Editor(sert,NULL);
 

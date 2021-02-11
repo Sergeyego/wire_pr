@@ -1,6 +1,5 @@
 <Glabels-templates>
-  <Template brand="&#x421;&#x417;&#x421;&#x41C;" part="1" size="A4" description="lable">
-      <Meta category="user-defined"/>
+  <Template brand="SZSM-01" part="1" size="A4" description="lable">
       <Meta category="user-defined"/>
       <Label-rectangle id="0" width="66.7mm" height="46.0001mm" round="0mm" x_waste="0mm" y_waste="0mm">
 	<Markup-margin size="3.2mm"/>

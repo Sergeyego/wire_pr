@@ -65,7 +65,7 @@ void LblEngine::createLblEd(int id_part, QString cod, bool barcode)
 
 void LblEngine::createLblEd(QString text, QString barcode)
 {
-    QString templ=QString::fromLocal8Bit("СЗСМ");
+    QString templ=QString::fromLocal8Bit("SZSM-01");
     if (map.value(templ).isNull()){
         QMessageBox::critical(NULL,tr("Ошибка"),tr("Ошибка шаблона"),QMessageBox::Ok);
         return;
@@ -295,7 +295,6 @@ QDomElement LblEngine::newLine(QString x, QString y, QString dx, QString dy, QDo
 
 void LblEngine::openSysFile(QString fname)
 {
-    //system("./runlbl.sh&");
     QFileInfo fileInfo(fname);
     QDesktopServices::openUrl((QUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()))));
 }

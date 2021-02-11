@@ -10,11 +10,11 @@ DbMapper::DbMapper(QAbstractItemView *v, QWidget *parent) :
     cmdDel = new QPushButton(QString::fromUtf8("Удал."),this);
     cmdWrite->setEnabled(false);
     cmdEsc->setEnabled(false);
-    cmdNew->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton)));
-    cmdEdt->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_FileDialogListView)));
-    cmdWrite->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton)));
-    cmdDel->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton)));
-    cmdEsc->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_DialogResetButton)));
+    cmdNew->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
+    cmdEdt->setIcon(style()->standardIcon(QStyle::SP_FileDialogListView));
+    cmdWrite->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
+    cmdDel->setIcon(style()->standardIcon(QStyle::SP_DialogCancelButton));
+    cmdEsc->setIcon(style()->standardIcon(QStyle::SP_DialogResetButton));
     mainLayout = new QHBoxLayout(this);
     setLayout(mainLayout);
     mainLayout->addWidget(cmdEdt);

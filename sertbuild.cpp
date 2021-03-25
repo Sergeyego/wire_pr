@@ -105,11 +105,34 @@ void SertBuild::rebuild()
 
     QVector<int> id_ved;
     svData enSert;
+    QHash<QString,QString> odobr;
     foreach (sertData s, *data->sert()){
         if (s.en){
             enSert.push_back(s);
             if (!id_ved.contains(s.id_ved)){
                 id_ved.push_back(s.id_ved);
+
+            }
+            if (s.id_doc_t==3){
+                QString str("Одобрено ");
+                QString str_en("Approved by ");
+                str+=s.ved_short.rus;
+                str_en+=s.ved_short.eng;
+                QString cat=s.grade_nam;
+                QString sh=str+QString(".");
+                if (!cat.isEmpty()){
+                    str+=QString(" по категории ")+cat;
+                    str_en+=QString(" in category ")+cat;
+                }
+                str+=QString(".");
+                str_en+=QString(".");
+                if (odobr.contains(sh) && (str!=sh)){
+                    odobr.remove(sh);
+                }
+                QStringList lst=odobr.keys();
+                if (lst.indexOf(QRegExp("^"+str+".*"))==-1) {
+                    odobr.insert(str,str_en);
+                }
             }
         }
     }
@@ -410,6 +433,16 @@ void SertBuild::rebuild()
         }
         cursor.movePosition(QTextCursor::End);
         cursor.insertBlock();
+    }
+
+    cursor.setBlockFormat(formatLeft);
+    cursor.setCharFormat(textNormalFormat);
+
+    QHash<QString, QString>::const_iterator it = odobr.constBegin();
+    while (it != odobr.constEnd()) {
+        insertText(cursor,it.key(),it.value());
+        cursor.insertBlock();
+        ++it;
     }
 
     cursor.setBlockFormat(formatLeft);

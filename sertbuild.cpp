@@ -282,8 +282,7 @@ void SertBuild::rebuild()
     cursor.setBlockFormat(formatCenter);
     cursor.insertBlock();
     cursor.insertBlock();
-    double value=0;
-    QString head;
+
     int row=data->chem()->size();
     if (row) {
         QTextTable *chemTable = cursor.insertTable(3, row, tableFormat);

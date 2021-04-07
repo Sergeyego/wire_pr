@@ -380,6 +380,7 @@ ModelPodtCex::ModelPodtCex(QObject *parent) : DbTableModel("wire_podt_cex",paren
     addColumn("id_op","id_op");
     addColumn("dat",tr("Дата"));
     addColumn("kvo",tr("Кол-во, кг"));
+    setDecimals(4,2);
     setSort("wire_podt_cex.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));

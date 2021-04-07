@@ -195,6 +195,7 @@ ModelInCex::ModelInCex(QObject *parent):
     addColumn("m_netto",tr("Масса, кг"));
     addColumn("id_type",tr("Операция"),Models::instance()->relAddType);
     setDefaultValue(4,3);
+    setDecimals(3,2);
     setSuffix("inner join wire_in_cex_type on wire_in_cex_type.id=wire_in_cex_data.id_type and wire_in_cex_type.koef=1");
     setSort("wire_in_cex_data.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
@@ -229,6 +230,7 @@ ModelOutCex::ModelOutCex(QObject *parent) :
     addColumn("m_netto",tr("Масса, кг"));
     addColumn("id_type",tr("Причина"),Models::instance()->relCause);
     setSuffix("inner join wire_in_cex_type on wire_in_cex_type.id = wire_in_cex_data.id_type");
+    setDecimals(3,2);
     setSort("wire_in_cex_data.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
@@ -285,6 +287,7 @@ ModelPerepack::ModelPerepack(QObject *parent) : DbTableModel("wire_perepack",par
     addColumn("id_wpartisrc",tr("Из партии"),Models::instance()->relWirePart);
     addColumn("id_wpartires",tr("В партию"),Models::instance()->relWirePart);
     addColumn("m_netto",tr("Масса, кг"));
+    setDecimals(4,2);
 }
 
 void ModelPerepack::refresh(int id_nakl)
@@ -344,6 +347,7 @@ ModelNamCex::ModelNamCex(QObject *parent) : DbTableModel("wire_in_cex_nam",paren
     addColumn("id_empl",tr("Работник"),Models::instance()->relRab);
     addColumn("id_line",tr("Линия"),Models::instance()->relLine);
     setSort("wire_in_cex_nam.dat");
+    setDecimals(3,2);
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
 }
@@ -485,6 +489,7 @@ ModelPodtCont::ModelPodtCont(QObject *parent) : DbTableModel("wire_podt_cont",pa
     addColumn("id_rab",tr("Волочильщик"),Models::instance()->relVol);
     addColumn("id_podt_src",tr("Исходная протяжка"),Models::instance()->relPodt);
     setSort("wire_podt_cont.dat");
+    setDecimals(3,2);
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
 }
@@ -627,6 +632,7 @@ ModelPackCex::ModelPackCex(QObject *parent) : DbTableModel("wire_parti_pack",par
     addColumn("id_part",tr("id_part"));
     addColumn("dat",tr("Дата"));
     addColumn("kvo",tr("Масса, кг"));
+    setDecimals(3,2);
     setSort("wire_parti_pack.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
@@ -924,6 +930,8 @@ ModelPodtVol::ModelPodtVol(QObject *parent) : DbTableModel("wire_podt_out",paren
     addColumn("kvo_defect",tr("Брак, кг"));
     addColumn("id_line",tr("Линия"),Models::instance()->relLine);
     addColumn("id_vol",tr("Волочильщик"),Models::instance()->relVol);
+    setDecimals(2,2);
+    setDecimals(3,2);
     setSort("wire_podt_out.dat");
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
     connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));

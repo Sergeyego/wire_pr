@@ -207,6 +207,11 @@ void DbDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, co
                     return;
                 }
             }
+            QCheckBox *cb=qobject_cast<QCheckBox *>(editor);
+            if (cb && sqlModel->columnType(index.column())==QMetaType::Int){
+                sqlModel->setData(index,cb->isChecked() ? 1 : 0,Qt::EditRole);
+                return;
+            }
             return QItemDelegate::setModelData(editor, model, index);
         }
     } else {

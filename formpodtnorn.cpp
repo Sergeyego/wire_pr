@@ -21,9 +21,12 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
     modelNorm->addColumn("kvo",tr("Норма"));
     modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
+    modelNorm->addColumn("dat_beg",tr("Дата нач."));
+    modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr");
     modelNorm->setDecimals(5,3);
+    modelNorm->setDefaultValue(8,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
     for (int i=0; i<=3; i++){
@@ -32,6 +35,8 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     ui->tableViewNorm->setColumnWidth(4,330);
     ui->tableViewNorm->setColumnWidth(5,80);
     ui->tableViewNorm->setColumnWidth(6,200);
+    ui->tableViewNorm->setColumnWidth(7,80);
+    ui->tableViewNorm->setColumnWidth(8,80);
 
     modelPodtProd = new ModelPodtProd(this);
     ui->tableViewPodt->setModel(modelPodtProd);
@@ -112,6 +117,8 @@ void FormPodtNorn::copy()
         m.id_matr=modelNorm->data(modelNorm->index(i,4),Qt::EditRole).toInt();
         m.kvo=modelNorm->data(modelNorm->index(i,5),Qt::EditRole).toDouble();
         m.id_vid=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toInt();
+        m.d_beg=modelNorm->data(modelNorm->index(i,7),Qt::EditRole).toDate();
+        m.d_end=modelNorm->data(modelNorm->index(i,8),Qt::EditRole).toDate();
         buf.push_back(m);
     }
     ui->pushButtonPaste->setEnabled(true);
@@ -126,8 +133,8 @@ void FormPodtNorn::paste()
     QString err;
     foreach (mnorm m, buf) {
         QSqlQuery query;
-        query.prepare("insert into wire_podt_norm (id_podt_type, id_provol, id_src_diam, id_diam, id_matr, kvo, id_vid) values "
-                      "(:id_podt_type, :id_provol, :id_src_diam, :id_diam, :id_matr, :kvo, :id_vid)");
+        query.prepare("insert into wire_podt_norm (id_podt_type, id_provol, id_src_diam, id_diam, id_matr, kvo, id_vid, dat_beg, dat_end) values "
+                      "(:id_podt_type, :id_provol, :id_src_diam, :id_diam, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
         query.bindValue(":id_podt_type",id_type);
         query.bindValue(":id_provol",id_provol);
         query.bindValue(":id_src_diam",id_src_diam);
@@ -135,6 +142,8 @@ void FormPodtNorn::paste()
         query.bindValue(":id_matr",m.id_matr);
         query.bindValue(":kvo",m.kvo);
         query.bindValue(":id_vid",m.id_vid);
+        query.bindValue(":dat_beg",m.d_beg);
+        query.bindValue(":dat_end",m.d_end);
         if (!query.exec()){
             err=query.lastError().text();
         }

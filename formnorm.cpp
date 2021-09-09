@@ -23,9 +23,12 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
     modelNorm->addColumn("kvo",tr("Норма"));
     modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
+    modelNorm->addColumn("dat_beg",tr("Дата нач."));
+    modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr");
     modelNorm->setDecimals(7,3);
+    modelNorm->setDefaultValue(10,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
     for (int i=0; i<=5; i++){
@@ -34,6 +37,8 @@ FormNorm::FormNorm(QWidget *parent) :
     ui->tableViewNorm->setColumnWidth(6,330);
     ui->tableViewNorm->setColumnWidth(7,80);
     ui->tableViewNorm->setColumnWidth(8,200);
+    ui->tableViewNorm->setColumnWidth(9,80);
+    ui->tableViewNorm->setColumnWidth(10,80);
 
     modelProd = new ModelProd(this);
     ui->tableViewProd->setModel(modelProd);
@@ -116,6 +121,8 @@ void FormNorm::copy()
         m.id_matr=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toInt();
         m.kvo=modelNorm->data(modelNorm->index(i,7),Qt::EditRole).toDouble();
         m.id_vid=modelNorm->data(modelNorm->index(i,8),Qt::EditRole).toInt();
+        m.d_beg=modelNorm->data(modelNorm->index(i,9),Qt::EditRole).toDate();
+        m.d_end=modelNorm->data(modelNorm->index(i,10),Qt::EditRole).toDate();
         buf.push_back(m);
     }
     ui->pushButtonPaste->setEnabled(true);
@@ -132,8 +139,8 @@ void FormNorm::paste()
     QString err;
     foreach (pnorm m, buf) {
         QSqlQuery query;
-        query.prepare("insert into wire_norm (id_add_type, id_line, id_provol, id_diam, id_spool, id_pack, id_matr, kvo, id_vid) values "
-                      "(:id_add_type, :id_line, :id_provol, :id_diam, :id_spool, :id_pack, :id_matr, :kvo, :id_vid)");
+        query.prepare("insert into wire_norm (id_add_type, id_line, id_provol, id_diam, id_spool, id_pack, id_matr, kvo, id_vid, dat_beg, dat_end) values "
+                      "(:id_add_type, :id_line, :id_provol, :id_diam, :id_spool, :id_pack, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
         query.bindValue(":id_add_type",id_type);
         query.bindValue(":id_line",id_line);
         query.bindValue(":id_provol",id_provol);
@@ -143,6 +150,8 @@ void FormNorm::paste()
         query.bindValue(":id_matr",m.id_matr);
         query.bindValue(":kvo",m.kvo);
         query.bindValue(":id_vid",m.id_vid);
+        query.bindValue(":dat_beg",m.d_beg);
+        query.bindValue(":dat_end",m.d_end);
         if (!query.exec()){
             err=query.lastError().text();
         }

@@ -15,6 +15,8 @@ typedef struct
     int id_matr;
     double kvo;
     int id_vid;
+    QDate d_beg;
+    QDate d_end;
 } pnorm;
 
 class FormNorm : public QWidget

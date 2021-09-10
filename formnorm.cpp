@@ -26,7 +26,7 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("dat_beg",tr("Дата нач."));
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
-    modelNorm->setSort("id_vid, id_matr");
+    modelNorm->setSort("id_vid, id_matr, dat_beg");
     modelNorm->setDecimals(7,3);
     modelNorm->setDefaultValue(10,QDate());
 

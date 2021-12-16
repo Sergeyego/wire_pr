@@ -487,7 +487,7 @@ void Editor::exportPdf()
         exportPdf(exportname);
         QFile file(exportname);
         QFileInfo info(file);
-         settings.setValue("sertPath",info.path());
+        settings.setValue("sertPath",info.path());
     }
 }
 

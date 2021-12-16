@@ -16,6 +16,7 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     modelNorm = new DbTableModel("wire_podt_norm",this);
     modelNorm->addColumn("id_podt_type","id_podt_type");
     modelNorm->addColumn("id_provol","id_provol");
+    modelNorm->addColumn("id_buht_diam","id_buht_diam");
     modelNorm->addColumn("id_src_diam","id_src_diam");
     modelNorm->addColumn("id_diam","id_diam");
     modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
@@ -25,18 +26,19 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr, dat_beg");
-    modelNorm->setDecimals(5,3);
-    modelNorm->setDefaultValue(8,QDate());
+    modelNorm->setDecimals(6,3);
+    modelNorm->setDefaultValue(9,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
-    for (int i=0; i<=3; i++){
+    for (int i=0; i<=4; i++){
         ui->tableViewNorm->setColumnHidden(i,true);
     }
-    ui->tableViewNorm->setColumnWidth(4,330);
-    ui->tableViewNorm->setColumnWidth(5,80);
-    ui->tableViewNorm->setColumnWidth(6,200);
-    ui->tableViewNorm->setColumnWidth(7,80);
+    ui->tableViewNorm->setColumnWidth(5,330);
+    ui->tableViewNorm->setColumnWidth(6,80);
+    ui->tableViewNorm->setColumnWidth(7,200);
     ui->tableViewNorm->setColumnWidth(8,80);
+    ui->tableViewNorm->setColumnWidth(9,80);
+    ui->tableViewNorm->setColumnWidth(10,80);
 
     modelPodtProd = new ModelPodtProd(this);
     ui->tableViewPodt->setModel(modelPodtProd);
@@ -44,14 +46,15 @@ FormPodtNorn::FormPodtNorn(QWidget *parent) :
     connect(ui->tableViewPodt->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updNorm(QModelIndex)));
     upd();
 
-    for (int i=0; i<=3; i++){
+    for (int i=0; i<=4; i++){
         ui->tableViewPodt->setColumnHidden(i,true);
     }
-    ui->tableViewPodt->setColumnWidth(4,220);
-    ui->tableViewPodt->setColumnWidth(5,160);
-    ui->tableViewPodt->setColumnWidth(6,60);
+    ui->tableViewPodt->setColumnWidth(5,220);
+    ui->tableViewPodt->setColumnWidth(6,160);
     ui->tableViewPodt->setColumnWidth(7,60);
-    ui->tableViewPodt->setColumnWidth(8,90);
+    ui->tableViewPodt->setColumnWidth(8,60);
+    ui->tableViewPodt->setColumnWidth(9,60);
+    ui->tableViewPodt->setColumnWidth(10,90);
 
     connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(upd()));
     connect(ui->pushButtonCopy,SIGNAL(clicked(bool)),this,SLOT(copy()));
@@ -99,13 +102,15 @@ void FormPodtNorn::updNorm(QModelIndex /*ind*/)
 {
     int id_type=currentData(0).toInt();
     int id_provol=currentData(1).toInt();
-    int id_src_diam=currentData(2).toInt();
-    int id_diam=currentData(3).toInt();
+    int id_buht_diam=currentData(2).toInt();
+    int id_src_diam=currentData(3).toInt();
+    int id_diam=currentData(4).toInt();
     modelNorm->setDefaultValue(0,id_type);
     modelNorm->setDefaultValue(1,id_provol);
-    modelNorm->setDefaultValue(2,id_src_diam);
-    modelNorm->setDefaultValue(3,id_diam);
-    modelNorm->setFilter(QString("id_podt_type = %1 and id_provol = %2 and id_src_diam = %3 and id_diam = %4").arg(id_type).arg(id_provol).arg(id_src_diam).arg(id_diam));
+    modelNorm->setDefaultValue(2,id_buht_diam);
+    modelNorm->setDefaultValue(3,id_src_diam);
+    modelNorm->setDefaultValue(4,id_diam);
+    modelNorm->setFilter(QString("id_podt_type = %1 and id_provol = %2 and id_src_diam = %3 and id_diam = %4 and id_buht_diam = %5 ").arg(id_type).arg(id_provol).arg(id_src_diam).arg(id_diam).arg(id_buht_diam));
     modelNorm->select();
 }
 
@@ -114,11 +119,11 @@ void FormPodtNorn::copy()
     buf.clear();
     for (int i=0; i<modelNorm->rowCount();i++){
         mnorm m;
-        m.id_matr=modelNorm->data(modelNorm->index(i,4),Qt::EditRole).toInt();
-        m.kvo=modelNorm->data(modelNorm->index(i,5),Qt::EditRole).toDouble();
-        m.id_vid=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toInt();
-        m.d_beg=modelNorm->data(modelNorm->index(i,7),Qt::EditRole).toDate();
-        m.d_end=modelNorm->data(modelNorm->index(i,8),Qt::EditRole).toDate();
+        m.id_matr=modelNorm->data(modelNorm->index(i,5),Qt::EditRole).toInt();
+        m.kvo=modelNorm->data(modelNorm->index(i,6),Qt::EditRole).toDouble();
+        m.id_vid=modelNorm->data(modelNorm->index(i,7),Qt::EditRole).toInt();
+        m.d_beg=modelNorm->data(modelNorm->index(i,8),Qt::EditRole).toDate();
+        m.d_end=modelNorm->data(modelNorm->index(i,9),Qt::EditRole).toDate();
         buf.push_back(m);
     }
     ui->pushButtonPaste->setEnabled(true);
@@ -128,15 +133,17 @@ void FormPodtNorn::paste()
 {
     int id_type=currentData(0).toInt();
     int id_provol=currentData(1).toInt();
-    int id_src_diam=currentData(2).toInt();
-    int id_diam=currentData(3).toInt();
+    int id_buht_diam=currentData(2).toInt();
+    int id_src_diam=currentData(3).toInt();
+    int id_diam=currentData(4).toInt();
     QString err;
     foreach (mnorm m, buf) {
         QSqlQuery query;
-        query.prepare("insert into wire_podt_norm (id_podt_type, id_provol, id_src_diam, id_diam, id_matr, kvo, id_vid, dat_beg, dat_end) values "
-                      "(:id_podt_type, :id_provol, :id_src_diam, :id_diam, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
+        query.prepare("insert into wire_podt_norm (id_podt_type, id_provol, id_buht_diam, id_src_diam, id_diam, id_matr, kvo, id_vid, dat_beg, dat_end) values "
+                      "(:id_podt_type, :id_provol, :id_buht_diam, :id_src_diam, :id_diam, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
         query.bindValue(":id_podt_type",id_type);
         query.bindValue(":id_provol",id_provol);
+        query.bindValue(":id_buht_diam",id_buht_diam);
         query.bindValue(":id_src_diam",id_src_diam);
         query.bindValue(":id_diam",id_diam);
         query.bindValue(":id_matr",m.id_matr);
@@ -183,7 +190,7 @@ void FormPodtNorn::calcSum()
 {
     double sum=0;
     for (int i=0; i<modelPodtProd->rowCount(); i++){
-        sum+=modelPodtProd->data(modelPodtProd->index(i,8),Qt::EditRole).toDouble();
+        sum+=modelPodtProd->data(modelPodtProd->index(i,10),Qt::EditRole).toDouble();
     }
     ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
 }

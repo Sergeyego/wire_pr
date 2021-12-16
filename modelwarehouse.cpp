@@ -740,7 +740,8 @@ ModelPodtProd::ModelPodtProd(QObject *parent) : QSqlQueryModel(parent)
 void ModelPodtProd::refresh(QDate beg, QDate end, int id_type)
 {
     QSqlQuery query;
-    query.prepare("select p.id_type, pp.id_pr, coalesce(wps.id_diam,pp.id_dim), p.id_diam, wpt.nam, pr.nam, coalesce(ds.sdim,d.sdim) as fromdim, dp.sdim, sum(pc.kvo) "
+    query.prepare("select p.id_type, pp.id_pr, pp.id_dim, coalesce(wps.id_diam,pp.id_dim) as id_fromdim, p.id_diam, wpt.nam, pr.nam, "
+                  "d.sdim as diamsrc, coalesce(ds.sdim,d.sdim) as fromdim, dp.sdim, sum(pc.kvo) "
                   "from wire_podt_cont as pc "
                   "inner join wire_podt as p on pc.id_podt=p.id "
                   "inner join prov_buht as b on p.id_buht=b.id "
@@ -759,11 +760,12 @@ void ModelPodtProd::refresh(QDate beg, QDate end, int id_type)
     query.bindValue(":d2",end);
     if (query.exec()){
         setQuery(query);
-        setHeaderData(4,Qt::Horizontal,QString::fromUtf8("Тип полуфабриката"));
-        setHeaderData(5,Qt::Horizontal,QString::fromUtf8("Марка"));
-        setHeaderData(6,Qt::Horizontal,QString::fromUtf8("Ф нач."));
-        setHeaderData(7,Qt::Horizontal,QString::fromUtf8("Ф кон."));
-        setHeaderData(8,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
+        setHeaderData(5,Qt::Horizontal,QString::fromUtf8("Тип полуфабриката"));
+        setHeaderData(6,Qt::Horizontal,QString::fromUtf8("Марка"));
+        setHeaderData(7,Qt::Horizontal,QString::fromUtf8("Ф кат."));
+        setHeaderData(8,Qt::Horizontal,QString::fromUtf8("Ф нач."));
+        setHeaderData(9,Qt::Horizontal,QString::fromUtf8("Ф кон."));
+        setHeaderData(10,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
         updState();
     } else {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
@@ -780,12 +782,14 @@ QVariant ModelPodtProd::data(const QModelIndex &item, int role) const
         s+=this->data(this->index(item.row(),2),Qt::EditRole).toString();
         s+=":";
         s+=this->data(this->index(item.row(),3),Qt::EditRole).toString();
+        s+=":";
+        s+=this->data(this->index(item.row(),4),Qt::EditRole).toString();
         return exList.contains(s) ? QVariant(QColor(255,255,255)) : QVariant(QColor(255,170,170));
     }
-    if (role==Qt::DisplayRole && item.column()==8){
+    if (role==Qt::DisplayRole && item.column()==10){
         return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
     }
-    if (role==Qt::TextAlignmentRole && item.column()==8){
+    if (role==Qt::TextAlignmentRole && item.column()==10){
         return int(Qt::AlignRight | Qt::AlignVCenter);
     }
     return QSqlQueryModel::data(item,role);
@@ -802,6 +806,8 @@ bool ModelPodtProd::ready()
         s+=this->data(this->index(i,2),Qt::EditRole).toString();
         s+=":";
         s+=this->data(this->index(i,3),Qt::EditRole).toString();
+        s+=":";
+        s+=this->data(this->index(i,4),Qt::EditRole).toString();
         ok=ok && exList.contains(s);
         if (!ok){
             break;
@@ -813,7 +819,7 @@ bool ModelPodtProd::ready()
 void ModelPodtProd::updState()
 {
     QSqlQuery query;
-    query.prepare("select distinct id_podt_type||':'||id_provol||':'|| id_src_diam||':'|| id_diam as nam from wire_podt_norm order by nam");
+    query.prepare("select distinct id_podt_type||':'||id_provol||':'||id_buht_diam||':'|| id_src_diam||':'|| id_diam as nam from wire_podt_norm order by nam");
     if (query.exec()){
         exList.clear();
         while(query.next()){

@@ -10,13 +10,6 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().dayOfYear()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    //modelPodtMech = new ModelPodtMech(this);
-    //ui->tableViewMech->setModel(modelPodtMech);
-    //ui->tableViewMech->setColumnHidden(0,true);
-    //ui->tableViewMech->setColumnHidden(1,true);
-    //ui->tableViewMech->setColumnWidth(2,150);
-    //ui->tableViewMech->setColumnWidth(3,90);
-
     modelPodtIn = new ModelPodtCex(this);
     ui->tableViewPodtIn->setModel(modelPodtIn);
     ui->tableViewPodtIn->setColumnHidden(0,true);
@@ -67,8 +60,12 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableView->setColumnWidth(2,70);
     ui->tableView->setColumnWidth(3,360);
     ui->tableView->setColumnWidth(4,40);
-    for (int i=5; i<ui->tableView->model()->columnCount(); i++)
-        ui->tableView->setColumnHidden(i,true);
+    for (int i=5; i<ui->tableView->model()->columnCount(); i++){
+        if (i!=7) {
+            ui->tableView->setColumnHidden(i,true);
+        }
+    }
+    ui->tableView->setColumnWidth(7,100);
 
     modelPodtPart = new ModelPodtPart(this);
     ui->tableViewPart->setModel(modelPodtPart);
@@ -92,7 +89,6 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addEmptyLock(ui->tableViewPodtIn);
     push->addEmptyLock(ui->tableViewPodtOut);
     push->addEmptyLock(ui->tableViewVol);
-    //push->addEmptyLock(ui->tableViewMech);
     push->addUnLock(ui->toolButtonSrc);
     push->addLock(ui->pushButtonFltPodt);
 
@@ -118,14 +114,12 @@ FormPodt::~FormPodt()
 void FormPodt::loadSettings()
 {
     QSettings settings("szsm", "wire_pr");
-    //this->restoreGeometry(settings.value("podt_geometry").toByteArray());
     this->ui->splitter->restoreState(settings.value("podt_splitter_width").toByteArray());
 }
 
 void FormPodt::saveSettings()
 {
     QSettings settings("szsm", "wire_pr");
-    //settings.setValue("podt_geometry", this->saveGeometry());
     settings.setValue("podt_splitter_width",ui->splitter->saveState());
 }
 
@@ -142,7 +136,6 @@ void FormPodt::updPart(int index)
     modelCont->refresh(id_podt);
     modelPodtVol->refresh(id_podt);
     modelPodtPart->refresh(id_podt);
-    //modelPodtMech->refresh(id_podt);
     ui->tableViewPart->resizeToContents();
     modelPodtAnn->refresh(id_podt);
     ui->tableViewAnn->resizeToContents();

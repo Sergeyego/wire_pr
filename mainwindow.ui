@@ -101,7 +101,7 @@
    </widget>
    <widget class="QMenu" name="menu_8">
     <property name="title">
-     <string>Подтяжки</string>
+     <string>Полуфабрикаты</string>
     </property>
     <addaction name="actionPodt"/>
     <addaction name="actionPrecensePodt"/>
@@ -129,7 +129,7 @@
   </action>
   <action name="actionPodt">
    <property name="text">
-    <string>Партии подтяжек</string>
+    <string>Партии полуфабрикатов</string>
    </property>
    <property name="shortcut">
     <string>F3</string>
@@ -264,12 +264,12 @@
   </action>
   <action name="actionCubePodt">
    <property name="text">
-    <string>Анализ подтяжек</string>
+    <string>Анализ полуфабрикатов</string>
    </property>
   </action>
   <action name="actionPrecensePodt">
    <property name="text">
-    <string>Наличие подтяжек</string>
+    <string>Наличие полуфабрикатов</string>
    </property>
    <property name="shortcut">
     <string>F12</string>
@@ -277,7 +277,7 @@
   </action>
   <action name="actionReportPodt">
    <property name="text">
-    <string>Отчет по подтяжкам</string>
+    <string>Отчет по полуфабрикатам</string>
    </property>
    <property name="shortcut">
     <string>F10</string>
@@ -285,12 +285,12 @@
   </action>
   <action name="actionFixPodt">
    <property name="text">
-    <string>Фиксированные остатки подтяжек</string>
+    <string>Фиксированные остатки полуфабрикатов</string>
    </property>
   </action>
   <action name="actionPodtNakl">
    <property name="text">
-    <string>Накладные подтяжек</string>
+    <string>Накладные полуфабрикатов</string>
    </property>
    <property name="shortcut">
     <string>F11</string>
@@ -303,7 +303,7 @@
   </action>
   <action name="actionPodtNorm">
    <property name="text">
-    <string>Расход материалов на подтяжку</string>
+    <string>Расход материалов на полуфабрикаты</string>
    </property>
   </action>
   <action name="actionNorm">
@@ -318,7 +318,7 @@
   </action>
   <action name="actionCubePodtOut">
    <property name="text">
-    <string>Анализ расхода подтяжек</string>
+    <string>Анализ расхода полуфабрикатов</string>
    </property>
   </action>
  </widget>

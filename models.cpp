@@ -39,13 +39,15 @@ Models::Models(QObject *parent) :
     relType = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_type order by nam"), this),0,1,this);
     relCause = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type where koef=-1 order by nam"), this),0,1,this);
     relAddType = new DbRelation(new DbRelationalModel(QString("select id, short from wire_in_cex_type where koef=1 order by id"), this),0,1,this);
-    relPodt = new DbRelation(new DbRelationalModel(QString("select pd.id, pd.n_s || '-'|| date_part('year',pd.dat) ||' '||r.nam ||' '||d.sdim || ' ('||  h.n_plav || ')' as str, h.id, date_part('year',pd.dat) as year "
-                                              "from wire_podt as pd "
-                                              "inner join prov_buht as h on pd.id_buht=h.id "
-                                              "inner join prov_prih as p on p.id=h.id_prih "
-                                              "inner join provol as r on r.id=p.id_pr "
-                                              "inner join diam as d on pd.id_diam=d.id "
-                                              "order by year desc, str desc"), this),0,1,this);
+    relPodt = new DbRelation(new DbRelationalModel(QString("select pd.id, pd.n_s || '-'|| date_part('year',pd.dat) ||' '||r.nam ||' '||d.sdim || ' ('||  wpt.snam || ' '|| h.n_plav || ')' as str, "
+                                                           "h.id, date_part('year',pd.dat) as year "
+                                                           "from wire_podt as pd "
+                                                           "inner join wire_podt_type wpt on wpt.id = pd.id_type "
+                                                           "inner join prov_buht as h on pd.id_buht=h.id "
+                                                           "inner join prov_prih as p on p.id=h.id_prih "
+                                                           "inner join provol as r on r.id=p.id_pr "
+                                                           "inner join diam as d on pd.id_diam=d.id "
+                                                           "order by year desc, str desc"), this),0,1,this);
     relOven = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_oven order by nam"),this),0,1,this);
     relVol = new DbRelation(new DbRelationalModel(QString("select r.id, r.first_name||' '||substr(r.last_name,1,1)||'. '||substr(r.middle_name,1,1)||'. '||'('||n.num||')' as rab, n.num "
                                                           "from wire_namoch as n "
@@ -62,7 +64,7 @@ Models::Models(QObject *parent) :
     relVedPix = new DbRelation(new DbRelationalModel(QString("select id, simb from zvd_ved"),this),0,1,this);
     relWireType = new DbRelation(new DbRelationalModel(QString("select id, nam from provol_type order by id"), this),0,1,this);
     relEan = new DbRelation(new DbRelationalModel(QString("select ean from eans order by ean"), this),0,0,this);
-    relPodtType = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_podt_type order by id"), this),0,1,this);    
+    relPodtType = new DbRelation(new DbRelationalModel(QString("select id, snam from wire_podt_type order by id"), this),0,1,this);
     relEd = new DbRelation(new DbRelationalModel(QString("select id, nam from units order by id"), this),0,1,this);
     relMatr = new DbRelation(new DbRelationalModel(QString("select id, nam from wire_matr order by nam"), this),0,1,this);
     relRasxVid = new DbRelation(new DbRelationalModel(QString("select id, nam from rasx_vid order by id"), this),0,1,this);

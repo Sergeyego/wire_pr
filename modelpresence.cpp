@@ -272,7 +272,7 @@ void ModelPresencePodt::refresh(QDate date, bool bypart, int id_type)
         if (lastError().isValid()){
             QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
         } else {
-            setHeaderData(0, Qt::Horizontal,tr("Партия подт."));
+            setHeaderData(0, Qt::Horizontal,tr("Партия полуф."));
             setHeaderData(1, Qt::Horizontal,tr("Марка проволоки"));
             setHeaderData(2, Qt::Horizontal,tr("Ф"));
             setHeaderData(3, Qt::Horizontal,tr("Наличие, кг"));
@@ -379,7 +379,7 @@ void ModelReportPodt::refresh(QDate begDate, QDate endDate, int num, int id_type
         if (lastError().isValid()){
             QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
         } else {
-            setHeaderData(0, Qt::Horizontal,tr("Партия подт."));
+            setHeaderData(0, Qt::Horizontal,tr("Партия полуф."));
             setHeaderData(1, Qt::Horizontal,tr("Марка проволоки"));
             setHeaderData(2, Qt::Horizontal,tr("Ф"));
             setHeaderData(3, Qt::Horizontal,tr("Нал. на нач."));

@@ -154,7 +154,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>Подтяжка</string>
+            <string>Полуфабрикат</string>
            </property>
           </widget>
          </item>
@@ -790,14 +790,14 @@
    <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
-   <class>DbViewer</class>
-   <extends>QTableView</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
+   <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -60,11 +60,6 @@ SOURCES += main.cpp\
     db/dbmapper.cpp \
     db/dbtablemodel.cpp \
     db/dbviewer.cpp \
-    olap/axiswidget.cpp \
-    olap/cubewidget.cpp \
-    olap/cubic.cpp \
-    olap/olapmodel.cpp \
-    olap/tableview.cpp \
     modelstu.cpp \
     qr/qrencode.cpp \
     formfixpodt.cpp \
@@ -73,7 +68,14 @@ SOURCES += main.cpp\
     formreportpodt.cpp \
     formmatr.cpp \
     formpodtnorn.cpp \
-    formnorm.cpp
+    formnorm.cpp \
+    olap/axiswidget.cpp \
+    olap/cubewidget.cpp \
+    olap/cubic.cpp \
+    olap/dialogolapflt.cpp \
+    olap/formfilter.cpp \
+    olap/olapmodel.cpp \
+    olap/tableview.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
@@ -108,11 +110,6 @@ HEADERS  += mainwindow.h \
     db/dbmapper.h \
     db/dbtablemodel.h \
     db/dbviewer.h \
-    olap/axiswidget.h \
-    olap/cubewidget.h \
-    olap/cubic.h \
-    olap/olapmodel.h \
-    olap/tableview.h \
     modelstu.h \
     qr/qrencode.h \
     formfixpodt.h \
@@ -121,7 +118,14 @@ HEADERS  += mainwindow.h \
     formreportpodt.h \
     formmatr.h \
     formpodtnorn.h \
-    formnorm.h
+    formnorm.h \
+    olap/axiswidget.h \
+    olap/cubewidget.h \
+    olap/cubic.h \
+    olap/dialogolapflt.h \
+    olap/formfilter.h \
+    olap/olapmodel.h \
+    olap/tableview.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -144,15 +148,17 @@ FORMS    += mainwindow.ui \
     dialogflt.ui \
     formnakl.ui \
     db/dblogin.ui \
-    olap/axiswidget.ui \
-    olap/cubewidget.ui \
     formfixpodt.ui \
     formpresencepodt.ui \
     formnaklpodt.ui \
     formreportpodt.ui \
     formmatr.ui \
     formpodtnorn.ui \
-    formnorm.ui
+    formnorm.ui \
+    olap/axiswidget.ui \
+    olap/cubewidget.ui \
+    olap/dialogolapflt.ui \
+    olap/formfilter.ui
 
 RESOURCES += \
     res.qrc

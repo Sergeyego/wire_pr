@@ -171,6 +171,8 @@ void FormPodtNorn::report()
         id_olap=35;
     } else if (id_type==2){
         id_olap=37;
+    } else if (id_type==3){
+        id_olap=46;
     }
     if (id_olap>0 && ready()){
         CubeWidget *w = new CubeWidget(id_olap);

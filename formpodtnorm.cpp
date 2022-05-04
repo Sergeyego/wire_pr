@@ -190,7 +190,7 @@ void FormPodtNorm::calcSum()
 {
     double sum=0;
     for (int i=0; i<modelPodtProd->rowCount(); i++){
-        sum+=modelPodtProd->data(modelPodtProd->index(i,10),Qt::EditRole).toDouble();
+        sum+=modelPodtProd->data(modelPodtProd->index(i,12),Qt::EditRole).toDouble();
     }
     ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
 }

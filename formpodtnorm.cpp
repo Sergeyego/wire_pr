@@ -27,7 +27,7 @@ FormPodtNorm::FormPodtNorm(QWidget *parent) :
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr, dat_beg");
-    modelNorm->setDecimals(6,3);
+    modelNorm->setDecimals(7,3);
     modelNorm->setDefaultValue(10,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
@@ -56,6 +56,7 @@ FormPodtNorm::FormPodtNorm(QWidget *parent) :
     connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
     connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
     connect(modelNorm,SIGNAL(sigUpd()),modelPodtProd,SLOT(updState()));
+    connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(upd()));
 }
 
 FormPodtNorm::~FormPodtNorm()
@@ -249,10 +250,10 @@ QVariant ModelPodtProd::data(const QModelIndex &item, int role) const
         }
         return exList.contains(s) ? QVariant(QColor(255,255,255)) : QVariant(QColor(255,170,170));
     }
-    if (role==Qt::DisplayRole && item.column()==10){
+    if (role==Qt::DisplayRole && item.column()==12){
         return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
     }
-    if (role==Qt::TextAlignmentRole && item.column()==10){
+    if (role==Qt::TextAlignmentRole && item.column()==12){
         return int(Qt::AlignRight | Qt::AlignVCenter);
     }
     return QSqlQueryModel::data(item,role);

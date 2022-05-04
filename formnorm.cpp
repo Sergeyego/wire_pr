@@ -52,6 +52,7 @@ FormNorm::FormNorm(QWidget *parent) :
     connect(ui->pushButtonRep,SIGNAL(clicked(bool)),this,SLOT(report()));
     connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(save()));
     connect(modelNorm,SIGNAL(sigUpd()),modelProd,SLOT(updState()));
+    connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(upd()));
 }
 
 FormNorm::~FormNorm()

@@ -25,7 +25,7 @@
 #include "formnaklpodt.h"
 #include "formreportpodt.h"
 #include "formmatr.h"
-#include "formpodtnorn.h"
+#include "formpodtnorm.h"
 #include "formnorm.h"
 #include <QMdiSubWindow>
 

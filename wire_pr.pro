@@ -67,7 +67,6 @@ SOURCES += main.cpp\
     formnaklpodt.cpp \
     formreportpodt.cpp \
     formmatr.cpp \
-    formpodtnorn.cpp \
     formnorm.cpp \
     olap/axiswidget.cpp \
     olap/cubewidget.cpp \
@@ -75,7 +74,8 @@ SOURCES += main.cpp\
     olap/dialogolapflt.cpp \
     olap/formfilter.cpp \
     olap/olapmodel.cpp \
-    olap/tableview.cpp
+    olap/tableview.cpp \
+    formpodtnorm.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
@@ -117,7 +117,6 @@ HEADERS  += mainwindow.h \
     formnaklpodt.h \
     formreportpodt.h \
     formmatr.h \
-    formpodtnorn.h \
     formnorm.h \
     olap/axiswidget.h \
     olap/cubewidget.h \
@@ -125,7 +124,8 @@ HEADERS  += mainwindow.h \
     olap/dialogolapflt.h \
     olap/formfilter.h \
     olap/olapmodel.h \
-    olap/tableview.h
+    olap/tableview.h \
+    formpodtnorm.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
@@ -153,12 +153,12 @@ FORMS    += mainwindow.ui \
     formnaklpodt.ui \
     formreportpodt.ui \
     formmatr.ui \
-    formpodtnorn.ui \
     formnorm.ui \
     olap/axiswidget.ui \
     olap/cubewidget.ui \
     olap/dialogolapflt.ui \
-    olap/formfilter.ui
+    olap/formfilter.ui \
+    formpodtnorm.ui
 
 RESOURCES += \
     res.qrc

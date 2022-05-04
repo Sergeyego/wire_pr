@@ -1,14 +1,13 @@
-#ifndef FORMPODTNORN_H
-#define FORMPODTNORN_H
+#ifndef FORMPODTNORM_H
+#define FORMPODTNORM_H
 
 #include <QWidget>
-#include "modelwarehouse.h"
 #include "db/dbtablemodel.h"
 #include "models.h"
 #include "olap/cubewidget.h"
 
 namespace Ui {
-class FormPodtNorn;
+class FormPodtNorm;
 }
 
 typedef struct
@@ -20,16 +19,30 @@ typedef struct
     QDate d_end;
 } mnorm;
 
-class FormPodtNorn : public QWidget
+class ModelPodtProd : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelPodtProd(QObject *parent);
+    void refresh(QDate beg, QDate end, int id_type);
+    QVariant data(const QModelIndex &item, int role) const;
+    bool ready();
+private:
+    QStringList exList;
+public slots:
+    void updState();
+};
+
+class FormPodtNorm : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FormPodtNorn(QWidget *parent = 0);
-    ~FormPodtNorn();
+    explicit FormPodtNorm(QWidget *parent = 0);
+    ~FormPodtNorm();
 
 private:
-    Ui::FormPodtNorn *ui;
+    Ui::FormPodtNorm *ui;
     ModelPodtProd *modelPodtProd;
     DbTableModel *modelNorm;
     QVector<mnorm> buf;
@@ -47,4 +60,4 @@ private slots:
     void calcSum();
 };
 
-#endif // FORMPODTNORN_H
+#endif // FORMPODTNORM_H

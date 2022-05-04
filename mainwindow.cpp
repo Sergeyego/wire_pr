@@ -214,7 +214,7 @@ void MainWindow::podtNakl()
 void MainWindow::podtNorm()
 {
     if (!exist(sender())){
-        addSubWindow(new FormPodtNorn(),sender());
+        addSubWindow(new FormPodtNorm(),sender());
     }
 }
 

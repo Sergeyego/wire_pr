@@ -35,5 +35,6 @@
         <file>fonts/DroidSerif-Italic.ttf</file>
         <file>fonts/DroidSerif-Regular.ttf</file>
         <file>images/wire.ico</file>
+        <file>images/simb.png</file>
     </qresource>
 </RCC>

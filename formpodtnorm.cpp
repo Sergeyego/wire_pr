@@ -107,6 +107,7 @@ void FormPodtNorm::updNorm(QModelIndex /*ind*/)
     modelNorm->setDefaultValue(2,id_buht_diam);
     modelNorm->setDefaultValue(3,id_src_diam);
     modelNorm->setDefaultValue(4,id_diam);
+    modelNorm->setDefaultValue(5,id_type_src);
     modelNorm->setFilter(QString("id_podt_type = %1 and id_provol = %2 and id_src_diam = %3 and id_diam = %4 and id_buht_diam = %5 and id_type_src = %6").arg(id_type).arg(id_provol).arg(id_src_diam).arg(id_diam).arg(id_buht_diam).arg(id_type_src));
     modelNorm->select();
 }

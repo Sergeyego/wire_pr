@@ -346,6 +346,7 @@ ModelNamCex::ModelNamCex(QObject *parent) : DbTableModel("wire_in_cex_nam",paren
     addColumn("m_netto",tr("Масса, кг"));
     addColumn("id_empl",tr("Работник"),Models::instance()->relRab);
     addColumn("id_line",tr("Линия"),Models::instance()->relLine);
+    addColumn("id_wpartipack",tr("Объединенная партия"),Models::instance()->relWirePart);
     setSort("wire_in_cex_nam.dat");
     setDecimals(3,2);
     connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
@@ -869,4 +870,37 @@ void ModelPodtVol::calcSum()
         s+=(tr(" (Брак: ")+QLocale().toString(def,'f',2)+tr(" кг)"));
     }
     emit sigSum(s);
+}
+
+ModelUnionCex::ModelUnionCex(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelUnionCex::refresh(int id_part)
+{
+    QSqlQuery query;
+    query.prepare("select wpm.n_s||'-'||date_part('year',wpm.dat)||' '||p.nam||' ф '||d.sdim||' '||wpk.short , wicn.m_netto, wicn.dat , wl.snam, "
+                  "we.first_name ||' '||substr(we.last_name,1,1)||'. '||substr(we.middle_name,1,1)||'.' "
+                  "from wire_in_cex_nam wicn "
+                  "inner join wire_parti wp on wp.id = wicn.id_wpartipack "
+                  "inner join wire_parti_m wpm on wpm.id = wp.id_m "
+                  "inner join provol p on p.id = wpm.id_provol "
+                  "inner join diam d on d.id = wpm.id_diam "
+                  "inner join wire_pack_kind wpk on wpk.id = wp.id_pack "
+                  "inner join wire_line wl on wl.id = wicn.id_line "
+                  "inner join wire_empl we on we.id = wicn.id_empl "
+                  "where wicn.id_wpartipack = :id "
+                  "order by wicn.dat, wicn.id");
+    query.bindValue(":id",id_part);
+    if (query.exec()){
+        setQuery(query);
+        setHeaderData(0,Qt::Horizontal,tr("Партия"));
+        setHeaderData(1,Qt::Horizontal,tr("Масса, кг"));
+        setHeaderData(2,Qt::Horizontal,tr("Дата"));
+        setHeaderData(3,Qt::Horizontal,tr("Линия"));
+        setHeaderData(4,Qt::Horizontal,tr("Работник"));
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
+    }
 }

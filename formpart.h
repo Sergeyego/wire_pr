@@ -39,6 +39,7 @@ private:
     ModelOutCex *modelOutCex;
     ModelNamCex *modelNamCex;
     ModelPackCex *modelPackCex;
+    ModelUnionCex *modelUnionCex;
     void loadSettings();
     void saveSettings();
     SertBuild *sert;

@@ -125,6 +125,9 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
 
     loadSettings();
 
+    modelUnionCex = new ModelUnionCex(this);
+    ui->tableViewUnion->setModel(modelUnionCex);
+
     modelNamCex = new ModelNamCex(this);
     ui->tableViewNam->setModel(modelNamCex);
     ui->tableViewNam->setColumnHidden(0,true);
@@ -133,6 +136,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewNam->setColumnWidth(3,70);
     ui->tableViewNam->setColumnWidth(4,140);
     ui->tableViewNam->setColumnWidth(5,110);
+    ui->tableViewNam->setColumnWidth(6,250);
 
     partPackModel = new PartPackModel(this);
     ui->comboBoxPack->setModel(partPackModel);
@@ -310,9 +314,19 @@ void FormPart::updShip()
     modelPackCex->refresh(id_p);
     modelStockCex->refresh(id_p);
     modelPerepackCex->refresh(id_p);
+    modelUnionCex->refresh(id_p);
     ui->tableViewShip->resizeColumnsToContents();
     ui->tableViewStock->resizeColumnsToContents();
     ui->tableViewPerepack->resizeColumnsToContents();
+    ui->tableViewUnion->resizeColumnsToContents();
+
+    int id_ist=modelPart->data(modelPart->index(push->currentIndex(),3),Qt::EditRole).toInt();
+    bool isUnion=id_ist==8 || id_ist==9;
+
+    ui->tableViewNam->setVisible(!isUnion);
+    ui->labelProd->setVisible(!isUnion);
+    ui->tableViewUnion->setVisible(isUnion);
+    ui->labelUnion->setVisible(isUnion);
 }
 
 void FormPart::addPack()

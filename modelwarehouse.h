@@ -238,4 +238,14 @@ private:
 public slots:
     void updState();
 };
+
+class ModelUnionCex : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelUnionCex(QObject *parent=0);
+    //QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+public slots:
+    void refresh(int id_part);
+};
 #endif // MODELWAREHOUSE_H

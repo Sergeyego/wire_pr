@@ -532,6 +532,22 @@
                <item>
                 <widget class="DbViewer" name="tableViewNam"/>
                </item>
+               <item>
+                <widget class="QLabel" name="labelUnion">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Объединение</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="TableView" name="tableViewUnion"/>
+               </item>
               </layout>
              </item>
              <item>
@@ -785,8 +801,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
@@ -795,8 +811,8 @@
    <header>olap/tableview.h</header>
   </customwidget>
   <customwidget>
-   <class>DbViewer</class>
-   <extends>QTableView</extends>
+   <class>DateEdit</class>
+   <extends>QDateEdit</extends>
    <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>

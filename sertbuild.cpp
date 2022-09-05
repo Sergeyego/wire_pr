@@ -7,6 +7,7 @@ SertBuild::SertBuild(QObject *parent) :
     prn=false;
     l_rus=true;
     l_en=false;
+    sample=false;
     connect(data,SIGNAL(sigRefresh()),this,SIGNAL(sigRefresh()));
 }
 
@@ -42,7 +43,7 @@ DataSert *SertBuild::sData()
 
 void SertBuild::build(int id, bool is_ship)
 {
-    data->refresh(id, is_ship);
+    data->refresh(id, is_ship, sample);
     current_id=id;
     current_is_ship=is_ship;
     rebuild();
@@ -450,7 +451,9 @@ void SertBuild::rebuild()
         insertText(cursor,tr("Грузополучатель"),tr("Consignee"));
         cursor.insertText(":\n",textBoldFormat);
         cursor.setCharFormat(textNormalFormat);
-        insertText(cursor,data->head()->poluch.rus,data->head()->poluch.eng,true);
+        if (!sample){
+            insertText(cursor,data->head()->poluch.rus,data->head()->poluch.eng,true);
+        }
         cursor.insertBlock();
     }
     cursor.setBlockFormat(formatCenter);
@@ -465,7 +468,11 @@ void SertBuild::rebuild()
     insertText(cursor,tr("Дата выдачи сертификата"),tr("Date of issue of the certificate"),false);
     cursor.insertText(tr(": "),textBoldFormat);
     cursor.setCharFormat(textNormalFormat);
-    insertDate(cursor,date,false);
+    if (!sample){
+        insertDate(cursor,date,false);
+    } else {
+        insertDate(cursor,QDate(1111,11,11),false);
+    }
     cursor.insertBlock();
 
     cursor.setBlockFormat(formatLeft);
@@ -479,7 +486,7 @@ void SertBuild::rebuild()
     QString nach=tr("Начальник ОТК");
     QString nach_en=tr("Head of Quality Department");
     QString line=tr("______________");
-    if (prn) {
+    if (prn && !sample) {
         QImage im(data->general()->sign);
         QPainter p(&im);
         QFont f(textNormalFormat.font());
@@ -512,7 +519,11 @@ void SertBuild::rebuild()
         }
         insertText(cursor,nach,nach_en);
         cursor.insertText(line,textNormalFormat);
-        insertText(cursor,data->general()->otk.rus,data->general()->otk.eng);
+        if (!sample){
+            insertText(cursor,data->general()->otk.rus,data->general()->otk.eng);
+        } else {
+            insertText(cursor,tr("[МЕСТО ДЛЯ ПЕЧАТИ, ПОДПИСЬ]"),tr("[LOCUS SIGILLI, SIGNATURE]"));
+        }
     }
 }
 
@@ -622,6 +633,12 @@ void SertBuild::setLMix(bool b)
     }
 }
 
+void SertBuild::setSample(bool b)
+{
+    sample=b;
+    this->build(current_id,current_is_ship);
+}
+
 void SertBuild::setDocEn(int id_doc, bool en)
 {
     data->setDocEn(id_doc,en);
@@ -654,7 +671,7 @@ DataSert::DataSert(QObject *parent) : QObject(parent)
     gData.sign.load("images/otk.png");
 }
 
-void DataSert::refresh(int id, bool is_ship)
+void DataSert::refresh(int id, bool is_ship, bool sample)
 {
     QSqlQuery query;
     QString sQuery;
@@ -690,13 +707,13 @@ void DataSert::refresh(int id, bool is_ship)
     if (query.exec()){
         while(query.next()){
             hData.id_wparti=query.value(0).toInt();
-            hData.netto=query.value(1).toDouble();
+            hData.netto=sample ? 1111 : query.value(1).toDouble();
             hData.nomSert=query.value(2).toString();
             hData.dateVidSert=query.value(3).toDate();
-            hData.nomPart=query.value(4).toString();
+            hData.nomPart=sample ? "1111" : query.value(4).toString();
             hData.yearPart=query.value(5).toInt();
-            hData.datePart=query.value(6).toDate();
-            hData.nPlav=query.value(7).toString();
+            hData.datePart=sample ? QDate(1111,11,11) :query.value(6).toDate();
+            hData.nPlav=sample ? "1111" : query.value(7).toString();
             hData.prov=query.value(9).toString();
             hData.diam=query.value(10).toDouble();
             hData.spool.rus=query.value(11).toString();
@@ -710,7 +727,7 @@ void DataSert::refresh(int id, bool is_ship)
         refreshChem();
         refreshMech();
         refreshSert();
-        refreshQR(id,is_ship);
+        refreshQR(id,is_ship,sample);
         emit sigRefresh();
     } else {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Ok);
@@ -884,10 +901,11 @@ void DataSert::refreshSert()
     }
 }
 
-void DataSert::refreshQR(int id, bool is_ship)
+void DataSert::refreshQR(int id, bool is_ship, bool sample)
 {
     QString str;
-    str+="СЕРТИФИКАТ КАЧЕСТВА №"+hData.nomPart+"-"+QString::number(hData.yearPart);
+    str+=sample? "ОБРАЗЕЦ СЕРТИФИКАТА КАЧЕСТВА №" : "СЕРТИФИКАТ КАЧЕСТВА №";
+    str+=hData.nomPart+"-"+QString::number(hData.yearPart);
     if (is_ship) str+="/"+hData.nomSert;
     str+="\n";
     str+=hData.is_cored? "Наименование продукции " : "Марка проволоки ";
@@ -908,10 +926,17 @@ void DataSert::refreshQR(int id, bool is_ship)
     str+="\n";
     str+="Масса проволоки нетто, кг "+QString::number(hData.netto);
     str+="\n";
-    if (is_ship) str+="Грузополучатель: "+hData.poluch.rus+"\n";
-    QDate date;
-    date=(is_ship)? hData.dateVidSert : QDate::currentDate();
+    if (is_ship && !sample) {
+        str+="Грузополучатель: "+hData.poluch.rus+"\n";
+    }
+    QDate date=QDate::currentDate();
+    if (is_ship && !sample){
+        date=hData.dateVidSert;
+    } else if (sample){
+        date=QDate(1111,11,11);
+    }
     str+="Дата "+date.toString("dd.MM.yy")+"\n";
+
     quint32 id_part=hData.id_wparti;
     quint32 id_ship= is_ship ? id : 0;
     quint64 cod=0;

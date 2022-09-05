@@ -69,6 +69,8 @@ private slots:
     void showSertShip(QModelIndex index);
     void fltPodt();
     void fltSrc();
+    void savePrim();
+    void enPrimSave();
 };
 
 #endif // FORMPART_H

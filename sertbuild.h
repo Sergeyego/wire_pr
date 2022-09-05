@@ -78,7 +78,7 @@ class DataSert : public QObject
 
 public:
     DataSert(QObject *parent = 0);
-    void refresh(int id, bool is_ship=true);
+    void refresh(int id, bool is_ship=true, bool sample=false);
 
     const generalData* general();
     QString tu();
@@ -96,7 +96,7 @@ private:
     void refreshChem();
     void refreshMech();
     void refreshSert();
-    void refreshQR(int id, bool is_ship);
+    void refreshQR(int id, bool is_ship, bool sample=false);
     QStringList tuList;
     generalData gData;
     headData hData;
@@ -133,6 +133,7 @@ public slots:
     void setLRus(bool b);
     void setLEn(bool b);
     void setLMix(bool b);
+    void setSample(bool b);
     void setDocEn(int id_doc, bool en);
     void setDefaultDoc();
 
@@ -142,6 +143,7 @@ private:
     bool prn;
     bool l_rus;
     bool l_en;
+    bool sample;
     int current_id;
     bool current_is_ship;
     void insertText(QTextCursor &c, const QString &rus, const QString &eng, bool newpar=false, bool sep=true, bool html=false);

@@ -877,6 +877,23 @@ ModelUnionCex::ModelUnionCex(QObject *parent) : QSqlQueryModel(parent)
 
 }
 
+QVariant ModelUnionCex::data(const QModelIndex &item, int role) const
+{
+    QVariant origData=QSqlQueryModel::data(item,Qt::EditRole);
+    QVariant::Type type=origData.type();
+    if (role==Qt::DisplayRole){
+        if (type==QMetaType::Double){
+            return (origData.isNull()) ? QString("") : QLocale().toString(origData.toDouble(),'f',2);
+        } else if (type==QMetaType::QDate){
+            return (origData.isNull()) ? QString("") : origData.toDate().toString("dd.MM.yy");
+        }
+    } else if (role==Qt::TextAlignmentRole){
+        return (type==QMetaType::Int || type==QMetaType::Double || type==QMetaType::Float || type==QMetaType::LongLong ) ?
+                    int(Qt::AlignRight | Qt::AlignVCenter) : int(Qt::AlignLeft | Qt::AlignVCenter);
+    }
+    return QSqlQueryModel::data(item,role);
+}
+
 void ModelUnionCex::refresh(int id_part)
 {
     QSqlQuery query;
@@ -903,4 +920,11 @@ void ModelUnionCex::refresh(int id_part)
     } else {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
     }
+    double sum=0;
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,1),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (tr("Объединение итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Объединение");
+    emit sigSum(s);
 }

@@ -120,6 +120,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addEmptyLock(ui->toolButtonEdtPack);
     push->addEmptyLock(ui->groupBoxTu);
     push->addEmptyLock(ui->tableViewPack);
+    push->addEmptyLock(ui->groupBoxPrim);
     push->addUnLock(ui->toolButtonPodt);
     push->addUnLock(ui->toolButtonSrc);
 
@@ -195,12 +196,15 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(modelPackCex,SIGNAL(sigSum(QString)),ui->labelPackProd,SLOT(setText(QString)));
     connect(modelStockCex,SIGNAL(sigSum(QString)),ui->labelStock,SLOT(setText(QString)));
     connect(modelPerepackCex,SIGNAL(sigSum(QString)),ui->labelPerepack,SLOT(setText(QString)));
+    connect(modelUnionCex,SIGNAL(sigSum(QString)),ui->labelUnion,SLOT(setText(QString)));
     connect(ui->cmdLblSpool,SIGNAL(clicked(bool)),this,SLOT(lblEd()));
     connect(ui->cmdLblPack,SIGNAL(clicked(bool)),this,SLOT(lblGroup()));
     connect(ui->tableViewShip,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showSertShip(QModelIndex)));
     connect(ui->toolButtonPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
     connect(ui->toolButtonSrc,SIGNAL(clicked(bool)),this,SLOT(fltSrc()));
     connect(ui->toolButtonCopyTu,SIGNAL(clicked(bool)),modelGostPart,SLOT(copyTu()));
+    connect(ui->pushButtonSavePrim,SIGNAL(clicked(bool)),this,SLOT(savePrim()));
+    connect(ui->plainTextEditPrim,SIGNAL(textChanged()),this,SLOT(enPrimSave()));
 
     modelPart->select();
 
@@ -244,6 +248,7 @@ void FormPart::blockShip(bool val)
     ui->cmdLblSpool->setDisabled(val);
     ui->toolButtonDelPack->setDisabled(val);
     ui->toolButtonEdtPack->setDisabled(val);
+    ui->groupBoxPrim->setDisabled(val);
 }
 
 
@@ -327,6 +332,20 @@ void FormPart::updShip()
     ui->labelProd->setVisible(!isUnion);
     ui->tableViewUnion->setVisible(isUnion);
     ui->labelUnion->setVisible(isUnion);
+
+    ui->plainTextEditPrim->clear();
+    if (id_p>0){
+        QSqlQuery query;
+        query.prepare("select prim_prod from wire_parti where id = :id");
+        query.bindValue(":id",id_p);
+        if (query.exec()){
+            query.next();
+            ui->plainTextEditPrim->setPlainText(query.value(0).toString());
+            ui->pushButtonSavePrim->setEnabled(false);
+        } else {
+            QMessageBox::critical(this,tr("Ошибка"),query.lastError().text(),QMessageBox::Cancel);
+        }
+    }
 }
 
 void FormPart::addPack()
@@ -431,4 +450,25 @@ void FormPart::fltSrc()
 {
     DialogFlt d(tr("исходные партии"), Models::instance()->relSrcPart);
     d.exec();
+}
+
+void FormPart::savePrim()
+{
+    int id_p = partPackModel->rowCount()>0 ? partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt() : -1;
+    if (id_p>0){
+        QSqlQuery query;
+        query.prepare("update wire_parti set prim_prod = :prim where id = :id");
+        query.bindValue(":prim",ui->plainTextEditPrim->toPlainText());
+        query.bindValue(":id",id_p);
+        if (!query.exec()){
+            QMessageBox::critical(this,tr("Ошибка"),query.lastError().text(),QMessageBox::Cancel);
+        } else {
+            ui->pushButtonSavePrim->setEnabled(false);
+        }
+    }
+}
+
+void FormPart::enPrimSave()
+{
+    ui->pushButtonSavePrim->setEnabled(true);
 }

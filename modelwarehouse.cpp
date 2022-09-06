@@ -900,7 +900,7 @@ void ModelUnionCex::refresh(int id_part)
     query.prepare("select wpm.n_s||'-'||date_part('year',wpm.dat)||' '||p.nam||' ф '||d.sdim||' '||wpk.short , wicn.m_netto, wicn.dat , wl.snam, "
                   "we.first_name ||' '||substr(we.last_name,1,1)||'. '||substr(we.middle_name,1,1)||'.' "
                   "from wire_in_cex_nam wicn "
-                  "inner join wire_parti wp on wp.id = wicn.id_wpartipack "
+                  "inner join wire_parti wp on wp.id = wicn.id_wparti "
                   "inner join wire_parti_m wpm on wpm.id = wp.id_m "
                   "inner join provol p on p.id = wpm.id_provol "
                   "inner join diam d on d.id = wpm.id_diam "

@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "modelwarehouse.h"
-#include <QTcpSocket>
 
 namespace Ui {
 class FormNaklPodt;

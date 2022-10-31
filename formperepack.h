@@ -6,7 +6,6 @@
 #include "db/dbmapper.h"
 #include "models.h"
 #include "modelwarehouse.h"
-#include <QTcpSocket>
 
 namespace Ui {
 class FormPerePack;

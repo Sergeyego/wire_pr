@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QtSql>
 #include "db/dbtablemodel.h"
+#include "invoicemanager.h"
 
 class Models : public QObject
 {
@@ -45,6 +46,7 @@ public:
     DbRelation *relMatr;
     DbRelation *relRasxVid;
     DbRelation *relPodtOp;
+    InvoiceManager *invoiceManager;
 
 public slots:
     void refresh();

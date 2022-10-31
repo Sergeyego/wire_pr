@@ -75,7 +75,8 @@ SOURCES += main.cpp\
     olap/formfilter.cpp \
     olap/olapmodel.cpp \
     olap/tableview.cpp \
-    formpodtnorm.cpp
+    formpodtnorm.cpp \
+    invoicemanager.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
@@ -125,7 +126,8 @@ HEADERS  += mainwindow.h \
     olap/formfilter.h \
     olap/olapmodel.h \
     olap/tableview.h \
-    formpodtnorm.h
+    formpodtnorm.h \
+    invoicemanager.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \

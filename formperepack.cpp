@@ -81,14 +81,10 @@ void FormPerePack::printNakl()
 {
     int row=ui->tableViewNakl->currentIndex().row();
     int id_nakl=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,0),Qt::EditRole).toInt();
-    QTcpSocket tcpSocket;
-    tcpSocket.connectToHost("127.0.0.1", 5555);
-    if (tcpSocket.waitForConnected()) {
-        tcpSocket.write((QString("%1:%2:%3:%4").arg(1).arg(2).arg(id_nakl).arg(-1)).toLocal8Bit().data());
-        tcpSocket.waitForBytesWritten();
-        tcpSocket.disconnectFromHost();
-    } else {
-        QMessageBox::critical(this,tr("Ошибка"),tcpSocket.errorString(),QMessageBox::Ok);
-    }
+    QString vid=tr("Проволока");
+    QString type=tr("Переупаковка");
+    QString filename=type.toUpper()+"_"+ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,1),Qt::EditRole).toString();
+    int year=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,2),Qt::EditRole).toDate().year();
+    Models::instance()->invoiceManager->getInvoice("invoices/wire/perepack/"+QString::number(id_nakl),vid,type,filename,year);
 }
 

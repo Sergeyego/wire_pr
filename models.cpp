@@ -117,6 +117,8 @@ Models::Models(QObject *parent) :
     relSrcPart->proxyModel()->setFilterRegExp(QRegExp(QString::number(year-1)+"|"+QString::number(year)));
 
     relEan->proxyModel()->setFilterKeyColumn(0);
+
+    invoiceManager = new InvoiceManager(this);
 }
 
 Models *Models::instance()

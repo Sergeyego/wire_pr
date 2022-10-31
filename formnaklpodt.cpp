@@ -85,13 +85,9 @@ void FormNaklPodt::printNakl()
     QDate dat=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,1),Qt::EditRole).toDate();
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,2),Qt::EditRole).toInt();
     int id_vid=ui->comboBoxVid->model()->data(ui->comboBoxVid->model()->index(ui->comboBoxVid->currentIndex(),0),Qt::EditRole).toInt();
-    QTcpSocket tcpSocket;
-    tcpSocket.connectToHost("127.0.0.1", 5555);
-    if (tcpSocket.waitForConnected()) {
-        tcpSocket.write((QString("%1:%2:%3:%4-%5").arg(1).arg(3).arg(dat.toString("dd.MM.yyyy")).arg(id_type).arg(id_vid)).toLocal8Bit().data());
-        tcpSocket.waitForBytesWritten();
-        tcpSocket.disconnectFromHost();
-    } else {
-        QMessageBox::critical(this,tr("Ошибка"),tcpSocket.errorString(),QMessageBox::Ok);
-    }
+    QString vid=tr("Проволока");
+    QString type=tr("Подтяжка");
+    QString filename=ui->comboBoxVid->currentText().toUpper()+"_"+ui->comboBoxType->currentText().toUpper()+"_"+ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(row,0),Qt::EditRole).toString();
+    int year=dat.year();
+    Models::instance()->invoiceManager->getInvoice("invoices/wire/semifinished/"+QString::number(id_vid)+"/"+QString::number(id_type)+"/"+dat.toString("yyyy-MM-dd"),vid,type,filename,year);
 }

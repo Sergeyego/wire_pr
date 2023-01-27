@@ -12,24 +12,13 @@ FormNakl::FormNakl(QWidget *parent) :
     ui->dateEditEnd->setDate(QDate::currentDate());
     ui->comboBoxType->setModel(Models::instance()->relNaklType->model());
     ui->comboBoxType->setModelColumn(Models::instance()->relNaklType->columnDisplay());
+
     modelNakl = new ModelNaklGen(this);
     modelNaklCont = new ModelNaklGenCont(this);
 
-    refreshNakl();
     ui->tableViewNakl->setModel(modelNakl);
-    ui->tableViewNakl->verticalHeader()->setDefaultSectionSize(ui->tableViewNakl->verticalHeader()->fontMetrics().height()*1.5);
-    ui->tableViewNakl->setColumnHidden(2,true);
-    ui->tableViewNakl->setColumnWidth(0,100);
-    ui->tableViewNakl->setColumnWidth(1,200);
 
-    modelNaklCont->refresh(QDate(),-1);
     ui->tableViewItem->setModel(modelNaklCont);
-    ui->tableViewItem->verticalHeader()->setDefaultSectionSize(ui->tableViewItem->verticalHeader()->fontMetrics().height()*1.5);
-    ui->tableViewItem->setColumnWidth(0,200);
-    ui->tableViewItem->setColumnWidth(1,60);
-    ui->tableViewItem->setColumnWidth(2,80);
-    ui->tableViewItem->setColumnWidth(3,100);
-    ui->tableViewItem->setColumnWidth(4,100);
 
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(refreshNakl()));
     connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(refreshNakl()));
@@ -37,9 +26,7 @@ FormNakl::FormNakl(QWidget *parent) :
     connect(ui->cmdNakl,SIGNAL(clicked(bool)),this,SLOT(printNakl()));
     connect(modelNaklCont,SIGNAL(sigSum(QString)),ui->labelItogo,SLOT(setText(QString)));
 
-    if (modelNakl->rowCount()){
-        ui->tableViewNakl->selectRow(0);
-    }
+    refreshNakl();
 }
 
 FormNakl::~FormNakl()
@@ -65,8 +52,11 @@ void FormNakl::refreshNakl()
     int r=ui->comboBoxType->currentIndex();
     int id_type=ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(r,0),Qt::EditRole).toInt();
     modelNakl->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),id_type);
-    if (modelNakl->rowCount()){
-        ui->tableViewNakl->selectRow(0);
+    if (ui->tableViewNakl->model()->rowCount()){
+        ui->tableViewNakl->setColumnHidden(2,true);
+        ui->tableViewNakl->setColumnWidth(0,100);
+        ui->tableViewNakl->setColumnWidth(1,100);
+        ui->tableViewNakl->selectRow(modelNakl->rowCount()-1);
     } else {
         modelNaklCont->refresh(QDate(),-1);
     }
@@ -77,6 +67,13 @@ void FormNakl::refreshCont(QModelIndex index)
     QDate dat=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),1),Qt::EditRole).toDate();
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),2),Qt::EditRole).toInt();
     modelNaklCont->refresh(dat,id_type);
+    if (ui->tableViewItem->model()->rowCount()){
+        ui->tableViewItem->setColumnWidth(0,200);
+        ui->tableViewItem->setColumnWidth(1,60);
+        ui->tableViewItem->setColumnWidth(2,80);
+        ui->tableViewItem->setColumnWidth(3,100);
+        ui->tableViewItem->setColumnWidth(4,100);
+    }
 }
 
 void FormNakl::printNakl()

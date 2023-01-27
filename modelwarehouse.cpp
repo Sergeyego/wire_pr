@@ -665,7 +665,10 @@ ModelNaklPodt::ModelNaklPodt(QObject *parent) : QSqlQueryModel(parent)
 void ModelNaklPodt::refresh(QDate beg, QDate end, int id_type, int id_podt_type)
 {
     QSqlQuery query;
-    query.prepare("select distinct date_part('doy',wpc.dat), wpc.dat, wpc.id_op, wp.id_type "
+    query.prepare("select distinct (select count(distinct wpc2.dat) from wire_podt_cex wpc2 "
+                  "inner join wire_podt as wp2 on wp2.id=wpc2.id_podt "
+                  "where date_part('year',wpc2.dat) = date_part('year',wpc.dat) and wpc2.dat<=wpc.dat and wpc2.id_op = wpc.id_op and wp2.id_type = wp.id_type "
+                  "), wpc.dat, wpc.id_op, wp.id_type "
                   "from wire_podt_cex as wpc "
                   "inner join wire_podt as wp on wp.id=wpc.id_podt "
                   "where wpc.dat between :d1 and :d2 and wpc.id_op = :t and wp.id_type = :pt "

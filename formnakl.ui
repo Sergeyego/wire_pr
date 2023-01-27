@@ -70,7 +70,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxType"/>
+          <widget class="QComboBox" name="comboBoxType">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">
@@ -88,7 +95,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableViewNakl">
+        <widget class="TableView" name="tableViewNakl">
          <property name="selectionMode">
           <enum>QAbstractItemView::SingleSelection</enum>
          </property>
@@ -115,6 +122,12 @@
          </item>
          <item>
           <widget class="QLabel" name="labelItogo">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string>Итого</string>
            </property>
@@ -136,7 +149,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableViewItem"/>
+        <widget class="TableView" name="tableViewItem"/>
        </item>
       </layout>
      </widget>
@@ -149,6 +162,11 @@
    <class>DateEdit</class>
    <extends>QDateEdit</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QTableView</extends>
+   <header>olap/tableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

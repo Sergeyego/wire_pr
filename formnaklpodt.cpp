@@ -61,7 +61,7 @@ void FormNaklPodt::refreshNakl()
         ui->tableViewNakl->setColumnHidden(3,true);
         ui->tableViewNakl->setColumnWidth(0,100);
         ui->tableViewNakl->setColumnWidth(1,100);
-        ui->tableViewNakl->selectRow(0);
+        ui->tableViewNakl->selectRow(ui->tableViewNakl->model()->rowCount()-1);
     } else {
         modelNaklPodtCont->refresh(QDate(),-1,-1);
     }
@@ -73,10 +73,12 @@ void FormNaklPodt::refreshCont(QModelIndex index)
     int id_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),2),Qt::EditRole).toInt();
     int id_podt_type=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index.row(),3),Qt::EditRole).toInt();
     modelNaklPodtCont->refresh(dat,id_type,id_podt_type);
-    ui->tableViewCont->setColumnWidth(1,120);
-    ui->tableViewCont->setColumnWidth(2,100);
-    ui->tableViewCont->setColumnWidth(3,100);
-    ui->tableViewCont->setColumnWidth(4,100);
+    if (ui->tableViewCont->model()->rowCount()){
+        ui->tableViewCont->setColumnWidth(1,120);
+        ui->tableViewCont->setColumnWidth(2,100);
+        ui->tableViewCont->setColumnWidth(3,100);
+        ui->tableViewCont->setColumnWidth(4,100);
+    }
 }
 
 void FormNaklPodt::printNakl()

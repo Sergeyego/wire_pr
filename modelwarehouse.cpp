@@ -458,7 +458,6 @@ int ModelPodtPart::rowCount(const QModelIndex &parent) const
 void ModelPodtPart::refresh(int id_podt)
 {
     this->clear();
-    //setQuery("select m.n_s, m.dat, m.kvo from wire_parti_m as m where m.id_podt = "+QString::number(id_podt));
     setQuery("select m.n_s||'-'||date_part('year',m.dat) ||' '|| pr.nam ||' '|| dm.sdim ||' '||k.short  as parti, sum(d.m_netto), r.kvo, z.kvo "
              "from wire_in_cex_nam as d "
              "inner join wire_parti as p on p.id=d.id_wparti "
@@ -474,7 +473,6 @@ void ModelPodtPart::refresh(int id_podt)
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
     } else {
         setHeaderData(0, Qt::Horizontal,tr("Партия"));
-        //setHeaderData(1, Qt::Horizontal,tr("Дата"));
         setHeaderData(1, Qt::Horizontal,tr("Масса, кг"));
         setHeaderData(2, Qt::Horizontal,tr("σв, МПа"));
         setHeaderData(3, Qt::Horizontal,tr("σв(c),МПа"));

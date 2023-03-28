@@ -205,6 +205,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(ui->toolButtonCopyTu,SIGNAL(clicked(bool)),modelGostPart,SLOT(copyTu()));
     connect(ui->pushButtonSavePrim,SIGNAL(clicked(bool)),this,SLOT(savePrim()));
     connect(ui->plainTextEditPrim,SIGNAL(textChanged()),this,SLOT(enPrimSave()));
+    connect(ui->toolButtonVar,SIGNAL(clicked(bool)),this,SLOT(edtVar()));
 
     modelPart->select();
 
@@ -334,13 +335,16 @@ void FormPart::updShip()
     ui->labelUnion->setVisible(isUnion);
 
     ui->plainTextEditPrim->clear();
+    ui->lineEditVar->clear();
+    ui->toolButtonVar->setEnabled(id_p>0);
     if (id_p>0){
         QSqlQuery query;
-        query.prepare("select prim_prod from wire_parti where id = :id");
+        query.prepare("select wp.prim_prod, ev.nam from wire_parti wp inner join elrtr_vars ev on ev.id = wp.id_var  where wp.id = :id");
         query.bindValue(":id",id_p);
         if (query.exec()){
             query.next();
             ui->plainTextEditPrim->setPlainText(query.value(0).toString());
+            ui->lineEditVar->setText(query.value(1).toString());
             ui->pushButtonSavePrim->setEnabled(false);
         } else {
             QMessageBox::critical(this,tr("Ошибка"),query.lastError().text(),QMessageBox::Cancel);
@@ -385,6 +389,37 @@ void FormPart::edtPack()
             int pos=ui->comboBoxPack->findText(p.getText());
             if (pos>=0)
                 ui->comboBoxPack->setCurrentIndex(pos);
+        }
+    }
+}
+
+void FormPart::edtVar()
+{
+    if (partPackModel->rowCount()){
+        int id_p = partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
+        QMap <QString, int> map;
+        QSqlQuery query;
+        query.prepare("select id, nam from elrtr_vars order by nam");
+        if (query.exec()){
+            while (query.next()){
+                map.insert(query.value(1).toString(),query.value(0).toInt());
+            }
+        } else {
+            QMessageBox::critical(this,tr("Ошибка"),query.lastError().text(),QMessageBox::Cancel);
+        }
+        bool ok;
+        QStringList items = map.keys();
+        QString item = QInputDialog::getItem(this,tr("Редактировать вариант"),tr("Выберите вариант"),items, items.indexOf(ui->lineEditVar->text()),false,&ok);
+        if (ok){
+            QSqlQuery queryVar;
+            queryVar.prepare("update wire_parti set id_var = :id_var where id = :id ");
+            queryVar.bindValue(":id_var",map.value(item,1));
+            queryVar.bindValue(":id",id_p);
+            if (queryVar.exec()){
+                updShip();
+            } else {
+                QMessageBox::critical(this,tr("Ошибка"),queryVar.lastError().text(),QMessageBox::Cancel);
+            }
         }
     }
 }

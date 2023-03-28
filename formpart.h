@@ -60,6 +60,7 @@ private slots:
     void addPack();
     void delPack();
     void edtPack();
+    void edtVar();
     void setAddItogo(QString s);
     void setOutItogo(QString s);
     void setNamItogo(QString s);

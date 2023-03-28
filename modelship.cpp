@@ -29,15 +29,17 @@ ModelDataShip::ModelDataShip(QObject *parent) :
 
 void ModelDataShip::refresh(int id_ship)
 {
-    setQuery("select w.id, pr.nam, d.sdim, k.short, m.n_s, w.m_netto "
-                 "from wire_shipment_consist w "
-                 "inner join wire_parti p on p.id=w.id_wparti "
-                 "inner join wire_parti_m m on p.id_m=m.id "
-                 "inner join provol pr on pr.id=m.id_provol "
-                 "inner join diam d on d.id=m.id_diam "
-                 "inner join wire_pack_kind k on p.id_pack=k.id "
-                 "where w.id_ship= "+QString::number(id_ship)+
-                 " order by pr.nam, d.sdim, k.short, m.n_s");
+    setQuery("select w.id, pr.nam || CASE WHEN p.id_var <> 1 THEN (' /'::text || ev.nam::text) || '/'::text ELSE ''::text END AS mark, "
+             "d.sdim, k.short, m.n_s, w.m_netto "
+             "from wire_shipment_consist w "
+             "inner join wire_parti p on p.id=w.id_wparti "
+             "inner join wire_parti_m m on p.id_m=m.id "
+             "inner join provol pr on pr.id=m.id_provol "
+             "inner join diam d on d.id=m.id_diam "
+             "inner join wire_pack_kind k on p.id_pack=k.id "
+             "inner join elrtr_vars ev on ev.id=p.id_var "
+             "where w.id_ship= "+QString::number(id_ship)+
+             " order by pr.nam, d.sdim, k.short, m.n_s");
     if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
     } else {

@@ -65,13 +65,10 @@ FormPodt::FormPodt(QWidget *parent) :
             ui->tableView->setColumnHidden(i,true);
         }
     }
-    ui->tableView->setColumnWidth(7,100);
+    ui->tableView->setColumnWidth(7,130);
 
     modelPodtPart = new ModelPodtPart(this);
     ui->tableViewPart->setModel(modelPodtPart);
-
-    modelPodtAnn = new ModelPodtAnn(this);
-    ui->tableViewAnn->setModel(modelPodtAnn);
 
     push = new DbMapper(ui->tableView,this);
     ui->horizontalLayoutBtn->insertWidget(0,push);
@@ -82,6 +79,7 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addMapping(ui->comboBoxLine,5);
     push->addMapping(ui->lineEditComm,6);
     push->addMapping(ui->comboBoxType,7);
+    push->addMapping(ui->comboBoxVol,8);
     push->addLock(ui->dateEditBeg);
     push->addLock(ui->dateEditEnd);
     push->addLock(ui->cmdUpd);
@@ -137,8 +135,6 @@ void FormPodt::updPart(int index)
     modelPodtVol->refresh(id_podt);
     modelPodtPart->refresh(id_podt);
     ui->tableViewPart->resizeToContents();
-    modelPodtAnn->refresh(id_podt);
-    ui->tableViewAnn->resizeToContents();
     modelPodtIn->refresh(id_podt,1);
     modelPodtOut->refresh(id_podt,2);
     modelPodtDef->refresh(id_podt,3);

@@ -212,55 +212,6 @@ bool PartPackModel::edtPack(int id, int id_pack_new, int id_type_new)
     return ok;
 }
 
-ModelAnn::ModelAnn(QObject *parent) : DbTableModel("wire_ann",parent)
-{
-    addColumn("id","id");
-    addColumn("n_s",tr("№"));
-    addColumn("dat",tr("Дата"));
-    addColumn("id_wire_oven",tr("Стенд"),Models::instance()->relOven);
-    addColumn("time_blow",tr("Время продувки"));
-    addColumn("temp",tr("Температура"));
-    addColumn("time_ex",tr("Время выдержки"));
-    addColumn("note",tr("Комментарий"));
-    setSort("wire_ann.dat, wire_ann.n_s");
-    setDecimals(4,0);
-    setDecimals(5,0);
-    setDecimals(6,0);
-}
-
-void ModelAnn::refresh(QDate beg, QDate end)
-{
-    setFilter("wire_ann.dat between '"+beg.toString("yyyy.MM.dd")+"' and '"+end.toString("yyyy.MM.dd")+"'");
-    select();
-}
-
-bool ModelAnn::insertRow(int row, const QModelIndex &parent)
-{
-    int old_num=0;
-    if (rowCount()>0) old_num=this->data(this->index(rowCount()-1,1),Qt::EditRole).toInt();
-    setDefaultValue(1,QString("%1").arg((old_num+1),4,'d',0,QChar('0')));
-    setDefaultValue(2,QDate::currentDate());
-    return DbTableModel::insertRow(row,parent);
-}
-
-ModelPodtMech::ModelPodtMech(QObject *parent) : DbTableModel("wire_podt_mech", parent)
-{
-    addColumn("id","id");
-    addColumn("id_podt","id_podt");
-    addColumn("id_mech",tr("Параметр"),Models::instance()->relMechTbl);
-    addColumn("kvo",tr("Значение"));
-    setDecimals(3,3);
-    setDefaultValue(2,1);
-    setSort("wire_podt_mech.id_mech, wire_podt_mech.kvo");
-}
-
-void ModelPodtMech::refresh(int id_podt)
-{
-    setDefaultValue(1,id_podt);
-    setFilter("wire_podt_mech.id_podt = "+QString::number(id_podt));
-    select();
-}
-
 ModelMechReal::ModelMechReal(QObject *parent) : DbTableModel("wire_mech",parent)
 {
     addColumn("id","id");

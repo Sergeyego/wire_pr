@@ -51,7 +51,6 @@
     </property>
     <addaction name="actionEdtWire"/>
     <addaction name="actionSpool"/>
-    <addaction name="actionRoute"/>
     <addaction name="actionLine"/>
     <addaction name="actionMatr"/>
    </widget>
@@ -59,7 +58,6 @@
     <property name="title">
      <string>Производство</string>
     </property>
-    <addaction name="actionAnn"/>
     <addaction name="actionPart"/>
     <addaction name="actionLbl"/>
    </widget>

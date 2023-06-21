@@ -5,7 +5,6 @@
 #include <QDebug>
 #include "formpart.h"
 #include "models.h"
-#include "formroute.h"
 #include "formship.h"
 #include "formwarehouse.h"
 #include "formedtwire.h"
@@ -15,7 +14,6 @@
 #include "formreport.h"
 #include "olap/cubewidget.h"
 #include "formpodt.h"
-#include "formann.h"
 #include "formedtpack.h"
 #include "formedtline.h"
 #include "formlbl.h"
@@ -58,7 +56,6 @@ private slots:
 
     void edtWire();
     void edtSpool();
-    void edtRoute();
     void edtLine();
     void edtMatr();
     void podtPart();
@@ -67,7 +64,6 @@ private slots:
     void podtFix();
     void podtNakl();
     void podtNorm();
-    void wireAnn();
     void wirePart();
     void wireLbl();
     void perepack();

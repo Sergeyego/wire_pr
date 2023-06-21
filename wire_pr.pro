@@ -31,7 +31,6 @@ SOURCES += main.cpp\
     checkform.cpp \
     dialogotk.cpp \
     dialogpack.cpp \
-    drawing.cpp \
     editor.cpp \
     formedtwire.cpp \
     formpart.cpp \
@@ -39,7 +38,6 @@ SOURCES += main.cpp\
     formpodt.cpp \
     formpresence.cpp \
     formreport.cpp \
-    formroute.cpp \
     formship.cpp \
     formwarehouse.cpp \
     lblengine.cpp \
@@ -49,7 +47,6 @@ SOURCES += main.cpp\
     modelship.cpp \
     modelwarehouse.cpp \
     sertbuild.cpp \
-    formann.cpp \
     formedtpack.cpp \
     formedtline.cpp \
     formlbl.cpp \
@@ -82,7 +79,6 @@ HEADERS  += mainwindow.h \
     checkform.h \
     dialogotk.h \
     dialogpack.h \
-    drawing.h \
     editor.h \
     formedtwire.h \
     formpart.h \
@@ -90,7 +86,6 @@ HEADERS  += mainwindow.h \
     formpodt.h \
     formpresence.h \
     formreport.h \
-    formroute.h \
     formship.h \
     formwarehouse.h \
     lblengine.h \
@@ -100,7 +95,6 @@ HEADERS  += mainwindow.h \
     modelship.h \
     modelwarehouse.h \
     sertbuild.h \
-    formann.h \
     formedtpack.h \
     formedtline.h \
     formlbl.h \
@@ -143,7 +137,6 @@ FORMS    += mainwindow.ui \
     formroute.ui \
     formship.ui \
     formwarehouse.ui \
-    formann.ui \
     formedtpack.ui \
     formedtline.ui \
     formlbl.ui \

@@ -10,7 +10,6 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
 
     actAction(ui->actionEdtWire,&MainWindow::edtWire);
     actAction(ui->actionSpool,&MainWindow::edtSpool);
-    actAction(ui->actionRoute,&MainWindow::edtRoute);
     actAction(ui->actionLine,&MainWindow::edtLine);
     actAction(ui->actionMatr,&MainWindow::edtMatr);
 
@@ -21,7 +20,6 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionPodtNakl,&MainWindow::podtNakl);
     actAction(ui->actionPodtNorm,&MainWindow::podtNorm);
 
-    actAction(ui->actionAnn,&MainWindow::wireAnn);
     actAction(ui->actionPart,&MainWindow::wirePart);
     actAction(ui->actionLbl,&MainWindow::wireLbl);
 
@@ -155,13 +153,6 @@ void MainWindow::edtSpool()
     }
 }
 
-void MainWindow::edtRoute()
-{
-    if (!exist(sender())){
-        addSubWindow(new FormRoute(),sender());
-    }
-}
-
 void MainWindow::edtLine()
 {
     if (!exist(sender())){
@@ -215,13 +206,6 @@ void MainWindow::podtNorm()
 {
     if (!exist(sender())){
         addSubWindow(new FormPodtNorm(),sender());
-    }
-}
-
-void MainWindow::wireAnn()
-{
-    if (!exist(sender())){
-        addSubWindow(new FormAnn(),sender());
     }
 }
 

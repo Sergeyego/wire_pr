@@ -51,23 +51,6 @@ private:
     int id_m;
 };
 
-class ModelAnn : public DbTableModel
-{
-    Q_OBJECT
-public:
-    ModelAnn(QObject *parent=0);
-    void refresh(QDate beg, QDate end);
-    bool insertRow(int row, const QModelIndex &parent);
-};
-
-class ModelPodtMech : public DbTableModel
-{
-    Q_OBJECT
-public:
-    ModelPodtMech(QObject *parent=0);
-    void refresh(int id_podt);
-};
-
 class ModelMechReal : public DbTableModel
 {
     Q_OBJECT

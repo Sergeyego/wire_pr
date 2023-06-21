@@ -171,21 +171,21 @@ private slots:
     void calcSum();
 };
 
-class ModelPodtNext : public QSqlQueryModel
+/*class ModelPodtNext : public QSqlQueryModel
 {
     Q_OBJECT
 public:
     ModelPodtNext(QObject *parent=0);
     void refresh(int id_podt);
-};
+};*/
 
-class ModelPodtAnn : public QSqlQueryModel
+/*class ModelPodtAnn : public QSqlQueryModel
 {
     Q_OBJECT
 public:
     ModelPodtAnn(QObject *parent=0);
     void refresh(int id_podt);
-};
+};*/
 
 class ModelNaklGen : public QSqlQueryModel
 {

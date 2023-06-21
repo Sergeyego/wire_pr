@@ -381,6 +381,7 @@ ModelPodt::ModelPodt(QObject *parent) : DbTableModel("wire_podt",parent)
     addColumn("id_line",tr("Стан"),Models::instance()->relLine);
     addColumn("comment",tr("Комментарий"));
     addColumn("id_type",tr("Тип"),Models::instance()->relPodtType);
+    addColumn("id_vol_type",tr("Волочение"),Models::instance()->relType);
     setSort("dat,n_s");
     setDefaultValue(7,1);
     connect(this,SIGNAL(sigUpd()),Models::instance()->relPodt->model(),SLOT(refresh()));
@@ -509,46 +510,6 @@ void ModelPodtCont::calcSum()
     QString s;
     s = (sum>0)? (tr("Поступление итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Поступление");
     emit sigSum(s);
-}
-
-ModelPodtNext::ModelPodtNext(QObject *parent) : QSqlQueryModel(parent)
-{
-    refresh(-1);
-}
-
-void ModelPodtNext::refresh(int id_podt)
-{
-    setQuery("select p.n_s ||'-'||date_part('year',p.dat), c.dat, d.sdim from wire_podt_cont as c "
-             "inner join wire_podt as p on p.id=c.id_podt "
-             "inner join diam as d on p.id_diam=d.id "
-             "where c.id_podt_src = "+QString::number(id_podt)+" order by p.n_s, p.dat");
-    if (lastError().isValid()){
-        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
-    } else {
-        setHeaderData(0, Qt::Horizontal,tr("Подтяжка"));
-        setHeaderData(1, Qt::Horizontal,tr("Дата"));
-        setHeaderData(2, Qt::Horizontal,tr("Диаметр"));
-    }
-}
-
-ModelPodtAnn::ModelPodtAnn(QObject *parent) : QSqlQueryModel(parent)
-{
-    refresh(-1);
-}
-
-void ModelPodtAnn::refresh(int id_podt)
-{
-    setQuery("select a.n_s, a.dat, o.nam from wire_ann_cont as c "
-             "inner join wire_ann as a on a.id=c.id_ann "
-             "inner join wire_oven as o on o.id=a.id_wire_oven "
-             "where c.id_podt = "+QString::number(id_podt)+" group by a.n_s, a.dat, o.nam order by a.n_s, a.dat");
-    if (lastError().isValid()){
-        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
-    } else {
-        setHeaderData(0, Qt::Horizontal,tr("Отжиг"));
-        setHeaderData(1, Qt::Horizontal,tr("Дата"));
-        setHeaderData(2, Qt::Horizontal,tr("Стенд"));
-    }
 }
 
 ModelNaklGen::ModelNaklGen(QObject *parent) : QSqlQueryModel(parent)

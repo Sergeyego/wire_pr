@@ -30,7 +30,6 @@ private:
     void saveSettings();
     ModelPodtCont *modelCont;
     ModelPodtVol *modelPodtVol;
-    ModelPodtAnn *modelPodtAnn;
     ModelPodtCex *modelPodtIn;
     ModelPodtCex *modelPodtOut;
     ModelPodtCex *modelPodtDef;

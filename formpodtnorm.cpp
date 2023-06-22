@@ -28,8 +28,8 @@ FormPodtNorm::FormPodtNorm(QWidget *parent) :
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr, dat_beg");
-    modelNorm->setDecimals(7,3);
-    modelNorm->setDefaultValue(10,QDate());
+    modelNorm->setDecimals(8,3);
+    modelNorm->setDefaultValue(11,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
     for (int i=0; i<=6; i++){

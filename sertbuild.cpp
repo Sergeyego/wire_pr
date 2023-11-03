@@ -483,26 +483,31 @@ void SertBuild::rebuild()
     cursor.insertImage(qrformat);
 
     cursor.insertText("   ",textNormalFormat);
-    QString nach=/*tr("Начальник ОТК")*/data->general()->otk_title.rus;
-    QString nach_en=/*tr("Head of Quality Department")*/data->general()->otk_title.eng;
+    QString nach=data->general()->otk_title.rus;
+    QString nach_en=data->general()->otk_title.eng;
     QString line=tr("______________");
     if (prn && !sample) {
         QImage im(data->general()->sign);
         QPainter p(&im);
         QFont f(textNormalFormat.font());
-        f.setPointSize(44);
+        f.setPixelSize(44);
         p.setFont(f);
-        int pos=100;
-        QString str;
+        QFontMetrics fm(f);
+        QString str, suf;
         if (l_en && !l_rus){
-            pos=400;
-            str=nach_en+line+data->general()->otk.eng;
+            suf=nach_en;
+            str=data->general()->otk.eng;
         } else if (l_rus && !l_en){
-            pos=630;
-            str=nach+line+data->general()->otk.rus;
+            suf=nach;
+            str=data->general()->otk.rus;
         } else if (l_rus && l_en){
-            pos=50;
-            str=nach+" / "+nach_en+line+data->general()->otk.rus+" / "+data->general()->otk.eng;
+            suf=nach+" / "+nach_en;
+            str=data->general()->otk.rus+" / "+data->general()->otk.eng;
+        }
+        str=suf+line+str;
+        int pos=(im.width()/2-fm.horizontalAdvance(suf));
+        if (pos<0){
+            pos=0;
         }
         p.drawText(pos,150,str);
         addResource(QTextDocument::ImageResource, QUrl("sign"), im);
@@ -653,24 +658,7 @@ void SertBuild::setDefaultDoc()
 
 DataSert::DataSert(QObject *parent) : QObject(parent)
 {
-    refreshMechCategory();
-    QSqlQuery query;
-    query.prepare("select adr, telboss||', '||telfax||', '||teldop||' '||site||' '||email, otk, adr_en, otk_en, otk_title, otk_title_en from hoz where id=1");
-    if (query.exec()){
-        while(query.next()){
-            gData.adres.rus=query.value(0).toString();
-            gData.contact=query.value(1).toString();
-            gData.otk.rus=query.value(2).toString();
-            gData.adres.eng=query.value(3).toString();
-            gData.otk.eng=query.value(4).toString();
-            gData.otk_title.rus=query.value(5).toString();
-            gData.otk_title.eng=query.value(6).toString();
-        }
-    } else {
-        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Ok);
-    }
-    gData.logo.load("images/logo2.png");
-    gData.sign.load("images/otk.png");
+
 }
 
 void DataSert::refresh(int id, bool is_ship, bool sample)
@@ -725,6 +713,7 @@ void DataSert::refresh(int id, bool is_ship, bool sample)
             hData.spool.eng=query.value(15).toString();
             hData.srcProv=query.value(16).toString();
         }
+        refreshGeneralData(hData.dateVidSert);
         refreshTu();
         refreshChem();
         refreshMech();
@@ -977,6 +966,30 @@ void DataSert::refreshQR(int id, bool is_ship, bool sample)
         painter.drawRect(0,0,scale-1,scale-1);
     }
     qr_code=img;
+}
+
+void DataSert::refreshGeneralData(QDate date)
+{
+    refreshMechCategory();
+    QSqlQuery query;
+    query.prepare("select adr, telboss||', '||telfax||', '||teldop||' '||site||' '||email, otk, adr_en, otk_en, otk_title, otk_title_en, sign "
+                  "from general_data where dat = (select max(mgd.dat) from general_data mgd where mgd.dat <= :dat )");
+    query.bindValue(":dat",date);
+    if (query.exec()){
+        while(query.next()){
+            gData.adres.rus=query.value(0).toString();
+            gData.contact=query.value(1).toString();
+            gData.otk.rus=query.value(2).toString();
+            gData.adres.eng=query.value(3).toString();
+            gData.otk.eng=query.value(4).toString();
+            gData.otk_title.rus=query.value(5).toString();
+            gData.otk_title.eng=query.value(6).toString();
+            gData.sign.loadFromData(query.value(7).toByteArray());
+        }
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Ok);
+    }
+    gData.logo.load("images/logo2.png");
 }
 
 void DataSert::refreshMechCategory()

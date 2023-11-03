@@ -98,6 +98,7 @@ private:
     void refreshMech();
     void refreshSert();
     void refreshQR(int id, bool is_ship, bool sample=false);
+    void refreshGeneralData(QDate date);
     QStringList tuList;
     generalData gData;
     headData hData;

@@ -665,7 +665,7 @@ void DataSert::refresh(int id, bool is_ship, bool sample)
 {
     QSqlQuery query;
     QString sQuery;
-    sQuery= is_ship ? QString("select w.id_wparti, w.m_netto, s.nom_s, s.dat_vid, m.n_s, date_part('year',m.dat), m.dat, "
+    sQuery= is_ship ? QString("select w.id_wparti, w.m_netto, s.nom_s, coalesce(s.dat_vid,:dt), m.n_s, date_part('year',m.dat), m.dat, "
                   "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, pol.naim, pprov.is_cored, pol.naim_en, k.short_en, coalesce(bprov.nam, pprov.nam) "
                   "from wire_shipment_consist as w "
                   "inner join sertifikat as s on w.id_ship=s.id "
@@ -680,7 +680,7 @@ void DataSert::refresh(int id, bool is_ship, bool sample)
                   "inner join poluch as pol on s.id_pol=pol.id "
                   "inner join wire_pack_kind as k on p.id_pack=k.id "
                   "where w.id= :id ") :
-                  QString("select p.id, m.kvo, NULL, NULL, m.n_s, date_part('year',m.dat), m.dat, "
+                  QString("select p.id, m.kvo, NULL, (:dt)::date, m.n_s, date_part('year',m.dat), m.dat, "
                           "b.n_plav, prov.nam, pprov.nam, d.diam, k.short, NULL, pprov.is_cored, NULL, k.short_en, coalesce(bprov.nam, pprov.nam) "
                           "from wire_parti as p "
                           "inner join wire_parti_m as m on p.id_m=m.id "
@@ -694,6 +694,7 @@ void DataSert::refresh(int id, bool is_ship, bool sample)
                           "where p.id= :id ");
     query.prepare(sQuery);
     query.bindValue(":id",id);
+    query.bindValue(":dt",QDate::currentDate());
     if (query.exec()){
         while(query.next()){
             hData.id_wparti=query.value(0).toInt();

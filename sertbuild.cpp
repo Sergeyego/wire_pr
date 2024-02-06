@@ -505,7 +505,11 @@ void SertBuild::rebuild()
             str=data->general()->otk.rus+" / "+data->general()->otk.eng;
         }
         str=suf+line+str;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
         int pos=(im.width()/2-fm.horizontalAdvance(suf));
+#else
+        int pos=(im.width()/2-fm.width(suf));
+#endif
         if (pos<0){
             pos=0;
         }

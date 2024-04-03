@@ -461,6 +461,14 @@ void SertBuild::rebuild()
     insertText(cursor,tr("При переписке по вопросам качества просьба ссылаться на номер партии"),tr("When correspondence on quality issues, please refer to the batch number"),true);
 
     cursor.insertBlock();
+    cursor.setBlockFormat(formatLeft);
+    cursor.setCharFormat(textBoldFormat);
+    insertText(cursor,tr("Заключение"),tr("Conclusion"));
+    cursor.insertText(tr(":\n"),textBoldFormat);
+    cursor.setCharFormat(textNormalFormat);
+    insertText(cursor,tr("соответствует ")+tulist,tr("corresponds to ")+tulist,true);
+
+    cursor.insertBlock();
     cursor.setBlockFormat(formatCenter);
     cursor.setCharFormat(textBoldFormat);
     QDate date;

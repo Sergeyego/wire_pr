@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1058</width>
-    <height>796</height>
+    <width>1104</width>
+    <height>794</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
       </widget>
      </item>
      <item>
-      <widget class="DateEdit" name="dateEditBeg">
+      <widget class="DbDateEdit" name="dateEditBeg">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="DateEdit" name="dateEditEnd">
+      <widget class="DbDateEdit" name="dateEditEnd">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -81,19 +81,6 @@
          <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="label_3">
@@ -135,7 +122,7 @@
       </widget>
      </item>
      <item>
-      <widget class="DateEdit" name="dateEdit">
+      <widget class="DbDateEdit" name="dateEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -159,36 +146,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Выбирать партии</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBoxSelPart"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cmdUpdPart">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Обновить список партий</string>
-       </property>
-       <property name="text">
-        <string>Обновить партии</string>
-       </property>
-       <property name="icon">
-        <iconset theme="view-refresh">
-         <normaloff>.</normaloff>.</iconset>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cmdNakl">
@@ -264,14 +221,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -280,8 +237,6 @@
   <tabstop>cmdUpdate</tabstop>
   <tabstop>lineEditNum</tabstop>
   <tabstop>dateEdit</tabstop>
-  <tabstop>comboBoxSelPart</tabstop>
-  <tabstop>cmdUpdPart</tabstop>
   <tabstop>tableViewNakl</tabstop>
   <tabstop>tableViewPerePack</tabstop>
  </tabstops>

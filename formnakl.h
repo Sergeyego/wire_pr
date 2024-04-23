@@ -2,12 +2,31 @@
 #define FORMNAKL_H
 
 #include <QWidget>
-#include "models.h"
-#include "modelwarehouse.h"
+#include "rels.h"
+
 
 namespace Ui {
 class FormNakl;
 }
+
+class ModelNaklGen : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelNaklGen(QObject *parent=0);
+    void refresh(QDate beg, QDate end, int id_type);
+};
+
+class ModelNaklGenCont : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+    ModelNaklGenCont(QObject *parent=0);
+    void refresh(QDate dat, int id_type);
+signals:
+    void sigSum(QString sum);
+};
 
 class FormNakl : public QWidget
 {

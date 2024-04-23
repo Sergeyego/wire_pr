@@ -12,7 +12,7 @@ FormFixPodt::FormFixPodt(QWidget *parent) :
 
     modelFix = new DbTableModel("wire_podt_ost",this);
     modelFix->addColumn("dat",tr("Дата"));
-    modelFix->addColumn("id_podt",tr("Полуфабрикат"),Models::instance()->relPodt);
+    modelFix->addColumn("id_podt",tr("Полуфабрикат"),Rels::instance()->relPodt);
     modelFix->addColumn("kvo",tr("Кол-во, кг"));
     modelFix->setSuffix("inner join wire_podt as wp on wp.id = wire_podt_ost.id_podt "
                         "inner join prov_buht as h on wp.id_buht=h.id "
@@ -29,7 +29,6 @@ FormFixPodt::FormFixPodt(QWidget *parent) :
     ui->tableView->setColumnWidth(2,80);
 
     connect(ui->comboBoxDat,SIGNAL(currentIndexChanged(int)),this,SLOT(updFixData(int)));
-    connect(ui->pushButtonFlt,SIGNAL(clicked(bool)),this,SLOT(setFltPodt()));
     connect(ui->pushButtonFix,SIGNAL(clicked(bool)),this,SLOT(fixNewOst()));
     connect(ui->pushButtonUpd,SIGNAL(clicked(bool)),this,SLOT(updFix()));
 
@@ -62,12 +61,6 @@ void FormFixPodt::updFixData(int index)
         modelFix->setFilter(QString("wire_podt_ost.dat = '%1'").arg(date.toString("yyyy-MM-dd")));
         modelFix->select();
     }
-}
-
-void FormFixPodt::setFltPodt()
-{
-    DialogFlt d(tr("подтяжки"),Models::instance()->relPodt);
-    d.exec();
 }
 
 void FormFixPodt::fixNewOst()

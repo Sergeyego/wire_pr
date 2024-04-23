@@ -17,7 +17,7 @@ FormEdtLine::FormEdtLine(QWidget *parent) :
     ui->tableView->setColumnWidth(1,250);
     ui->tableView->setColumnWidth(2,150);
 
-    connect(modelLine,SIGNAL(sigUpd()),Models::instance()->relLine->model(),SLOT(refresh()));
+    connect(modelLine,SIGNAL(sigUpd()),Rels::instance()->relLine,SLOT(refreshModel()));
 }
 
 FormEdtLine::~FormEdtLine()

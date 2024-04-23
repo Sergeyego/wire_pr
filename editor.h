@@ -12,6 +12,7 @@
 #include <QMenu>
 #include <QTextEdit>
 #include <QInputDialog>
+#include <QCheckBox>
 #include "sertbuild.h"
 
 namespace Ui {
@@ -85,6 +86,7 @@ public slots:
     void exportPdf(QString filename);
     void print(QPrinter *p);
     void drawDoc(QPainter *painter);
+    void exportHtml();
 
 private slots:
     void textBold();
@@ -104,7 +106,9 @@ private slots:
     void chDoc();
     void setEnDoc(bool en);
     void setDefaultDoc();
-
+    void loadHtml();
+    void setLang();
+    void setType();
 };
 
 #endif // EDITOR_H

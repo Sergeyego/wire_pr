@@ -2,7 +2,6 @@
 #define FORMSHIP_H
 
 #include <QWidget>
-#include "modelship.h"
 #include "editor.h"
 #include "sertbuild.h"
 #include <QtPrintSupport/QPrinter>
@@ -12,6 +11,34 @@
 namespace Ui {
 class FormShip;
 }
+
+class ModelShip : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    explicit ModelShip(QObject *parent = 0);
+    void refresh(QDate begDate, QDate endDate);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+signals:
+
+public slots:
+
+};
+
+class ModelDataShip : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    explicit ModelDataShip(QObject *parent = 0);
+    void refresh(int id_ship);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+signals:
+
+public slots:
+
+};
 
 class FormShip : public QWidget
 {
@@ -33,7 +60,7 @@ private:
 private slots:
     void updateShip();
     void updateDataShip(QModelIndex shipIndex);
-    void updateSertificat(QModelIndex shipDataIndex);
+    void updateSertificat(QModelIndex index);
     void printAll();
     void pdfAll();
     void printAll(QPagedPaintDevice *printer);

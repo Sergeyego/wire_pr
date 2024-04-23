@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1053</width>
-    <height>722</height>
+    <width>1051</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
           </widget>
          </item>
          <item>
-          <widget class="DateEdit" name="dateEditBeg">
+          <widget class="DbDateEdit" name="dateEditBeg">
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -45,7 +45,7 @@
           </widget>
          </item>
          <item>
-          <widget class="DateEdit" name="dateEditEnd">
+          <widget class="DbDateEdit" name="dateEditEnd">
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -70,7 +70,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxType">
+          <widget class="DbComboBox" name="comboBoxType">
            <property name="minimumSize">
             <size>
              <width>150</width>
@@ -109,7 +109,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="layoutWidget1">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -159,14 +159,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbComboBox</class>
+   <extends>QComboBox</extends>
+   <header>db/dbcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

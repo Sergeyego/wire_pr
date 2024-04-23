@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "db/dbtablemodel.h"
-#include "models.h"
+#include "rels.h"
 
 struct range {
     QVariant min;

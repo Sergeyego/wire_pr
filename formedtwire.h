@@ -3,13 +3,22 @@
 
 #include <QWidget>
 #include "db/dbtablemodel.h"
-#include "models.h"
-#include "models_edt.h"
+#include "rels.h"
 #include "db/dbmapper.h"
 
 namespace Ui {
 class FormEdtWire;
 }
+
+class ModelEan : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelEan(QObject *parent=0);
+    void refresh(int id_prov);
+public slots:
+    void updRels(QModelIndex index);
+};
 
 class FormEdtWire : public QWidget
 {

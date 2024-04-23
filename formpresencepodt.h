@@ -2,12 +2,26 @@
 #define FORMPRESENCEPODT_H
 
 #include <QWidget>
-#include "modelpresence.h"
-#include "models.h"
+#include "rels.h"
 
 namespace Ui {
 class FormPresencePodt;
 }
+
+class ModelPresencePodt : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    explicit ModelPresencePodt(QObject *parent = 0);
+    void refresh(QDate date, bool bypart, int id_type);
+    QVariant data(const QModelIndex &index,int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+private:
+    bool by_Part;
+    double sum;
+    int colsum;
+};
 
 class FormPresencePodt : public QWidget
 {

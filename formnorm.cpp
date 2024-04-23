@@ -10,8 +10,14 @@ FormNorm::FormNorm(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    ui->comboBoxType->setModel(Models::instance()->relAddType->model());
-    ui->comboBoxType->setModelColumn(1);
+    if (!Rels::instance()->relAddType->isInital()){
+        Rels::instance()->relAddType->refreshModel();
+    }
+    ui->comboBoxType->setModel(Rels::instance()->relAddType->model());
+    ui->comboBoxType->setEditable(false);
+    colVal t;
+    t.val=3;
+    ui->comboBoxType->setCurrentData(t);
 
     modelNorm = new DbTableModel("wire_norm",this);
     modelNorm->addColumn("id_add_type","id_add_type");
@@ -20,9 +26,9 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("id_diam","id_diam");
     modelNorm->addColumn("id_spool","id_spool");
     modelNorm->addColumn("id_pack","id_pack");
-    modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
+    modelNorm->addColumn("id_matr",tr("Материал"),Rels::instance()->relMatr);
     modelNorm->addColumn("kvo",tr("Норма"));
-    modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
+    modelNorm->addColumn("id_vid",tr("Вид затрат"),Rels::instance()->relRasxVid);
     modelNorm->addColumn("dat_beg",tr("Дата нач."));
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
@@ -82,6 +88,10 @@ bool FormNorm::ready()
 
 void FormNorm::upd()
 {
+    if (sender()==ui->pushButtonUpd){
+        Rels::instance()->relAddType->refreshModel();
+        modelNorm->refreshRelsModel();
+    }
     modelProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),getIdType());
     if (ui->tableViewProd->model()->rowCount()){
         ui->tableViewProd->selectRow(0);
@@ -199,4 +209,101 @@ void FormNorm::calcSum()
         sum+=modelProd->data(modelProd->index(i,12),Qt::EditRole).toDouble();
     }
     ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
+}
+
+ModelProd::ModelProd(QObject *parent) : QSqlQueryModel(parent)
+{
+
+}
+
+void ModelProd::refresh(QDate beg, QDate end, int id_type)
+{
+    QSqlQuery query;
+    query.prepare("select w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, "
+                  "sum(w.m_netto) "
+                  "from wire_in_cex_data w "
+                  "inner join wire_in_cex_type t on w.id_type=t.id and t.koef=1 "
+                  "inner join wire_parti p on w.id_wparti=p.id "
+                  "inner join wire_parti_m m on p.id_m=m.id "
+                  "inner join wire_line as l on m.id_type=l.id "
+                  "inner join provol pr on pr.id=m.id_provol "
+                  "inner join diam d on d.id=m.id_diam "
+                  "inner join wire_pack_kind k on p.id_pack=k.id "
+                  "inner join wire_pack wp on wp.id=p.id_pack_type "
+                  "where w.id_type = :id_type and w.dat between :d1 and :d2 "
+                  "group by w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed "
+                  "order by t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed");
+    query.bindValue(":id_type",id_type);
+    query.bindValue(":d1",beg);
+    query.bindValue(":d2",end);
+    if (query.exec()){
+        setQuery(query);
+        setHeaderData(6,Qt::Horizontal,QString::fromUtf8("Тип продукции"));
+        setHeaderData(7,Qt::Horizontal,QString::fromUtf8("Стан"));
+        setHeaderData(8,Qt::Horizontal,QString::fromUtf8("Марка"));
+        setHeaderData(9,Qt::Horizontal,QString::fromUtf8("Диам."));
+        setHeaderData(10,Qt::Horizontal,QString::fromUtf8("Носитель"));
+        setHeaderData(11,Qt::Horizontal,QString::fromUtf8("Упаковка"));
+        setHeaderData(12,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
+        updState();
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
+    }
+}
+
+QVariant ModelProd::data(const QModelIndex &item, int role) const
+{
+    if (role==Qt::BackgroundRole){
+        QString s;
+        for (int i=0; i<=5; i++){
+            if (!s.isEmpty()){
+                s+=":";
+            }
+            s+=this->data(this->index(item.row(),i),Qt::EditRole).toString();
+        }
+        return exList.contains(s) ? QVariant(QColor(255,255,255)) : QVariant(QColor(255,170,170));
+    }
+    if (role==Qt::DisplayRole && item.column()==12){
+        return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
+    }
+    if (role==Qt::TextAlignmentRole && item.column()==12){
+        return int(Qt::AlignRight | Qt::AlignVCenter);
+    }
+    return QSqlQueryModel::data(item,role);
+}
+
+bool ModelProd::ready()
+{
+    bool ok=true;
+    for (int i=0; i<rowCount(); i++){
+        QString s;
+        for (int j=0; j<=5; j++){
+            if (!s.isEmpty()){
+                s+=":";
+            }
+            s+=this->data(this->index(i,j),Qt::EditRole).toString();
+        }
+        ok=ok && exList.contains(s);
+        if (!ok){
+            break;
+        }
+    }
+    return ok;
+}
+
+void ModelProd::updState()
+{
+    QSqlQuery query;
+    query.prepare("select distinct id_add_type||':'||id_line||':'||id_provol||':'||id_diam||':'||id_spool||':'||id_pack as nam from wire_norm order by nam");
+    if (query.exec()){
+        exList.clear();
+        while(query.next()){
+            exList.push_back(query.value(0).toString());
+        }
+        emit dataChanged(this->index(0,0),this->index(rowCount()-1,columnCount()-1));
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
+    }
 }

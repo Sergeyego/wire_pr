@@ -2,8 +2,7 @@
 #define FORMNORM_H
 
 #include <QWidget>
-#include "models.h"
-#include "modelwarehouse.h"
+#include "rels.h"
 #include "olap/cubewidget.h"
 
 namespace Ui {
@@ -18,6 +17,20 @@ typedef struct
     QDate d_beg;
     QDate d_end;
 } pnorm;
+
+class ModelProd : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelProd(QObject *parent);
+    void refresh(QDate beg, QDate end, int id_type);
+    QVariant data(const QModelIndex &item, int role) const;
+    bool ready();
+private:
+    QStringList exList;
+public slots:
+    void updState();
+};
 
 class FormNorm : public QWidget
 {

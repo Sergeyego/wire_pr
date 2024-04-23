@@ -3,15 +3,68 @@
 
 #include <QWidget>
 #include "db/dbmapper.h"
-#include "modelwarehouse.h"
 #include "db/dbtablemodel.h"
-#include "models.h"
-#include "models_edt.h"
-#include "dialogflt.h"
+#include "rels.h"
 
 namespace Ui {
 class FormPodt;
 }
+
+class ModelPodtPart : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelPodtPart(QObject *parent=0);
+    QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+public slots:
+    void refresh(int id_podt);
+};
+
+class ModelPodtCont : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodtCont(QObject *parent=0);
+    void refresh(int id_part);
+signals:
+    void sigSum(QString sum);
+private slots:
+    void calcSum();
+};
+
+class ModelPodtVol : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodtVol(QObject *parent=0);
+    void refresh(int id_part);
+signals:
+    void sigSum(QString sum);
+private slots:
+    void calcSum();
+};
+
+class ModelPodtCex : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodtCex(QObject *parent=0);
+    void refresh(int id_podt, int id_op);
+private slots:
+    void calcSum();
+signals:
+    void sigSum(QString sum);
+};
+
+class ModelPodt : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPodt(QObject *parent=0);
+    void refresh(QDate beg, QDate end);
+    bool insertRow(int row, const QModelIndex &parent);
+};
 
 class FormPodt : public QWidget
 {
@@ -39,8 +92,6 @@ private slots:
     void updPart(int index);
     void setContItogo(QString s);
     void setVolItogo(QString s);
-    void fltSrc();
-    void fltPodt();
     void setInItogo(QString s);
     void setOutItogo(QString s);
     void setDefItogo(QString s);

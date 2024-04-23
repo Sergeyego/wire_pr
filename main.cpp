@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QFontDatabase>
 #include "db/dblogin.h"
 
 int main(int argc, char *argv[])

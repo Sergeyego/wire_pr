@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogFlt</class>
- <widget class="QDialog" name="DialogFlt">
+ <class>DbRelationEditDialog</class>
+ <widget class="QDialog" name="DbRelationEditDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>514</width>
-    <height>85</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Укажите фильтр</string>
+   <string>Редактирование списка</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Выбирать партии</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox"/>
-     </item>
-    </layout>
+    <widget class="DbViewer" name="tableView"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -40,12 +29,19 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
+   <header>db/dbviewer.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DialogFlt</receiver>
+   <receiver>DbRelationEditDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -61,7 +57,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DialogFlt</receiver>
+   <receiver>DbRelationEditDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

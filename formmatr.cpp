@@ -10,9 +10,9 @@ FormMatr::FormMatr(QWidget *parent) :
     modelMatr = new DbTableModel("wire_matr",this);
     modelMatr->addColumn("id","id");
     modelMatr->addColumn("nam",tr("Название"));
-    modelMatr->addColumn("id_ed",tr("Ед.изм"),Models::instance()->relEd);
+    modelMatr->addColumn("id_ed",tr("Ед.изм"),Rels::instance()->relEd);
 
-    modelMatr->setSort("nam");
+    modelMatr->setSort("wire_matr.nam");
     modelMatr->setDefaultValue(2,1);
     modelMatr->select();
 
@@ -21,7 +21,7 @@ FormMatr::FormMatr(QWidget *parent) :
     ui->tableView->setColumnWidth(1,350);
     ui->tableView->setColumnWidth(2,70);
 
-    connect(modelMatr,SIGNAL(sigUpd()),Models::instance()->relMatr,SLOT(refreshModel()));
+    connect(modelMatr,SIGNAL(sigUpd()),Rels::instance()->relMatr,SLOT(refreshModel()));
 }
 
 FormMatr::~FormMatr()

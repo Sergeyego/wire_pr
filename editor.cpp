@@ -35,18 +35,26 @@ Editor::Editor(QTextDocument *doc, QWidget *parent) :
     printer = new QPrinter();
     printer->setPageMargins(QMarginsF(30, 30, 30, 30));
     printer->setColorMode(QPrinter::Color);
-    printer->setOrientation(QPrinter::Portrait);
-    printer->setPaperSize(QPrinter::A4);
+    printer->setPageOrientation(QPageLayout::Portrait);
+    printer->setPageSize(QPageSize(QPageSize::A4));
+
+    colVal t;
+    t.val=0;
+    if (!Rels::instance()->relSertType->isInital()){
+        Rels::instance()->relSertType->refreshModel();
+    }
+    ui->comboBoxType->setModel(Rels::instance()->relSertType->model());
+    ui->comboBoxType->setEditable(false);
+    ui->comboBoxType->setCurrentData(t);
 
     ui->textEdit->setDocument(doc);
     SertBuild *s=qobject_cast<SertBuild *>(doc);
     if (s){
-        ui->checkBoxPrn->setChecked(s->getPrn());
-        connect(ui->checkBoxPrn,SIGNAL(clicked(bool)),s,SLOT(setPrn(bool)));
-        connect(ui->checkBoxObr,SIGNAL(clicked(bool)),s,SLOT(setSample(bool)));
-        connect(ui->radioButtonRus,SIGNAL(clicked(bool)),s,SLOT(setLRus(bool)));
-        connect(ui->radioButtonEn,SIGNAL(clicked(bool)),s,SLOT(setLEn(bool)));
-        connect(ui->radioButtonMix,SIGNAL(clicked(bool)),s,SLOT(setLMix(bool)));
+        ui->comboBoxType->setCurrentIndex(s->getType());
+        connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(setType()));
+        connect(ui->radioButtonRus,SIGNAL(clicked(bool)),this,SLOT(setLang()));
+        connect(ui->radioButtonEn,SIGNAL(clicked(bool)),this,SLOT(setLang()));
+        connect(ui->radioButtonMix,SIGNAL(clicked(bool)),this,SLOT(setLang()));
         connect(s,SIGNAL(sigRefresh()),this,SLOT(chDoc()));
     }
 
@@ -58,11 +66,13 @@ Editor::Editor(QTextDocument *doc, QWidget *parent) :
 
     connect(ui->cmd_print,SIGNAL(clicked()),this,SLOT(filePrint()));
     connect(ui->cmd_pdf,SIGNAL(clicked()),this,SLOT(exportPdf()));
-    connect(ui->checkBoxObr,SIGNAL(clicked(bool)),this,SLOT(setObr()));
+    connect(ui->comboBoxType,SIGNAL(currentIndexChanged(int)),this,SLOT(setObr()));
     connect(ui->radioButtonRus,SIGNAL(clicked(bool)),this,SLOT(setObr()));
     connect(ui->radioButtonEn,SIGNAL(clicked(bool)),this,SLOT(setObr()));
     connect(ui->radioButtonMix,SIGNAL(clicked(bool)),this,SLOT(setObr()));
     connect(ui->pushButtonSertDef,SIGNAL(clicked(bool)),this,SLOT(setDefaultDoc()));
+    connect(ui->pushButtonHtml,SIGNAL(clicked(bool)),this,SLOT(exportHtml()));
+    connect(ui->toolButtonLoad,SIGNAL(clicked(bool)),this,SLOT(loadHtml()));
 }
 
 QTextDocument *Editor::document()
@@ -242,10 +252,29 @@ void Editor::drawDoc(QPainter *painter)
     QSize size (rect.size());
     size.scale(doc->size().toSize(),Qt::KeepAspectRatioByExpanding);
     painter->setWindow(0,0,size.width(),size.height());
-    if (ui->checkBoxObr->isChecked()){
+    if (ui->comboBoxType->currentIndex()==1){
         painter->drawImage(painter->window(),QImage(imBackPath()));
     }
     doc->drawContents(painter);
+}
+
+void Editor::exportHtml()
+{
+    SertBuild *doc = qobject_cast<SertBuild *>(ui->textEdit->document());
+    QString exportname, fname;
+    fname= doc? (doc->getName()) : QString("sertificat");
+    if (doc){
+        QSettings settings("szsm", QApplication::applicationName());
+        QDir dir(settings.value("sertPath",QDir::homePath()).toString());
+        exportname = QFileDialog::getSaveFileName(this,tr("Сохранить HTML"),dir.path()+"/"+fname+".html", "*.html");
+        if (!exportname.isEmpty()) {
+            QFile file(exportname);
+            if (file.open(QIODevice::WriteOnly)){
+                file.write(doc->toHtml().toUtf8());
+                file.close();
+            }
+        }
+    }
 }
 
 void Editor::textBold()
@@ -411,7 +440,7 @@ void Editor::textSize(const QString &p)
 
 void Editor::setObr()
 {
-    if (ui->checkBoxObr->isChecked()){
+    if (ui->comboBoxType->currentIndex()==1){
         ui->textEdit->viewport()->setStyleSheet(QString("background-image: url(%1);").arg(imBackPath()));
     } else {
         ui->textEdit->viewport()->setStyleSheet(QString(""));
@@ -426,8 +455,8 @@ void Editor::chDoc()
             b->deleteLater();
         }
         boxes.clear();
-        foreach (sertData d, *s->sData()->sert()) {
-            QCheckBox *box = new QCheckBox(d.ved_short.rus+": "+d.nom_doc);
+        for (sertData d : s->getSData()){
+            QCheckBox *box = new QCheckBox(d.ved_short+": "+d.nom_doc);
             connect(box,SIGNAL(clicked(bool)),this,SLOT(setEnDoc(bool)));
             box->setChecked(d.en);
             box->setProperty("id",d.id_doc);
@@ -456,6 +485,41 @@ void Editor::setDefaultDoc()
     }
 }
 
+void Editor::loadHtml()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open html"),QDir::homePath(), tr("HTML Files (*.html)"));
+    if (!fileName.isEmpty()){
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+            QString html=file.readAll();
+            this->document()->setHtml(html);
+            file.close();
+        }
+    }
+}
+
+void Editor::setLang()
+{
+    QString lang="mix";
+    if (ui->radioButtonRus->isChecked()){
+        lang="ru";
+    } else if (ui->radioButtonEn->isChecked()){
+        lang="en";
+    }
+    SertBuild *s=qobject_cast<SertBuild *>(this->document());
+    if (s){
+        s->setLang(lang);
+    }
+}
+
+void Editor::setType()
+{
+    SertBuild *s=qobject_cast<SertBuild *>(this->document());
+    if (s){
+        s->setType(ui->comboBoxType->getCurrentData().val.toInt());
+    }
+}
+
 void Editor::filePrint()
 {
     QPrintDialog printDialog(printer, this);
@@ -475,12 +539,7 @@ void Editor::exportPdf()
 {
     SertBuild *doc = qobject_cast<SertBuild *>(ui->textEdit->document());
     QString exportname, fname;
-    fname= doc? (doc->getNomPart()+"_"+doc->getYearPart()) : QString("sertificat");
-    if (doc){
-        if (!doc->getNomSert().isEmpty()){
-            fname+="_"+doc->getNomSert();
-        }
-    }
+    fname= doc? (doc->getName()) : QString("sertificat");
     QSettings settings("szsm", QApplication::applicationName());
     QDir dir(settings.value("sertPath",QDir::homePath()).toString());
     exportname = QFileDialog::getSaveFileName(this,tr("Сохранить PDF"),dir.path()+"/"+fname+".pdf", "*.pdf");
@@ -494,8 +553,9 @@ void Editor::exportPdf()
 
 void Editor::exportPdf(QString filename)
 {
-    if (QFileInfo(filename).suffix().isEmpty())
+    if (QFileInfo(filename).suffix().isEmpty()){
         filename.append(".pdf");
+    }
     QPrinter p;
     p.setOutputFormat(QPrinter::PdfFormat);
     p.setOutputFileName(filename);
@@ -660,4 +720,3 @@ void TextEdit::addTable()
         }
     }
 }
-

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1101</width>
-    <height>604</height>
+    <width>1169</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
           </widget>
          </item>
          <item>
-          <widget class="DateEdit" name="dateEditBeg"/>
+          <widget class="DbDateEdit" name="dateEditBeg"/>
          </item>
          <item>
           <widget class="QLabel" name="label_9">
@@ -41,7 +41,7 @@
           </widget>
          </item>
          <item>
-          <widget class="DateEdit" name="dateEditEnd"/>
+          <widget class="DbDateEdit" name="dateEditEnd"/>
          </item>
          <item>
           <widget class="QPushButton" name="cmdUpd">
@@ -70,16 +70,6 @@
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonFltPodt">
-           <property name="toolTip">
-            <string>Фильтр исходных протяжек</string>
-           </property>
-           <property name="text">
-            <string>Фильтр исходных протяжек</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -103,7 +93,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="layoutWidget1">
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
         <layout class="QGridLayout" name="gridLayout">
@@ -140,22 +130,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="8">
-          <widget class="QComboBox" name="comboBoxSrs"/>
-         </item>
-         <item row="1" column="9">
-          <widget class="QToolButton" name="toolButtonSrc">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>Фильтр исходных партий</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_7">
            <property name="maximumSize">
@@ -170,7 +144,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QComboBox" name="comboBoxLine">
+          <widget class="DbComboBox" name="comboBoxLine">
            <property name="maximumSize">
             <size>
              <width>150</width>
@@ -193,7 +167,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QComboBox" name="comboBoxDiam"/>
+          <widget class="DbComboBox" name="comboBoxDiam"/>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_3">
@@ -242,7 +216,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="DateEdit" name="dateEdit"/>
+          <widget class="DbDateEdit" name="dateEdit"/>
          </item>
          <item row="0" column="4">
           <widget class="QLabel" name="label_6">
@@ -252,7 +226,7 @@
           </widget>
          </item>
          <item row="0" column="5" colspan="3">
-          <widget class="QComboBox" name="comboBoxType"/>
+          <widget class="DbComboBox" name="comboBoxType"/>
          </item>
          <item row="2" column="9">
           <spacer name="horizontalSpacer_3">
@@ -268,7 +242,10 @@
           </spacer>
          </item>
          <item row="2" column="5" colspan="4">
-          <widget class="QComboBox" name="comboBoxVol"/>
+          <widget class="DbComboBox" name="comboBoxVol"/>
+         </item>
+         <item row="1" column="1" colspan="9">
+          <widget class="DbComboBox" name="comboBoxSrs"/>
          </item>
         </layout>
        </item>
@@ -409,11 +386,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
@@ -422,6 +394,16 @@
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbComboBox</class>
+   <extends>QComboBox</extends>
+   <header>db/dbcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -436,7 +418,6 @@
   <tabstop>dateEditEnd</tabstop>
   <tabstop>cmdUpd</tabstop>
   <tabstop>tableView</tabstop>
-  <tabstop>toolButtonSrc</tabstop>
  </tabstops>
  <resources/>
  <connections/>

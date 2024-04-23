@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>988</width>
-    <height>688</height>
+    <width>984</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxBase">
+          <widget class="DbComboBox" name="comboBoxBase">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -82,7 +82,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxType"/>
+          <widget class="DbComboBox" name="comboBoxType"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_3">
@@ -264,6 +264,11 @@
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbComboBox</class>
+   <extends>QComboBox</extends>
+   <header>db/dbcombobox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

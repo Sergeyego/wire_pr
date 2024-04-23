@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>929</width>
-    <height>721</height>
+    <width>927</width>
+    <height>719</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDateEdit" name="dateEdit">
+      <widget class="DbDateEdit" name="dateEdit">
        <property name="displayFormat">
         <string>dd.MM.yy</string>
        </property>
@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxType"/>
+      <widget class="DbComboBox" name="comboBoxType"/>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButtonMark">
@@ -92,6 +92,16 @@
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbComboBox</class>
+   <extends>QComboBox</extends>
+   <header>db/dbcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

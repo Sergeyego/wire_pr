@@ -40,8 +40,8 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableViewCont->setColumnHidden(1,true);
     ui->tableViewCont->setColumnWidth(2,90);
     ui->tableViewCont->setColumnWidth(3,80);
-    ui->tableViewCont->setColumnWidth(4,150);
-    ui->tableViewCont->setColumnWidth(5,320);
+    ui->tableViewCont->setColumnWidth(4,140);
+    ui->tableViewCont->setColumnWidth(5,400);
 
     modelPodtVol = new ModelPodtVol(this);
     ui->tableViewVol->setModel(modelPodtVol);
@@ -50,7 +50,7 @@ FormPodt::FormPodt(QWidget *parent) :
     ui->tableViewVol->setColumnWidth(2,80);
     ui->tableViewVol->setColumnWidth(3,80);
     ui->tableViewVol->setColumnWidth(4,140);
-    ui->tableViewVol->setColumnWidth(5,150);
+    ui->tableViewVol->setColumnWidth(5,140);
 
     modelPodt = new ModelPodt(this);
     ui->tableView->verticalHeader()->setDefaultSectionSize(ui->tableView->verticalHeader()->fontMetrics().height()*1.5);
@@ -87,15 +87,12 @@ FormPodt::FormPodt(QWidget *parent) :
     push->addEmptyLock(ui->tableViewPodtIn);
     push->addEmptyLock(ui->tableViewPodtOut);
     push->addEmptyLock(ui->tableViewVol);
-    push->addUnLock(ui->toolButtonSrc);
-    push->addLock(ui->pushButtonFltPodt);
+    push->addEmptyLock(ui->tableViewPodtDef);
 
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(refresh()));
     connect(push,SIGNAL(currentIndexChanged(int)),this,SLOT(updPart(int)));
     connect(modelCont,SIGNAL(sigSum(QString)),this,SLOT(setContItogo(QString)));
     connect(modelPodtVol,SIGNAL(sigSum(QString)),this,SLOT(setVolItogo(QString)));
-    connect(ui->toolButtonSrc,SIGNAL(clicked(bool)),this,SLOT(fltSrc()));
-    connect(ui->pushButtonFltPodt,SIGNAL(clicked(bool)),this,SLOT(fltPodt()));
     connect(modelPodtIn,SIGNAL(sigSum(QString)),this,SLOT(setInItogo(QString)));
     connect(modelPodtOut,SIGNAL(sigSum(QString)),this,SLOT(setOutItogo(QString)));
     connect(modelPodtDef,SIGNAL(sigSum(QString)),this,SLOT(setDefItogo(QString)));
@@ -123,6 +120,10 @@ void FormPodt::saveSettings()
 
 void FormPodt::refresh()
 {
+    if (sender()==ui->cmdUpd){
+        modelPodt->refreshRelsModel();
+        modelCont->refreshRelsModel();
+    }
     modelPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date());
 }
 
@@ -150,18 +151,6 @@ void FormPodt::setVolItogo(QString s)
     ui->groupBoxVol->setTitle(s);
 }
 
-void FormPodt::fltSrc()
-{
-    DialogFlt d(tr("исходные партии"),Models::instance()->relSrcPart);
-    d.exec();
-}
-
-void FormPodt::fltPodt()
-{
-    DialogFlt d(tr("подтяжки"),Models::instance()->relPodt);
-    d.exec();
-}
-
 void FormPodt::setInItogo(QString s)
 {
     ui->groupBoxPodtIn->setTitle(s);
@@ -175,4 +164,220 @@ void FormPodt::setOutItogo(QString s)
 void FormPodt::setDefItogo(QString s)
 {
     ui->groupBoxDef->setTitle(s);
+}
+
+ModelPodt::ModelPodt(QObject *parent) : DbTableModel("wire_podt",parent)
+{
+    addColumn("id","id");
+    addColumn("n_s",tr("№"));
+    addColumn("dat",tr("Дата"));
+    addColumn("id_buht",tr("Исх. партия"),Rels::instance()->relSrcPart);
+    addColumn("id_diam",tr("Ф"),Rels::instance()->relDiam);
+    addColumn("id_line",tr("Стан"),Rels::instance()->relLine);
+    addColumn("comment",tr("Комментарий"));
+    addColumn("id_type",tr("Тип"),Rels::instance()->relPodtType);
+    addColumn("id_vol_type",tr("Волочение"),Rels::instance()->relType);
+    setSort("dat,n_s");
+    setDefaultValue(7,1);
+    connect(this,SIGNAL(sigUpd()),Rels::instance()->relPodt,SLOT(refreshModel()));
+}
+
+void ModelPodt::refresh(QDate beg, QDate end)
+{
+    setFilter("wire_podt.dat between '"+beg.toString("yyyy.MM.dd")+"' and '"+end.toString("yyyy.MM.dd")+"'");
+    select();
+}
+
+bool ModelPodt::insertRow(int row, const QModelIndex &parent)
+{
+    select();
+    int old_num=0;
+    if (rowCount()>0) old_num=this->data(this->index(rowCount()-1,1),Qt::EditRole).toInt();
+    setDefaultValue(1,QString("%1").arg((old_num+1),4,'d',0,QChar('0')));
+    setDefaultValue(2,QDate::currentDate());
+    return DbTableModel::insertRow(row,parent);
+}
+
+ModelPodtPart::ModelPodtPart(QObject *parent) : QSqlQueryModel(parent)
+{
+}
+
+QVariant ModelPodtPart::data(const QModelIndex &index, int role) const
+{
+    if (index.row()>=rowCount()|| index.row()<0 || index.column()>=columnCount() || index.column()<0) return QVariant();
+
+    QVariant value;
+
+    if ((index.row()==QSqlQueryModel::rowCount()) && (role==Qt::DisplayRole || role==Qt::EditRole)){
+        if (index.column()==0) {
+            value= tr("Итого");
+        } else if (index.column() == 1) {
+            double sum=0.0;
+            for (int i=0; i<QSqlQueryModel::rowCount(); i++){
+                QModelIndex cs=this->index(i,index.column());
+                sum+=(QSqlQueryModel::data(cs).toDouble());
+            }
+            value=sum;
+        } else value=QVariant();
+
+    } else {
+        value = (index.row()==QSqlQueryModel::rowCount()) ? QVariant() : QSqlQueryModel::data(index, role);
+    }
+    switch (role) {
+        case Qt::DisplayRole:
+        {
+            if(index.column() >=1)
+                return value.isNull() ? QVariant() : QLocale().toString(value.toDouble(),'f',2);
+            else
+                return value;
+        }
+
+        case Qt::EditRole:
+        {
+            return value;
+        }
+
+        case Qt::TextAlignmentRole:
+        {
+             if(index.column() >=1)
+                 return int(Qt::AlignRight | Qt::AlignVCenter);
+             else return int(Qt::AlignLeft | Qt::AlignVCenter);
+        }
+    }
+    return value;
+}
+
+int ModelPodtPart::rowCount(const QModelIndex &parent) const
+{
+    return (QSqlQueryModel::rowCount(parent)==0)? 0 : QSqlQueryModel::rowCount(parent)+1;
+}
+
+void ModelPodtPart::refresh(int id_podt)
+{
+    this->clear();
+    setQuery("select m.n_s||'-'||date_part('year',m.dat) ||' '|| pr.nam ||' '|| dm.sdim ||' '||k.short  as parti, sum(d.m_netto), r.kvo, z.kvo "
+             "from wire_in_cex_nam as d "
+             "inner join wire_parti as p on p.id=d.id_wparti "
+             "inner join wire_parti_m as m on m.id=p.id_m "
+             "inner join provol as pr on m.id_provol=pr.id "
+             "inner join diam as dm on m.id_diam=dm.id "
+             "inner join wire_pack_kind as k on p.id_pack=k.id "
+             "left join (select id_part as id, value as kvo from wire_parti_mech where id_mech=1) as z on z.id=m.id "
+             "left join (select id_part as id, avg(kvo) as kvo from wire_mech where id_mech=1 group by id_part) as r on r.id=m.id "
+             "where m.id_podt = "+QString::number(id_podt)+
+             "group by parti, r.kvo, z.kvo order by parti");
+    if (lastError().isValid()){
+        QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
+    } else {
+        setHeaderData(0, Qt::Horizontal,tr("Партия"));
+        setHeaderData(1, Qt::Horizontal,tr("Масса, кг"));
+        setHeaderData(2, Qt::Horizontal,tr("σв, МПа"));
+        setHeaderData(3, Qt::Horizontal,tr("σв(c),МПа"));
+    }
+}
+
+ModelPodtCont::ModelPodtCont(QObject *parent) : DbTableModel("wire_podt_cont",parent)
+{
+    addColumn("id",tr("id"));
+    addColumn("id_podt",tr("id_podt"));
+    addColumn("dat",tr("Дата"));
+    addColumn("kvo",tr("Масса, кг"));
+    addColumn("id_rab",tr("Работник"),Rels::instance()->relRab);
+    addColumn("id_podt_src",tr("Исходный полуфабрикат"),Rels::instance()->relPodt);
+    setSort("wire_podt_cont.dat");
+    setDecimals(3,2);
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPodtCont::refresh(int id_part)
+{
+    setDefaultValue(1,id_part);
+    setFilter("wire_podt_cont.id_podt = "+QString::number(id_part));
+    select();
+}
+
+void ModelPodtCont::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,3),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (tr("Поступление итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Поступление");
+    emit sigSum(s);
+}
+
+ModelPodtVol::ModelPodtVol(QObject *parent) : DbTableModel("wire_podt_out",parent)
+{
+    addColumn("id_podt",tr("id_podt"));
+    addColumn("dat",tr("Дата"));
+    addColumn("kvo",tr("Масса, кг"));
+    addColumn("kvo_defect",tr("Брак, кг"));
+    addColumn("id_line",tr("Линия"),Rels::instance()->relLine);
+    addColumn("id_vol",tr("Работник"),Rels::instance()->relRab);
+    setDecimals(2,2);
+    setDecimals(3,2);
+    setSort("wire_podt_out.dat");
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPodtVol::refresh(int id_part)
+{
+    setDefaultValue(0,id_part);
+    setFilter("wire_podt_out.id_podt = "+QString::number(id_part));
+    select();
+}
+
+void ModelPodtVol::calcSum()
+{
+    double sum=0;
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,2),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (tr("Волочение итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : tr("Волочение");
+
+    double def=0;
+    for (int i=0; i<rowCount(); i++){
+        def+=data(index(i,3),Qt::EditRole).toDouble();
+    }
+    if (def>0){
+        s+=(tr(" (Брак: ")+QLocale().toString(def,'f',2)+tr(" кг)"));
+    }
+    emit sigSum(s);
+}
+
+ModelPodtCex::ModelPodtCex(QObject *parent) : DbTableModel("wire_podt_cex",parent)
+{
+    addColumn("id","id");
+    addColumn("id_podt","id_podt");
+    addColumn("id_op","id_op");
+    addColumn("dat",tr("Дата"));
+    addColumn("kvo",tr("Кол-во, кг"));
+    setDecimals(4,2);
+    setSort("wire_podt_cex.dat");
+    connect(this,SIGNAL(sigUpd()),this,SLOT(calcSum()));
+    connect(this,SIGNAL(sigRefresh()),this,SLOT(calcSum()));
+}
+
+void ModelPodtCex::refresh(int id_podt, int id_op)
+{
+    setDefaultValue(1,id_podt);
+    setDefaultValue(2,id_op);
+    setFilter(QString("wire_podt_cex.id_podt = %1 and wire_podt_cex.id_op = %2").arg(id_podt).arg(id_op));
+    select();
+}
+
+void ModelPodtCex::calcSum()
+{
+    double sum=0;
+    QString title=Rels::instance()->relPodtOp->getDisplayValue(this->defaultValue(2));
+    for (int i=0; i<rowCount(); i++){
+        sum+=data(index(i,4),Qt::EditRole).toDouble();
+    }
+    QString s;
+    s = (sum>0)? (title + tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг")) : title;
+    emit sigSum(s);
 }

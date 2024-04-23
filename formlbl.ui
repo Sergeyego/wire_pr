@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>942</width>
-    <height>526</height>
+    <width>940</width>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
             </widget>
            </item>
            <item row="0" column="1" colspan="3">
-            <widget class="QComboBox" name="comboBoxMar">
+            <widget class="DbComboBox" name="comboBoxMar">
              <property name="editable">
               <bool>true</bool>
              </property>
@@ -62,7 +62,7 @@
             </widget>
            </item>
            <item row="1" column="1" colspan="3">
-            <widget class="QComboBox" name="comboBoxDiam">
+            <widget class="DbComboBox" name="comboBoxDiam">
              <property name="editable">
               <bool>true</bool>
              </property>
@@ -76,7 +76,7 @@
             </widget>
            </item>
            <item row="2" column="1" colspan="3">
-            <widget class="QComboBox" name="comboBoxPack">
+            <widget class="DbComboBox" name="comboBoxPack">
              <property name="editable">
               <bool>true</bool>
              </property>
@@ -110,7 +110,7 @@
             </widget>
            </item>
            <item row="5" column="1" colspan="3">
-            <widget class="DateEdit" name="dateEditPart">
+            <widget class="DbDateEdit" name="dateEditPart">
              <property name="calendarPopup">
               <bool>true</bool>
              </property>
@@ -291,14 +291,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbComboBox</class>
+   <extends>QComboBox</extends>
+   <header>db/dbcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

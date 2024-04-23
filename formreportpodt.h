@@ -2,12 +2,24 @@
 #define FORMREPORTPODT_H
 
 #include <QWidget>
-#include "modelpresence.h"
-#include "models.h"
+#include "rels.h"
 
 namespace Ui {
 class FormReportPodt;
 }
+
+class ModelReportPodt : public QSqlQueryModel
+{
+    Q_OBJECT
+public:
+    ModelReportPodt(QObject *parent = 0);
+    void refresh(QDate begDate, QDate endDate, int num, int id_type);
+    QVariant data(const QModelIndex &index,int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+private:
+    bool by_Part;
+};
 
 class FormReportPodt : public QWidget
 {

@@ -7,10 +7,16 @@ FormLbl::FormLbl(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->dateEditPart->setDate(QDate::currentDate());
-    setComboBoxModel(ui->comboBoxMar,Models::instance()->relProvol);
-    setComboBoxModel(ui->comboBoxDiam,Models::instance()->relDiam);
-    setComboBoxModel(ui->comboBoxPack,Models::instance()->relPack);
-    setComboBoxModel(ui->comboBoxNam,Models::instance()->relNam);
+
+    setComboBoxModel(ui->comboBoxMar,Rels::instance()->relProvol);
+    setComboBoxModel(ui->comboBoxDiam,Rels::instance()->relDiam);
+    setComboBoxModel(ui->comboBoxPack,Rels::instance()->relPack);
+
+    ui->comboBoxNam->setModel(Rels::instance()->modelNam);
+    ui->comboBoxNam->setModelColumn(1);
+    ui->comboBoxNam->completer()->setCompletionMode(QCompleter::PopupCompletion);
+    ui->comboBoxNam->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+
     ui->lineEditMas->setValidator(new QDoubleValidator(0,999999999,3,this));
 
     ui->lineEditOrigPart->setValidator(new QIntValidator(0,9999,this));
@@ -30,7 +36,7 @@ FormLbl::FormLbl(QWidget *parent) :
     modelNam = new DbTableModel("wire_namoch",this);
     modelNam->addColumn("id",tr("id"));
     modelNam->addColumn("num",tr("№"));
-    modelNam->addColumn("id_rab",tr("ФИО"),Models::instance()->relRab);
+    modelNam->addColumn("id_rab",tr("ФИО"),Rels::instance()->relRab);
     modelNam->addColumn("id_pr",tr("id_pr"));
     modelNam->setFilter("wire_namoch.id_pr = 3");
     modelNam->setSort("wire_namoch.num");
@@ -45,7 +51,7 @@ FormLbl::FormLbl(QWidget *parent) :
     modelVol = new DbTableModel("wire_namoch",this);
     modelVol->addColumn("id",tr("id"));
     modelVol->addColumn("num",tr("№"));
-    modelVol->addColumn("id_rab",tr("ФИО"),Models::instance()->relRab);
+    modelVol->addColumn("id_rab",tr("ФИО"),Rels::instance()->relRab);
     modelVol->addColumn("id_pr",tr("id_pr"));
     modelVol->setFilter("wire_namoch.id_pr = 2");
     modelVol->setSort("wire_namoch.num");
@@ -57,10 +63,8 @@ FormLbl::FormLbl(QWidget *parent) :
     ui->tableViewVol->setColumnWidth(2,290);
     ui->tableViewVol->setColumnHidden(3,true);
 
-    connect(modelVol,SIGNAL(sigUpd()),Models::instance()->relVol->model(),SLOT(refresh()));
-    connect(modelNam,SIGNAL(sigUpd()),Models::instance()->relNam->model(),SLOT(refresh()));
-    connect(modelOtk,SIGNAL(sigUpd()),Models::instance()->relOtk->model(),SLOT(refresh()));
     connect(ui->pushButtonLbl1,SIGNAL(clicked(bool)),this,SLOT(goLbl1()));
+    connect(modelNam,SIGNAL(sigUpd()),Rels::instance(),SLOT(refreshNam()));
 }
 
 FormLbl::~FormLbl()
@@ -68,14 +72,6 @@ FormLbl::~FormLbl()
     delete ui;
 }
 
-void FormLbl::setComboBoxModel(QComboBox *c, DbRelation *r)
-{
-    c->setModel(r->model());
-    c->setModelColumn(r->columnDisplay());
-    c->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    c->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    c->lineEdit()->clear();
-}
 
 QString FormLbl::getNum(QComboBox *c)
 {
@@ -84,6 +80,15 @@ QString FormLbl::getNum(QComboBox *c)
         n=c->model()->data(c->model()->index(c->currentIndex(),2),Qt::EditRole).toInt();
     }
     return QString("%1").arg(n,2,'d',0,QChar('0'));
+}
+
+void FormLbl::setComboBoxModel(DbComboBox *c, DbSqlRelation *r)
+{
+    if (!r->isInital()){
+        r->refreshModel();
+    }
+    c->setModel(r->model());
+    c->setCurrentText("");
 }
 
 void FormLbl::goLbl1()

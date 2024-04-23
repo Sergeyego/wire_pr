@@ -3,8 +3,26 @@
 TableView::TableView(QWidget *parent) : QTableView(parent)
 {
     verticalHeader()->setDefaultSectionSize(verticalHeader()->fontMetrics().height()*1.5);
-    //verticalHeader()->setFixedWidth(verticalHeader()->fontMetrics().height()*1.2);
     verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    removeAct = new QAction(QString::fromUtf8("Удалить"),this);
+    saveAct = new QAction(QString::fromUtf8("Сохранить"),this);
+
+    connect(removeAct,SIGNAL(triggered()),this,SLOT(remove()));
+    connect(saveAct,SIGNAL(triggered(bool)),this,SLOT(saveXLSX()));
+}
+
+void TableView::contextMenuEvent(QContextMenuEvent *event)
+{
+    if (this->selectionModel()){
+        QMenu menu(this);
+        menu.addAction(saveAct);
+        menu.addSeparator();
+        QModelIndex index=this->indexAt(event->pos());
+        if (index.isValid() && this->editTriggers()!=QAbstractItemView::NoEditTriggers && (model()->flags(index) & Qt::ItemIsEditable)){
+            menu.addAction(removeAct);
+        }
+        menu.exec(event->globalPos());
+    }
 }
 
 void TableView::resizeToContents()
@@ -29,16 +47,29 @@ void TableView::resizeToContents()
         l=s.split("\n");
         max=0;
         for (int k=0; k<l.size(); k++){
+#if (QT_VERSION < QT_VERSION_CHECK(5, 11, 0))
             if (max<fontMetrics().width(l.at(k)))
                 max=fontMetrics().width(l.at(k));
+#else
+            if (max<fontMetrics().horizontalAdvance(l.at(k)))
+                max=fontMetrics().horizontalAdvance(l.at(k));
+#endif
         }
         for (int j=0; j<m; j++){
             s=model()->data(model()->index(j,i)).toString();
             l=s.split("\n");
             for (int k=0; k<l.size(); k++){
-                if (max<fontMetrics().width(l.at(k)))
-                    max=fontMetrics().width(l.at(k));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 11, 0))
+            if (max<fontMetrics().width(l.at(k)))
+                max=fontMetrics().width(l.at(k));
+#else
+            if (max<fontMetrics().horizontalAdvance(l.at(k)))
+                max=fontMetrics().horizontalAdvance(l.at(k));
+#endif
             }
+        }
+        if (max>300) {
+            max=300;
         }
         setColumnWidth(i,max+12);
     }
@@ -89,7 +120,7 @@ void TableView::save(QString fnam, int dec, bool fitToHeight, Qt::ScreenOrientat
         ws->writeString(CellReference("A1"),fnam,titleFormat);
 
         int m=2;
-        ws->setRowHeight(2,2,this->verticalHeader()->height()/14.0);
+        ws->setRowHeight(2,2,this->horizontalHeader()->height());
         for(int i=0;i<cols;i++) {
             if (!this->isColumnHidden(i)) {
                 QString hCubeell=this->model()->headerData(i,Qt::Horizontal).toString();
@@ -126,7 +157,7 @@ void TableView::save(QString fnam, int dec, bool fitToHeight, Qt::ScreenOrientat
                     }
                     if ((value.typeName()==QString("double"))||value.typeName()==QString("int")){
                         if (d>=1){
-                            QString fmt=QString("0.%1").arg((0),d,'d',0,QChar('0'));
+                            QString fmt=QString("# ##0.%1").arg((0),d,'d',0,QChar('0'));
                             numFormat.setNumberFormat(fmt);
                         } else {
                             numFormat.setNumberFormat("0");
@@ -160,4 +191,28 @@ void TableView::save(QString fnam, int dec, bool fitToHeight, Qt::ScreenOrientat
             settings.setValue("savePath",info.path());
         }
     }
+}
+
+void TableView::remove()
+{
+    if (model()){
+        QModelIndex ind=this->currentIndex();
+        QString dat;
+        for(int i=0; i<model()->columnCount(); i++) {
+            if (!dat.isEmpty()){
+                dat+=", ";
+            }
+            dat+=model()->data(model()->index(ind.row(),i),Qt::DisplayRole).toString();
+        }
+        int n=QMessageBox::question(NULL,QString::fromUtf8("Подтвердите удаление"),
+                                    QString::fromUtf8("Подтветждаете удаление ")+dat+QString::fromUtf8("?"),QMessageBox::Yes| QMessageBox::No);
+        if (n==QMessageBox::Yes){
+            emit sigRemove(ind.row());
+        }
+    }
+}
+
+void TableView::saveXLSX()
+{
+    save("");
 }

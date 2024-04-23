@@ -4,12 +4,29 @@
 #include <QWidget>
 #include "db/dbtablemodel.h"
 #include "db/dbmapper.h"
-#include "models.h"
-#include "modelwarehouse.h"
+#include "rels.h"
 
 namespace Ui {
 class FormPerePack;
 }
+
+class ModelNakl : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelNakl(QObject *parent=0);
+    void refresh(QDate beg, QDate end);
+    bool insertRow(int row, const QModelIndex &parent);
+};
+
+class ModelPerepack : public DbTableModel
+{
+    Q_OBJECT
+public:
+    ModelPerepack(QObject *parent=0);
+    void refresh(int id_nakl);
+    bool submit();
+};
 
 class FormPerePack : public QWidget
 {
@@ -28,7 +45,6 @@ private:
 private slots:
     void refresh();
     void refreshData(int row);
-    void setPartFilter(int index);
     void printNakl();
 };
 

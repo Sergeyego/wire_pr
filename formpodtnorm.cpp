@@ -10,8 +10,14 @@ FormPodtNorm::FormPodtNorm(QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    ui->comboBoxType->setModel(Models::instance()->relPodtType->model());
-    ui->comboBoxType->setModelColumn(1);
+    if (!Rels::instance()->relPodtType->isInital()){
+        Rels::instance()->relPodtType->refreshModel();
+    }
+    ui->comboBoxType->setModel(Rels::instance()->relPodtType->model());
+    ui->comboBoxType->setEditable(false);
+    colVal c;
+    c.val=1;
+    ui->comboBoxType->setCurrentData(c);
 
     modelNorm = new DbTableModel("wire_podt_norm",this);
     modelNorm->addColumn("id_podt_type","id_podt_type");
@@ -21,9 +27,9 @@ FormPodtNorm::FormPodtNorm(QWidget *parent) :
     modelNorm->addColumn("id_diam","id_diam");
     modelNorm->addColumn("id_type_src","id_type_src");
     modelNorm->addColumn("id_type_vol","id_type_vol");
-    modelNorm->addColumn("id_matr",tr("Материал"),Models::instance()->relMatr);
+    modelNorm->addColumn("id_matr",tr("Материал"),Rels::instance()->relMatr);
     modelNorm->addColumn("kvo",tr("Норма"));
-    modelNorm->addColumn("id_vid",tr("Вид затрат"),Models::instance()->relRasxVid);
+    modelNorm->addColumn("id_vid",tr("Вид затрат"),Rels::instance()->relRasxVid);
     modelNorm->addColumn("dat_beg",tr("Дата нач."));
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
@@ -73,7 +79,7 @@ QVariant FormPodtNorm::currentData(int column)
 
 int FormPodtNorm::getIdType()
 {
-    return ui->comboBoxType->model()->data(ui->comboBoxType->model()->index(ui->comboBoxType->currentIndex(),0),Qt::EditRole).toInt();
+    return ui->comboBoxType->getCurrentData().val.toInt();
 }
 
 bool FormPodtNorm::ready()
@@ -87,6 +93,10 @@ bool FormPodtNorm::ready()
 
 void FormPodtNorm::upd()
 {
+    if (sender()==ui->pushButtonUpd){
+        Rels::instance()->relPodtType->refreshModel();
+        modelNorm->refreshRelsModel();
+    }
     modelPodtProd->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),getIdType());
     if (ui->tableViewPodt->model()->rowCount()){
         ui->tableViewPodt->selectRow(0);
@@ -249,7 +259,7 @@ void ModelPodtProd::refresh(QDate beg, QDate end, int id_type)
 
 QVariant ModelPodtProd::data(const QModelIndex &item, int role) const
 {
-    if (role==Qt::BackgroundColorRole){
+    if (role==Qt::BackgroundRole){
         QString s;
         for (int i=0; i<=6; i++){
             if (!s.isEmpty()){

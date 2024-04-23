@@ -46,13 +46,12 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
 
     connect(ui->actionExit,SIGNAL(triggered(bool)),this,SLOT(close()));
-    connect(ui->actionRefresh,SIGNAL(triggered(bool)),Models::instance(),SLOT(refresh()));
 }
 
 MainWindow::~MainWindow()
 {
     saveSettings();
-    delete Models::instance();
+    delete Rels::instance();
     delete ui;
 }
 
@@ -247,7 +246,7 @@ void MainWindow::report()
 void MainWindow::warehouse()
 {
     if (!exist(sender())){
-        addSubWindow(new FormWarehouse(),sender());
+        addSubWindow(new FormMovWire(),sender());
     }
 }
 

@@ -10,7 +10,7 @@ ModelChem::ModelChem(QString tname, QObject *parent) : DbTableModel(tname,parent
 QVariant ModelChem::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) return QVariant();
-    if (role==Qt::BackgroundColorRole){
+    if (role==Qt::BackgroundRole){
         return getColor(index);
     }
     if (role==Qt::ToolTipRole){
@@ -103,10 +103,9 @@ QString ModelChem::getToolTip(const QModelIndex &index) const
 ModelChemSrc::ModelChemSrc(QObject *parent) : ModelChem("prov_chem",parent)
 {
     addColumn("id_buht","id_buht");
-    addColumn("id_el",tr("Элем."),Models::instance()->relChemTbl);
+    addColumn("id_el",tr("Элем."),Rels::instance()->relChem);
     addColumn("kvo",tr("Сод., %"));
     setDecimals(2,3);
-    setSuffix("inner join chem_tbl on chem_tbl.id=prov_chem.id_el");
     setSort("chem_tbl.sig");
     flt=tableName+".id_buht = :idp";
     colIdPart=0;
@@ -121,10 +120,9 @@ ModelChemSert::ModelChemSert(QObject *parent) : ModelChem("wire_parti_chem",pare
 {
     addColumn("id","id");
     addColumn("id_part","id_part");
-    addColumn("id_chem",tr("Элем."),Models::instance()->relChemTbl);
+    addColumn("id_chem",tr("Элем."),Rels::instance()->relChem);
     addColumn("value",tr("Сод., %"));
     setDecimals(3,3);
-    setSuffix("inner join chem_tbl on wire_parti_chem.id_chem=chem_tbl.id");
     setSort("chem_tbl.sig");
     flt=tableName+".id_part = :idp";
     colIdPart=1;

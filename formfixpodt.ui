@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
-    <height>690</height>
+    <width>963</width>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,13 +34,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonFlt">
-       <property name="text">
-        <string>Фильтр подтяжек</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -54,7 +47,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="DateEdit" name="dateEdit">
+      <widget class="DbDateEdit" name="dateEdit">
        <property name="calendarPopup">
         <bool>true</bool>
        </property>
@@ -76,14 +69,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbviewer.h</header>
-  </customwidget>
-  <customwidget>
    <class>DbViewer</class>
    <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DbDateEdit</class>
+   <extends>QDateEdit</extends>
+   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

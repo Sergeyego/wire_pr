@@ -3,9 +3,9 @@
 
 #include <QWidget>
 #include "db/dbtablemodel.h"
-#include "models.h"
+#include "rels.h"
 #include <QSqlQueryModel>
-#include "dialogflt.h"
+
 
 namespace Ui {
 class FormFixPodt;
@@ -27,7 +27,6 @@ private:
 private slots:
     void updFix();
     void updFixData(int index);
-    void setFltPodt();
     void fixNewOst();
     void delOst(QDate date);
 

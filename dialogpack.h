@@ -2,7 +2,7 @@
 #define DIALOGPACK_H
 
 #include <QDialog>
-#include "models.h"
+#include "rels.h"
 
 namespace Ui {
 class DialogPack;
@@ -13,7 +13,7 @@ class DialogPack : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogPack(QString dafault, QWidget *parent = 0);
+    explicit DialogPack(int id_p, int id_t, QWidget *parent = 0);
     ~DialogPack();
     int getId();
     int getIdType();

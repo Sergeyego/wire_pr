@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "db/dbtablemodel.h"
-#include "models.h"
+#include "rels.h"
 
 namespace Ui {
 class FormEdtLine;

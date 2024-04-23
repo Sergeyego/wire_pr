@@ -27,44 +27,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(xlsx/qtxlsx.pri)
 
 SOURCES += main.cpp\
-    mainwindow.cpp \
     checkform.cpp \
-    dialogotk.cpp \
-    dialogpack.cpp \
-    editor.cpp \
-    formedtwire.cpp \
-    formpart.cpp \
-    formperepack.cpp \
-    formpodt.cpp \
-    formpresence.cpp \
-    formreport.cpp \
-    formship.cpp \
-    formwarehouse.cpp \
-    lblengine.cpp \
-    modelpresence.cpp \
-    models_edt.cpp \
-    models.cpp \
-    modelship.cpp \
-    modelwarehouse.cpp \
-    sertbuild.cpp \
-    formedtpack.cpp \
-    formedtline.cpp \
-    formlbl.cpp \
-    dialogflt.cpp \
-    formnakl.cpp \
+    db/dbcombobox.cpp \
+    db/dbdateedit.cpp \
     db/dbdelegate.cpp \
     db/dblogin.cpp \
     db/dbmapper.cpp \
+    db/dbrelationeditdialog.cpp \
     db/dbtablemodel.cpp \
     db/dbviewer.cpp \
-    modelstu.cpp \
-    qr/qrencode.cpp \
+    db/dbxlsx.cpp \
+    db/executor.cpp \
+    db/modelro.cpp \
+    db/tablemodel.cpp \
+    dialogotk.cpp \
+    dialogpack.cpp \
+    editor.cpp \
+    formedtline.cpp \
+    formedtpack.cpp \
+    formedtwire.cpp \
     formfixpodt.cpp \
-    formpresencepodt.cpp \
-    formnaklpodt.cpp \
-    formreportpodt.cpp \
+    formlbl.cpp \
     formmatr.cpp \
+    formmovwire.cpp \
+    formnakl.cpp \
+    formnaklpodt.cpp \
     formnorm.cpp \
+    formpart.cpp \
+    formperepack.cpp \
+    formpodt.cpp \
+    formpodtnorm.cpp \
+    formpresence.cpp \
+    formpresencepodt.cpp \
+    formreport.cpp \
+    formreportpodt.cpp \
+    formship.cpp \
+    invoicemanager.cpp \
+    lblengine.cpp \
+    mainwindow.cpp \
+    modelstu.cpp \
     olap/axiswidget.cpp \
     olap/cubewidget.cpp \
     olap/cubic.cpp \
@@ -72,47 +73,50 @@ SOURCES += main.cpp\
     olap/formfilter.cpp \
     olap/olapmodel.cpp \
     olap/tableview.cpp \
-    formpodtnorm.cpp \
-    invoicemanager.cpp
+    progressexecutor.cpp \
+    progressreportdialog.cpp \
+    rels.cpp \
+    sertbuild.cpp
 
 HEADERS  += mainwindow.h \
     checkform.h \
-    dialogotk.h \
-    dialogpack.h \
-    editor.h \
-    formedtwire.h \
-    formpart.h \
-    formperepack.h \
-    formpodt.h \
-    formpresence.h \
-    formreport.h \
-    formship.h \
-    formwarehouse.h \
-    lblengine.h \
-    modelpresence.h \
-    models_edt.h \
-    models.h \
-    modelship.h \
-    modelwarehouse.h \
-    sertbuild.h \
-    formedtpack.h \
-    formedtline.h \
-    formlbl.h \
-    dialogflt.h \
-    formnakl.h \
+    db/dbcombobox.h \
+    db/dbdateedit.h \
     db/dbdelegate.h \
     db/dblogin.h \
     db/dbmapper.h \
+    db/dbrelationeditdialog.h \
     db/dbtablemodel.h \
     db/dbviewer.h \
-    modelstu.h \
-    qr/qrencode.h \
+    db/dbxlsx.h \
+    db/executor.h \
+    db/modelro.h \
+    db/tablemodel.h \
+    dialogotk.h \
+    dialogpack.h \
+    editor.h \
+    formedtline.h \
+    formedtpack.h \
+    formedtwire.h \
     formfixpodt.h \
-    formpresencepodt.h \
-    formnaklpodt.h \
-    formreportpodt.h \
+    formlbl.h \
     formmatr.h \
+    formmovwire.h \
+    formnakl.h \
+    formnaklpodt.h \
     formnorm.h \
+    formpart.h \
+    formperepack.h \
+    formpodt.h \
+    formpodtnorm.h \
+    formpresence.h \
+    formpresencepodt.h \
+    formreport.h \
+    formreportpodt.h \
+    formship.h \
+    invoicemanager.h \
+    lblengine.h \
+    modelstu.h \
     olap/axiswidget.h \
     olap/cubewidget.h \
     olap/cubic.h \
@@ -120,45 +124,48 @@ HEADERS  += mainwindow.h \
     olap/formfilter.h \
     olap/olapmodel.h \
     olap/tableview.h \
-    formpodtnorm.h \
-    invoicemanager.h
+    progressexecutor.h \
+    progressreportdialog.h \
+    rels.h \
+    sertbuild.h
 
 FORMS    += mainwindow.ui \
     checkform.ui \
+    db/dblogin.ui \
+    db/dbrelationeditdialog.ui \
     dialogotk.ui \
     dialogpack.ui \
     editor.ui \
+    formedtline.ui \
+    formedtpack.ui \
     formedtwire.ui \
+    formfixpodt.ui \
+    formlbl.ui \
+    formmatr.ui \
+    formmovwire.ui \
+    formnakl.ui \
+    formnaklpodt.ui \
+    formnorm.ui \
     formpart.ui \
     formperepack.ui \
     formpodt.ui \
+    formpodtnorm.ui \
     formpresence.ui \
-    formreport.ui \
-    formroute.ui \
-    formship.ui \
-    formwarehouse.ui \
-    formedtpack.ui \
-    formedtline.ui \
-    formlbl.ui \
-    dialogflt.ui \
-    formnakl.ui \
-    db/dblogin.ui \
-    formfixpodt.ui \
     formpresencepodt.ui \
-    formnaklpodt.ui \
+    formreport.ui \
     formreportpodt.ui \
-    formmatr.ui \
-    formnorm.ui \
+    formship.ui \
     olap/axiswidget.ui \
     olap/cubewidget.ui \
     olap/dialogolapflt.ui \
     olap/formfilter.ui \
-    formpodtnorm.ui
+    progressreportdialog.ui
 
 RESOURCES += \
     res.qrc
 
 DISTFILES += \
+    ico.rc \
     images/otk.png \
     images/logo2.png \
     templates/glabels_szsm.xml \

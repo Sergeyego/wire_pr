@@ -11,7 +11,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
 
     modelChemTu = new DbTableModel("wire_chem_tu",this);
     modelChemTu->addColumn("id_provol","id_provol");
-    modelChemTu->addColumn("id_chem",QString::fromUtf8("Элемент"),Models::instance()->relChemTbl);
+    modelChemTu->addColumn("id_chem",QString::fromUtf8("Элемент"),Rels::instance()->relChem);
     modelChemTu->addColumn("min",QString::fromUtf8("Минимум, %"));
     modelChemTu->addColumn("max",QString::fromUtf8("Максимум, %"));
     modelChemTu->setSort("wire_chem_tu.id_chem");
@@ -20,8 +20,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
 
     modelDim = new DbTableModel("wire_diams",this);
     modelDim->addColumn("id_wire","id_wire");
-    modelDim->addColumn("id_diam",QString::fromUtf8("Диаметр"),Models::instance()->relDiam);
-    modelDim->setSuffix("inner join diam on wire_diams.id_diam=diam.id");
+    modelDim->addColumn("id_diam",QString::fromUtf8("Диаметр"),Rels::instance()->relDiam);
     modelDim->setSort("diam.sdim");
     ui->tableViewDiam->setModel(modelDim);
     ui->tableViewDiam->setColumnHidden(0,true);
@@ -61,7 +60,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     modelGost = new DbTableModel("wire_gost",this);
     modelGost->addColumn("id","id");
     modelGost->addColumn("id_provol","id_provol");
-    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),Models::instance()->relNewGost);
+    modelGost->addColumn("id_gost",tr("ГОСТ/ТУ"),Rels::instance()->relNewGost);
     ui->tableViewTu->setModel(modelGost);
     ui->tableViewTu->setColumnHidden(0,true);
     ui->tableViewTu->setColumnHidden(1,true);
@@ -75,8 +74,8 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     modelWire->addColumn("is_cored",tr("Порошковая"));
     modelWire->addColumn("description",tr("Описание"));
     modelWire->addColumn("katalog",tr("Каталог"));
-    modelWire->addColumn("id_base",tr("Базовая марка"),Models::instance()->relProvol);
-    modelWire->addColumn("id_type",tr("Тип"),Models::instance()->relWireType);
+    modelWire->addColumn("id_base",tr("Базовая марка"),Rels::instance()->relProvol);
+    modelWire->addColumn("id_type",tr("Тип"),Rels::instance()->relWireType);
     modelWire->setSort("provol.nam");
 
     ui->tableViewWire->setModel(modelWire);
@@ -108,7 +107,7 @@ FormEdtWire::FormEdtWire(QWidget *parent) :
     mapper->addEmptyLock(ui->groupBoxDiam);
     mapper->addEmptyLock(ui->tableViewTu);
 
-    connect(modelWire,SIGNAL(sigUpd()),Models::instance()->relProvol->model(),SLOT(refresh()));
+    connect(modelWire,SIGNAL(sigUpd()),Rels::instance()->relProvol,SLOT(refreshModel()));
     connect(mapper,SIGNAL(currentIndexChanged(int)),this,SLOT(updEan(int)));
 
     modelWire->select();
@@ -159,4 +158,31 @@ void FormEdtWire::updEan(int row)
     modelChemTu->setFilter("wire_chem_tu.id_provol = "+QString::number(id_prov));
     modelChemTu->select();
 
+}
+
+ModelEan::ModelEan(QObject *parent) : DbTableModel("wire_ean",parent)
+{
+    addColumn("id_prov","id_prov");
+    addColumn("id_diam",tr("Диаметр"),Rels::instance()->relDiam);
+    addColumn("id_spool",tr("Носитель"),Rels::instance()->relPack);
+    addColumn("id_pack",tr("Упаковка (ед., групп.)"),Rels::instance()->relPackType);
+    addColumn("ean_ed",tr("Штрих код (ед.)"),Rels::instance()->relEanEd);
+    addColumn("ean_group",tr("Штрих код (гр.)"),Rels::instance()->relEanGr);
+    setSort("diam.sdim");
+}
+
+void ModelEan::refresh(int id_prov)
+{
+    setDefaultValue(0,id_prov);
+    setFilter("wire_ean.id_prov = "+QString::number(id_prov));
+    select();
+}
+
+void ModelEan::updRels(QModelIndex index)
+{
+    if (index.column()==4){
+        Rels::instance()->relEanEd->refreshModel();
+    } else if (index.column()==5){
+        Rels::instance()->relEanGr->refreshModel();
+    }
 }

@@ -11,7 +11,7 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     modelPack->addColumn("nam",tr("Наименование"));
     modelPack->addColumn("short",tr("Крат. наименование"));
     modelPack->addColumn("short_en",tr("Наименование анг."));
-    modelPack->addColumn("id_pack_def",tr("Упаковка по умолчанию"),Models::instance()->relPackType);
+    modelPack->addColumn("id_pack_def",tr("Упаковка по умолчанию"),Rels::instance()->relPackType);
     modelPack->setSort("wire_pack_kind.nam");
     modelPack->select();
     ui->tableView->setModel(modelPack);
@@ -36,8 +36,8 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     ui->tableViewType->setColumnWidth(3,100);
     ui->tableViewType->setColumnWidth(4,100);
 
-    connect(modelPack,SIGNAL(sigUpd()),Models::instance()->relPack->model(),SLOT(refresh()));
-    connect(modelPackType,SIGNAL(sigUpd()),Models::instance()->relPackType->model(),SLOT(refresh()));
+    connect(modelPack,SIGNAL(sigUpd()),Rels::instance()->relPack,SLOT(refreshModel()));
+    connect(modelPackType,SIGNAL(sigUpd()),Rels::instance()->relPackType,SLOT(refreshModel()));
 }
 
 FormEdtPack::~FormEdtPack()

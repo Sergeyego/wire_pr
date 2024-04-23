@@ -4,7 +4,8 @@
 #include <QDialog>
 #include <QCompleter>
 #include <QLineEdit>
-#include "models.h"
+#include <QComboBox>
+#include "rels.h"
 #include "db/dbtablemodel.h"
 
 namespace Ui {
@@ -24,9 +25,6 @@ public:
 private:
     Ui::DialogOtk *ui;
     QString getNum(QComboBox *c);
-
-private slots:
-    void edtPartFinished();
 };
 
 #endif // DIALOGOTK_H

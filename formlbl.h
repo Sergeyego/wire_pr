@@ -2,9 +2,11 @@
 #define FORMLBL_H
 
 #include <QWidget>
-#include "models.h"
+#include <QComboBox>
+#include "rels.h"
 #include "db/dbtablemodel.h"
 #include "lblengine.h"
+#include "db/dbcombobox.h"
 
 namespace Ui {
 class FormLbl;
@@ -20,11 +22,11 @@ public:
 
 private:
     Ui::FormLbl *ui;
-    void setComboBoxModel(QComboBox *c, DbRelation *r);
     DbTableModel *modelOtk;
     DbTableModel *modelNam;
     DbTableModel *modelVol;
     QString getNum(QComboBox *c);
+    void setComboBoxModel(DbComboBox *c, DbSqlRelation *r);
 
 private slots:
     void goLbl1();

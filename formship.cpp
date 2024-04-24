@@ -61,8 +61,7 @@ void FormShip::updateDataShip(QModelIndex shipIndex)
     int id_ship=modelShip->data(modelShip->index(shipIndex.row(),0)).toInt();
     modelDataShip->refresh(id_ship);
     ui->tableViewDataShip->setColumnHidden(0,true);
-    ui->tableViewDataShip->setColumnHidden(4,true);
-    ui->tableViewDataShip->setColumnHidden(5,true);
+    ui->tableViewDataShip->setColumnHidden(6,true);
     ui->tableViewDataShip->resizeToContents();
     ui->tableViewDataShip->selectRow(0);
 
@@ -70,10 +69,10 @@ void FormShip::updateDataShip(QModelIndex shipIndex)
 
 void FormShip::updateSertificat(QModelIndex index)
 {
-    int id_part=modelDataShip->data(modelDataShip->index(index.row(),5),Qt::EditRole).toInt();
+    int id_part=modelDataShip->data(modelDataShip->index(index.row(),6),Qt::EditRole).toInt();
     int id_ship=modelDataShip->data(modelDataShip->index(index.row(),0),Qt::EditRole).toInt();
     QString nomSert=ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(ui->tableViewShip->currentIndex().row(),1),Qt::EditRole).toString();
-    QString name = modelDataShip->data(modelDataShip->index(index.row(),1),Qt::EditRole).toString();
+    QString name = modelDataShip->data(modelDataShip->index(index.row(),4),Qt::EditRole).toString();
     name+="_"+nomSert;
     name=name.replace(QRegExp("[^\\w]"), "_");
     sertificat->build(id_part,id_ship,name);
@@ -99,7 +98,7 @@ void FormShip::pdfAll()
         QCoreApplication::processEvents();
         pprd->setValue(i);
         updateSertificat(modelDataShip->index(i,0));
-        QDir dir(QDir::homePath()+"/el_sertificat");
+        QDir dir(QDir::homePath()+"/wire_sertificat");
         if (!dir.exists()) dir.mkdir(dir.path());
         dir.setPath(dir.path()+"/"+QString::number(yearSert));
         if (!dir.exists()) dir.mkdir(dir.path());
@@ -133,7 +132,7 @@ void FormShip::printAll(QPagedPaintDevice *printer)
 
 void FormShip::multipagePdf()
 {
-    QString f=sertificat->getName()+".pdf";
+    QString f = ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(ui->tableViewShip->currentIndex().row(),1),Qt::EditRole).toString()+".pdf";
     QString fname = QFileDialog::getSaveFileName(this,tr("Сохранить PDF"),QDir::homePath()+"/"+f, "*.pdf");
     if (!fname.isEmpty()){
         QPdfWriter writer(fname);
@@ -151,12 +150,11 @@ ModelShip::ModelShip(QObject *parent) :
 
 void ModelShip::refresh(QDate begDate, QDate endDate)
 {
-    setQuery("select s.id, s.nom_s, s.dat_vid, p.short from sertifikat as s "
-             "inner join poluch as p on p.id=s.id_pol "
-             "inner join (select distinct id_sert from otpusk) as o on o.id_sert=s.id "
-             "where s.dat_vid between '"+begDate.toString("yyyy-MM-dd")+"' and '"
-             +endDate.toString("yyyy-MM-dd")+
-             "' order by s.nom_s, s.dat_vid");
+    setQuery("select s.id, s.nom_s, s.dat_vid, p.short from sertifikat s "
+                 "inner join poluch p on s.id_pol=p.id "
+                 "inner join (select distinct id_ship from wire_shipment_consist) w on w.id_ship=s.id "
+                 "where s.dat_vid between '"+begDate.toString("yyyy.MM.dd")+"' and '"+endDate.toString("yyyy.MM.dd")+
+                 "' order by s.dat_vid, s.nom_s");
     if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
     } else {
@@ -174,7 +172,6 @@ QVariant ModelShip::data(const QModelIndex &index, int role) const
     return QSqlQueryModel::data(index, role);
 }
 
-
 ModelDataShip::ModelDataShip(QObject *parent) :
     QSqlQueryModel(parent)
 {
@@ -182,46 +179,63 @@ ModelDataShip::ModelDataShip(QObject *parent) :
 
 void ModelDataShip::refresh(int id_ship)
 {
-    setQuery("select o.id, p.n_s||'-'||date_part('year',p.dat_part), e.marka||' "+tr("ф")+" '||cast(p.diam as varchar(3))||"
-             "CASE WHEN p.id_var <> 1 THEN (' /'::text || ev.nam::text) || '/'::text ELSE ''::text END AS mark, "
-             "o.massa,  "
-              "(select case when exists(select id_chem from sert_chem where id_part=p.id) "
-                 "then 1 else 0 end "
-                 "+ "
-                 "case when exists(select id_mech from sert_mech where id_part=p.id) "
-                 "then 2 else 0 end "
-                 "as r), p.id "
-             "from otpusk o inner join parti p on o.id_part=p.id "
-             "inner join elrtr e on e.id=p.id_el "
-             "inner join istoch i on i.id=p.id_ist "
+    setQuery("select w.id, pr.nam || CASE WHEN p.id_var <> 1 THEN (' /'::text || ev.nam::text) || '/'::text ELSE ''::text END AS mark, "
+             "d.sdim, k.short, m.n_s||'-'||date_part('year',m.dat), w.m_netto, p.id "
+             "from wire_shipment_consist w "
+             "inner join wire_parti p on p.id=w.id_wparti "
+             "inner join wire_parti_m m on p.id_m=m.id "
+             "inner join provol pr on pr.id=m.id_provol "
+             "inner join diam d on d.id=m.id_diam "
+             "inner join wire_pack_kind k on p.id_pack=k.id "
              "inner join elrtr_vars ev on ev.id=p.id_var "
-             "where o.id_sert ="+QString::number(id_ship)+" order by p.n_s, p.dat_part");
-    if (lastError().isValid())
-    {
+             "where w.id_ship= "+QString::number(id_ship)+
+             " order by pr.nam, d.sdim, k.short, m.n_s");
+    if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
     } else {
-        setHeaderData(1, Qt::Horizontal,tr("Партия"));
-        setHeaderData(2, Qt::Horizontal,tr("Марка"));
-        setHeaderData(3, Qt::Horizontal,tr("Масса, кг"));
+        setHeaderData(1, Qt::Horizontal,tr("Марка"));
+        setHeaderData(2, Qt::Horizontal,tr("Ф"));
+        setHeaderData(3, Qt::Horizontal,tr("Катушка"));
+        setHeaderData(4, Qt::Horizontal,tr("Партия"));
+        setHeaderData(5, Qt::Horizontal,tr("Кг"));
+        refreshState(id_ship);
     }
 }
 
-QVariant ModelDataShip::data(const QModelIndex &index, int role) const
+QVariant ModelDataShip::data(const QModelIndex &item, int role) const
 {
-    if((role == Qt::BackgroundRole)&&(this->columnCount()>3)) {
-        int area = record(index.row()).value(4).toInt();
+    if(role==Qt::TextAlignmentRole){ // Выравнивание
+        if(item.column() == 2 || item.column()==5)
+            return int(Qt::AlignRight | Qt::AlignVCenter);
+        else return int(Qt::AlignLeft | Qt::AlignVCenter);
+    }
+    if((role == Qt::BackgroundRole)) {
+        int area = colorState.value(QSqlQueryModel::data(this->index(item.row(),0),Qt::DisplayRole).toInt());
         if(area == 0) return QVariant(QColor(255,170,170)); else
             if(area == 1) return QVariant(QColor(Qt::yellow)); else
                 if(area == 2) return QVariant(QColor(Qt::gray)); else
                     if(area == 3) return QVariant(QColor(170,255,170));
+    } else return QSqlQueryModel::data(item,role);
+}
+
+void ModelDataShip::refreshState(int id_ship)
+{
+    QSqlQuery query;
+    query.setForwardOnly(true);
+    query.prepare("select wire_shipment_consist.id, "
+                  "(select case when exists(select id from wire_parti_chem where id_part=(select p.id_m from wire_parti as p where p.id = wire_shipment_consist.id_wparti)) "
+                           "then 1 else 0 end "
+                           "+ "
+                           "case when exists(select id from wire_parti_mech where id_part=(select p.id_m from wire_parti as p where p.id = wire_shipment_consist.id_wparti)) "
+                           "then 2 else 0 end "
+                           "as r) from wire_shipment_consist where wire_shipment_consist.id_ship=:id");
+    query.bindValue(":id",id_ship);
+    if (query.exec()){
+        colorState.clear();
+        while (query.next()){
+            colorState[query.value(0).toInt()]=query.value(1).toInt();
+        }
+    } else {
+        QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Ok);
     }
-    if (role == Qt::TextAlignmentRole){
-        if((index.column() == 3))
-            return int(Qt::AlignRight | Qt::AlignVCenter);
-    }
-    if (role == Qt::DisplayRole){
-        if((index.column() == 3))
-            return QLocale().toString(QSqlQueryModel::data(index,role).toDouble(),'f',1);
-    }
-    return QSqlQueryModel::data(index, role);
 }

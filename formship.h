@@ -32,12 +32,11 @@ class ModelDataShip : public QSqlQueryModel
 public:
     explicit ModelDataShip(QObject *parent = 0);
     void refresh(int id_ship);
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &item, int role = Qt::DisplayRole) const;
 
-signals:
-
-public slots:
-
+private:
+    QMap <int,int> colorState;
+    void refreshState(int id_ship);
 };
 
 class FormShip : public QWidget

@@ -140,7 +140,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewNam->setColumnHidden(1,true);
     ui->tableViewNam->setColumnWidth(2,85);
     ui->tableViewNam->setColumnWidth(3,70);
-    ui->tableViewNam->setColumnWidth(4,140);
+    ui->tableViewNam->setColumnWidth(4,240);
     ui->tableViewNam->setColumnWidth(5,110);
     ui->tableViewNam->setColumnWidth(6,250);
 
@@ -530,7 +530,7 @@ ModelPart::ModelPart(QObject *parent):DbTableModel("wire_parti_m",parent)
     addColumn("id_diam",tr("Ф"),Rels::instance()->relDiam);
     addColumn("id_type",tr("Стан"),Rels::instance()->relLine);
     addColumn("comment",tr("Комментарий"));
-    addColumn("id_empl",tr("Волочильщик"),Rels::instance()->relRab);
+    addColumn("id_empl",tr("Волочильщик"),Rels::instance()->relVol);
     addColumn("kvo",tr("Масса"));
     addColumn("id_podt",tr("Подтяжка"),Rels::instance()->relPodt);
     setSort("dat,n_s");

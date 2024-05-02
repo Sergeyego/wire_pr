@@ -282,7 +282,7 @@ ModelPodtCont::ModelPodtCont(QObject *parent) : DbTableModel("wire_podt_cont",pa
     addColumn("id_podt",tr("id_podt"));
     addColumn("dat",tr("Дата"));
     addColumn("kvo",tr("Масса, кг"));
-    addColumn("id_rab",tr("Работник"),Rels::instance()->relRab);
+    addColumn("id_rab",tr("Работник"),Rels::instance()->relVol);
     addColumn("id_podt_src",tr("Исходный полуфабрикат"),Rels::instance()->relPodt);
     setSort("wire_podt_cont.dat");
     setDecimals(3,2);
@@ -315,7 +315,7 @@ ModelPodtVol::ModelPodtVol(QObject *parent) : DbTableModel("wire_podt_out",paren
     addColumn("kvo",tr("Масса, кг"));
     addColumn("kvo_defect",tr("Брак, кг"));
     addColumn("id_line",tr("Линия"),Rels::instance()->relLine);
-    addColumn("id_vol",tr("Работник"),Rels::instance()->relRab);
+    addColumn("id_vol",tr("Волочильщик"),Rels::instance()->relVol);
     setDecimals(2,2);
     setDecimals(3,2);
     setSort("wire_podt_out.dat");

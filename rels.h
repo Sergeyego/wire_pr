@@ -28,6 +28,7 @@ public:
     DbSqlRelation *relType;
     DbSqlRelation *relPodt;
     DbSqlRelation *relRab;
+    DbSqlRelation *relVol;
     DbSqlRelation *relPodtOp;
     DbSqlRelation *relRasxVid;
     DbSqlRelation *relSource;

@@ -82,6 +82,9 @@ Rels::Rels(QObject *parent) : QObject(parent)
     relRab = new DbSqlRelation("wire_empl","id","snam",this);
     relRab->setSort("wire_empl.snam");
 
+    relVol = new DbSqlRelation("wire_vol","id","rab",this);
+    relVol->setSort("wire_vol.rab");
+
     relPodtOp = new DbSqlRelation("wire_podt_op","id","nam",this);
     relPodtOp->setSort("wire_podt_op.id");
 

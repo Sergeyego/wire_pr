@@ -65,6 +65,7 @@ FormLbl::FormLbl(QWidget *parent) :
 
     connect(ui->pushButtonLbl1,SIGNAL(clicked(bool)),this,SLOT(goLbl1()));
     connect(modelNam,SIGNAL(sigUpd()),Rels::instance(),SLOT(refreshNam()));
+    connect(modelVol,SIGNAL(sigUpd()),Rels::instance()->relVol,SLOT(refreshModel()));
 }
 
 FormLbl::~FormLbl()

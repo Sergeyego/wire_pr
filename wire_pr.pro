@@ -168,5 +168,6 @@ DISTFILES += \
     ico.rc \
     images/otk.png \
     images/logo2.png \
+    images/wire.ico \
     templates/glabels_szsm.xml \
     ico.rc

@@ -91,7 +91,7 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->tableViewShip->verticalHeader()->hide();
     ui->tableViewShip->resizeColumnsToContents();
     ui->tableViewShip->setMenuEnabled(false);
-    ui->tableViewShip->setColumnHidden(4,true);
+    ui->tableViewShip->setColumnHidden(5,true);
 
     push = new DbMapper(ui->tableViewPart,this);
     ui->horizontalLayoutData->insertWidget(0,push);
@@ -489,7 +489,7 @@ void FormPart::showSertShip(QModelIndex index)
         int id_p = partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
         QString name=modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),1),Qt::EditRole).toString();
         name+="_"+QString::number(modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),2),Qt::EditRole).toDate().year());
-        int id_ship=ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(index.row(),4),Qt::EditRole).toInt();
+        int id_ship=ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(index.row(),5),Qt::EditRole).toInt();
         name+="_"+ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(index.row(),1),Qt::EditRole).toString();
         name=name.replace(QRegExp("[^\\w]"), "_");
         sert->build(id_p,id_ship,name);
@@ -814,9 +814,11 @@ QVariant ModelShipment::data(const QModelIndex &item, int role) const
 
 void ModelShipment::refresh(int id_part)
 {
-    setQuery("select s.dat_vid, s.nom_s, p.short, d.m_netto, d.id from wire_shipment_consist as d "
+    setQuery("select s.dat_vid, s.nom_s, p.short, d.m_netto, rp.short, d.id "
+             "from wire_shipment_consist as d "
              "inner join sertifikat as s on s.id=d.id_ship "
              "inner join poluch as p on s.id_pol=p.id "
+             "inner join poluch as rp on d.id_pol=rp.id "
              "where d.id_wparti="+QString::number(id_part)+" order by s.dat_vid");
     if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
@@ -825,6 +827,7 @@ void ModelShipment::refresh(int id_part)
         setHeaderData(1, Qt::Horizontal,tr("№"));
         setHeaderData(2, Qt::Horizontal,tr("Получатель"));
         setHeaderData(3, Qt::Horizontal,tr("Масса, кг"));
+        setHeaderData(4, Qt::Horizontal,tr("Реальный получатель"));
     }
     double sum=0;
     for (int i=0; i<rowCount(); i++){

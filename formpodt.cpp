@@ -141,6 +141,7 @@ void FormPodt::refresh()
     if (sender()==ui->cmdUpd){
         modelPodt->refreshRelsModel();
         modelCont->refreshRelsModel();
+        Rels::instance()->relMark->refreshModel();
     }
 
     int id_mark=ui->comboBoxFMark->getCurrentData().val.toInt();

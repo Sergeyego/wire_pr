@@ -15,6 +15,7 @@ public:
     DbSqlRelation *relDiam;
     DbSqlRelation *relNewGost;
     DbSqlRelation *relProvol;
+    DbSqlRelation *relMark;
     DbSqlRelation *relWireType;
     DbSqlRelation *relPack;
     DbSqlRelation *relPackType;

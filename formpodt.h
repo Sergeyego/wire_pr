@@ -62,7 +62,7 @@ class ModelPodt : public DbTableModel
     Q_OBJECT
 public:
     ModelPodt(QObject *parent=0);
-    void refresh(QDate beg, QDate end);
+    void refresh(QDate beg, QDate end, int id_mark, int id_diam, int id_type);
     bool insertRow(int row, const QModelIndex &parent);
 };
 
@@ -89,6 +89,7 @@ private:
 
 private slots:
     void refresh();
+    void fltChanged(QString s);
     void updPart(int index);
     void setContItogo(QString s);
     void setVolItogo(QString s);

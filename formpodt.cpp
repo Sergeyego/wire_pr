@@ -70,6 +70,19 @@ FormPodt::FormPodt(QWidget *parent) :
     modelPodtPart = new ModelPodtPart(this);
     ui->tableViewPart->setModel(modelPodtPart);
 
+    if (!Rels::instance()->relMark->isInital()){
+        Rels::instance()->relMark->refreshModel();
+    }
+    colVal ev;
+    ev.val=-1;
+
+    ui->comboBoxFMark->setModel(Rels::instance()->relMark->model());
+    ui->comboBoxFDiam->setModel(Rels::instance()->relDiam->model());
+    ui->comboBoxFType->setModel(Rels::instance()->relPodtType->model());
+    ui->comboBoxFMark->setCurrentData(ev);
+    ui->comboBoxFDiam->setCurrentData(ev);
+    ui->comboBoxFType->setCurrentData(ev);
+
     push = new DbMapper(ui->tableView,this);
     ui->horizontalLayoutBtn->insertWidget(0,push);
     push->addMapping(ui->lineEditNum,1);
@@ -96,7 +109,12 @@ FormPodt::FormPodt(QWidget *parent) :
     connect(modelPodtIn,SIGNAL(sigSum(QString)),this,SLOT(setInItogo(QString)));
     connect(modelPodtOut,SIGNAL(sigSum(QString)),this,SLOT(setOutItogo(QString)));
     connect(modelPodtDef,SIGNAL(sigSum(QString)),this,SLOT(setDefItogo(QString)));
-
+    connect(ui->comboBoxFMark,SIGNAL(currentIndexChanged(int)),this,SLOT(refresh()));
+    connect(ui->comboBoxFDiam,SIGNAL(currentIndexChanged(int)),this,SLOT(refresh()));
+    connect(ui->comboBoxFType,SIGNAL(currentIndexChanged(int)),this,SLOT(refresh()));
+    connect(ui->comboBoxFMark,SIGNAL(currentTextChanged(QString)),this,SLOT(fltChanged(QString)));
+    connect(ui->comboBoxFDiam,SIGNAL(currentTextChanged(QString)),this,SLOT(fltChanged(QString)));
+    connect(ui->comboBoxFType,SIGNAL(currentTextChanged(QString)),this,SLOT(fltChanged(QString)));
     refresh();
 }
 
@@ -124,7 +142,23 @@ void FormPodt::refresh()
         modelPodt->refreshRelsModel();
         modelCont->refreshRelsModel();
     }
-    modelPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date());
+
+    int id_mark=ui->comboBoxFMark->getCurrentData().val.toInt();
+    int id_diam=ui->comboBoxFDiam->getCurrentData().val.toInt();
+    int id_type=ui->comboBoxFType->getCurrentData().val.toInt();
+    modelPodt->refresh(ui->dateEditBeg->date(),ui->dateEditEnd->date(),id_mark,id_diam,id_type);
+}
+
+void FormPodt::fltChanged(QString s)
+{
+    if (s.isEmpty()){
+        DbComboBox *combo = qobject_cast<DbComboBox *>(sender());
+        if (combo) {
+            colVal ev;
+            ev.val=-1;
+            combo->setCurrentData(ev);
+        }
+    }
 }
 
 void FormPodt::updPart(int index)
@@ -177,14 +211,25 @@ ModelPodt::ModelPodt(QObject *parent) : DbTableModel("wire_podt",parent)
     addColumn("comment",tr("Комментарий"));
     addColumn("id_type",tr("Тип"),Rels::instance()->relPodtType);
     addColumn("id_vol_type",tr("Волочение"),Rels::instance()->relType);
+    setSuffix("left join prov_prih on prov_prih.id = prov_buht.id_prih");
     setSort("dat,n_s");
     setDefaultValue(7,1);
     connect(this,SIGNAL(sigUpd()),Rels::instance()->relPodt,SLOT(refreshModel()));
 }
 
-void ModelPodt::refresh(QDate beg, QDate end)
+void ModelPodt::refresh(QDate beg, QDate end, int id_mark, int id_diam, int id_type)
 {
-    setFilter("wire_podt.dat between '"+beg.toString("yyyy.MM.dd")+"' and '"+end.toString("yyyy.MM.dd")+"'");
+    QString flt="wire_podt.dat between '"+beg.toString("yyyy.MM.dd")+"' and '"+end.toString("yyyy.MM.dd")+"'";
+    if (id_mark>0){
+        flt+=" and prov_prih.id_pr = "+QString::number(id_mark);
+    }
+    if (id_diam>0){
+        flt+=" and wire_podt.id_diam = "+QString::number(id_diam);
+    }
+    if (id_type>0){
+        flt+=" and wire_podt.id_type = "+QString::number(id_type);
+    }
+    setFilter(flt);
     select();
 }
 

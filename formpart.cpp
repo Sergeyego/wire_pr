@@ -1094,7 +1094,7 @@ void ModelPerepackCex::refresh(int id_part)
              "inner join wire_parti as wp on p.id_wpartires=wp.id "
              "inner join wire_parti_m as m on wp.id_m=m.id "
              "where p.id_wpartisrc= "+QString::number(id_part)+" ) "
-             "union "
+             "union all "
              "(select n.dat, n.num, m.n_s ||'-'||date_part('year',m.dat) as nam, p.m_netto from wire_perepack as p "
              "inner join wire_perepack_nakl as n on p.id_nakl=n.id "
              "inner join wire_parti as wp on p.id_wpartisrc=wp.id "

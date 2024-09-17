@@ -36,6 +36,9 @@ Rels::Rels(QObject *parent) : QObject(parent)
     relProvol->setSort("relprov.nam");
     relProvol->setFilter("relprov.is_w=1");
 
+    relMark = new DbSqlRelation("provol","id","nam",this);
+    relMark->setSort("provol.nam");
+
     relWireType = new DbSqlRelation("provol_type","id","nam",this);
     relWireType->setSort("provol_type.nam");
 

@@ -263,7 +263,7 @@ void FormPart::updData(int row)
     QString pack;
     pack=tr("Носители: ");
     for (int i=0; i< partPackModel->rowCount(); i++){
-        pack+=partPackModel->data(partPackModel->index(i,1)).toString()+partPackModel->data(partPackModel->index(i,2)).toString()+", ";
+        pack+=partPackModel->data(partPackModel->index(i,1)).toString()+", ";
     }
     pack.truncate(pack.size()-2);
     ui->labelPack->setText(pack);
@@ -638,7 +638,7 @@ PartPackModel::PartPackModel(QObject *parent):
 void PartPackModel::refresh(int id_part)
 {
     id_m=id_part;
-    setQuery("select p.id, k.short, COALESCE(' ('||t.mas_ed::text||' "+tr("кг")+")',''), p.id_pack, p.id_pack_type "
+    setQuery("select p.id, k.short||' '|| COALESCE(' ('||t.mas_ed::text||' "+tr("кг")+")',''), COALESCE(' ('||t.mas_ed::text||' "+tr("кг")+")',''), p.id_pack, p.id_pack_type "
              "from wire_parti as p "
              "inner join wire_pack_kind as k on k.id=p.id_pack "
              "left outer join wire_pack as t on t.id=p.id_pack_type "

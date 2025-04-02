@@ -417,7 +417,6 @@
           <widget class="QLabel" name="label_14">
            <property name="font">
             <font>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -564,7 +563,6 @@
                 <widget class="QLabel" name="labelProd">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -580,7 +578,6 @@
                 <widget class="QLabel" name="labelUnion">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -600,7 +597,6 @@
                 <widget class="QLabel" name="labelNam">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -627,7 +623,6 @@
                 <widget class="QLabel" name="labelPackProd">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -658,7 +653,6 @@
                 <widget class="QLabel" name="labelPerepack">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -682,7 +676,6 @@
                 <widget class="QLabel" name="labelStock">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -706,7 +699,6 @@
                 <widget class="QLabel" name="labelDef">
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -825,16 +817,6 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="cmdSert">
-           <property name="toolTip">
-            <string>Сертификат на партию</string>
-           </property>
-           <property name="text">
-            <string>Сертификат</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
       </layout>
@@ -891,7 +873,6 @@
   <tabstop>tableViewWirePartMech</tabstop>
   <tabstop>cmdLblSpool</tabstop>
   <tabstop>cmdLblPack</tabstop>
-  <tabstop>cmdSert</tabstop>
   <tabstop>dateEditBeg</tabstop>
   <tabstop>dateEditEnd</tabstop>
   <tabstop>cmdUpdate</tabstop>

@@ -27,7 +27,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(xlsx/qtxlsx.pri)
 
 SOURCES += main.cpp\
-    checkform.cpp \
     db/dbcombobox.cpp \
     db/dbdateedit.cpp \
     db/dbdelegate.cpp \
@@ -42,7 +41,6 @@ SOURCES += main.cpp\
     db/tablemodel.cpp \
     dialogotk.cpp \
     dialogpack.cpp \
-    editor.cpp \
     formedtline.cpp \
     formedtpack.cpp \
     formedtwire.cpp \
@@ -61,7 +59,6 @@ SOURCES += main.cpp\
     formpresencepodt.cpp \
     formreport.cpp \
     formreportpodt.cpp \
-    formship.cpp \
     invoicemanager.cpp \
     lblengine.cpp \
     mainwindow.cpp \
@@ -75,11 +72,9 @@ SOURCES += main.cpp\
     olap/tableview.cpp \
     progressexecutor.cpp \
     progressreportdialog.cpp \
-    rels.cpp \
-    sertbuild.cpp
+    rels.cpp
 
 HEADERS  += mainwindow.h \
-    checkform.h \
     db/dbcombobox.h \
     db/dbdateedit.h \
     db/dbdelegate.h \
@@ -94,7 +89,6 @@ HEADERS  += mainwindow.h \
     db/tablemodel.h \
     dialogotk.h \
     dialogpack.h \
-    editor.h \
     formedtline.h \
     formedtpack.h \
     formedtwire.h \
@@ -113,7 +107,6 @@ HEADERS  += mainwindow.h \
     formpresencepodt.h \
     formreport.h \
     formreportpodt.h \
-    formship.h \
     invoicemanager.h \
     lblengine.h \
     modelstu.h \
@@ -126,16 +119,13 @@ HEADERS  += mainwindow.h \
     olap/tableview.h \
     progressexecutor.h \
     progressreportdialog.h \
-    rels.h \
-    sertbuild.h
+    rels.h
 
 FORMS    += mainwindow.ui \
-    checkform.ui \
     db/dblogin.ui \
     db/dbrelationeditdialog.ui \
     dialogotk.ui \
     dialogpack.ui \
-    editor.ui \
     formedtline.ui \
     formedtpack.ui \
     formedtwire.ui \
@@ -154,7 +144,6 @@ FORMS    += mainwindow.ui \
     formpresencepodt.ui \
     formreport.ui \
     formreportpodt.ui \
-    formship.ui \
     olap/axiswidget.ui \
     olap/cubewidget.ui \
     olap/dialogolapflt.ui \

@@ -48,6 +48,8 @@ private:
     QVariant currentData(int column);
     int getIdType();
     bool ready();
+    void loadSettings();
+    void saveSettings();
 
 private slots:
     void upd();

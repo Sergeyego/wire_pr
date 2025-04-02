@@ -5,8 +5,6 @@
 #include <QInputDialog>
 #include "rels.h"
 #include "db/dbmapper.h"
-#include "editor.h"
-#include "sertbuild.h"
 #include "dialogpack.h"
 #include "lblengine.h"
 #include "dialogotk.h"
@@ -218,9 +216,6 @@ private:
     ModelStockCex *modelStockCex;
     ModelPerepackCex *modelPerepackCex;
 
-    SertBuild *sert;
-    Editor *editor;
-
 
     void loadSettings();
     void saveSettings();
@@ -229,7 +224,6 @@ private:
 private slots:
     void updData(int row);
     void copyChem();
-    void showSert();
     void setFilter();
     void updShip();
     void addPack();
@@ -242,7 +236,6 @@ private slots:
     void setShipItogo(QString s);
     void lblEd();
     void lblGroup();
-    void showSertShip(QModelIndex index);
     void savePrim();
     void enPrimSave();
 };

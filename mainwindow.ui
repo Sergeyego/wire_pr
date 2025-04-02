@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>1038</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -84,13 +84,6 @@
     <addaction name="actionCubePodt"/>
     <addaction name="actionCubePodtOut"/>
    </widget>
-   <widget class="QMenu" name="menu_6">
-    <property name="title">
-     <string>Сертификаты</string>
-    </property>
-    <addaction name="actionShip"/>
-    <addaction name="actionCod"/>
-   </widget>
    <widget class="QMenu" name="menu_8">
     <property name="title">
      <string>Полуфабрикаты</string>
@@ -108,7 +101,6 @@
    <addaction name="menu_3"/>
    <addaction name="menu_4"/>
    <addaction name="menu_5"/>
-   <addaction name="menu_6"/>
   </widget>
   <action name="actionEdtWire">
    <property name="text">

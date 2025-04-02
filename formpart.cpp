@@ -17,9 +17,6 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     ui->toolButtonDelPack->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
     ui->toolButtonEdtPack->setIcon(style()->standardIcon(QStyle::SP_FileDialogListView));
 
-    sert=new SertBuild(this);
-    editor=new Editor(sert);
-
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().dayOfYear()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
     ui->tableViewPart->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -112,7 +109,6 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     push->addLock(ui->checkBoxOnly);
     push->addEmptyLock(ui->groupBoxChem);
     push->addEmptyLock(ui->groupBoxMech);
-    push->addEmptyLock(ui->cmdSert);
     push->addEmptyLock(ui->cmdLblPack);
     push->addEmptyLock(ui->cmdLblSpool);
     push->addEmptyLock(ui->groupBoxShip);
@@ -180,7 +176,6 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(chemModel,SIGNAL(sigUpd()),modelPart,SLOT(refreshState()));
     connect(mechModel,SIGNAL(sigUpd()),modelPart,SLOT(refreshState()));
     connect(ui->cmdCopyChem,SIGNAL(clicked()),this,SLOT(copyChem()));
-    connect(ui->cmdSert,SIGNAL(clicked()),this,SLOT(showSert()));
     connect(ui->checkBoxOnly,SIGNAL(clicked(bool)),ui->comboBoxOnly,SLOT(setEnabled(bool)));
     connect(ui->checkBoxOnly,SIGNAL(clicked(bool)),this,SLOT(setFilter()));
     connect(ui->comboBoxOnly,SIGNAL(currentIndexChanged(int)),this,SLOT(setFilter()));
@@ -198,11 +193,11 @@ FormPart::FormPart(bool edtSert, QWidget *parent) :
     connect(modelUnionCex,SIGNAL(sigSum(QString)),ui->labelUnion,SLOT(setText(QString)));
     connect(ui->cmdLblSpool,SIGNAL(clicked(bool)),this,SLOT(lblEd()));
     connect(ui->cmdLblPack,SIGNAL(clicked(bool)),this,SLOT(lblGroup()));
-    connect(ui->tableViewShip,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showSertShip(QModelIndex)));
     connect(ui->toolButtonCopyTu,SIGNAL(clicked(bool)),modelGostPart,SLOT(copyTu()));
     connect(ui->pushButtonSavePrim,SIGNAL(clicked(bool)),this,SLOT(savePrim()));
     connect(ui->plainTextEditPrim,SIGNAL(textChanged()),this,SLOT(enPrimSave()));
     connect(ui->toolButtonVar,SIGNAL(clicked(bool)),this,SLOT(edtVar()));
+
 
     modelPart->select();
 
@@ -212,7 +207,6 @@ FormPart::~FormPart()
 {
     saveSettings();
     delete ui;
-    delete editor;
 }
 
 void FormPart::loadSettings()
@@ -236,7 +230,6 @@ void FormPart::blockShip(bool val)
     ui->groupBoxShip->setDisabled(val);
     ui->tableViewInCex->setDisabled(val);
     ui->tableViewPack->setDisabled(val);
-    ui->cmdSert->setDisabled(val);
     ui->cmdLblPack->setDisabled(val);
     ui->cmdLblSpool->setDisabled(val);
     ui->toolButtonDelPack->setDisabled(val);
@@ -285,16 +278,6 @@ void FormPart::copyChem()
         modelPart->copyChem(id_p);
         updData(push->currentIndex());
     }
-}
-
-void FormPart::showSert()
-{
-    int id_p=partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
-    QString name=modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),1),Qt::EditRole).toString();
-    name+="_"+QString::number(modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),2),Qt::EditRole).toDate().year());
-    name=name.replace(QRegExp("[^\\w]"), "_");
-    sert->build(id_p,-1,name);
-    editor->show();
 }
 
 void FormPart::setFilter()
@@ -480,20 +463,6 @@ void FormPart::lblGroup()
         int id_p = partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
         LblEngine e;
         e.createLblGroup(id_p);
-    }
-}
-
-void FormPart::showSertShip(QModelIndex index)
-{    
-    if (index.isValid()){
-        int id_p = partPackModel->data(partPackModel->index(ui->comboBoxPack->currentIndex(),0),Qt::EditRole).toInt();
-        QString name=modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),1),Qt::EditRole).toString();
-        name+="_"+QString::number(modelPart->data(modelPart->index(ui->tableViewPart->currentIndex().row(),2),Qt::EditRole).toDate().year());
-        int id_ship=ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(index.row(),5),Qt::EditRole).toInt();
-        name+="_"+ui->tableViewShip->model()->data(ui->tableViewShip->model()->index(index.row(),1),Qt::EditRole).toString();
-        name=name.replace(QRegExp("[^\\w]"), "_");
-        sert->build(id_p,id_ship,name);
-        editor->show();
     }
 }
 

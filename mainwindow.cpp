@@ -38,9 +38,6 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionCubePodt,&MainWindow::cubePodt);
     actAction(ui->actionCubePodtOut,&MainWindow::cubePodtOut);
 
-    actAction(ui->actionShip,&MainWindow::sert);
-    actAction(ui->actionCod,&MainWindow::check);
-
     loadSettings();
 
     connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
@@ -310,19 +307,5 @@ void MainWindow::cubePodtOut()
 {
     if (!exist(sender())){
         addSubWindow(new CubeWidget(45),sender());
-    }
-}
-
-void MainWindow::sert()
-{
-    if (!exist(sender())){
-        addSubWindow(new FormShip(),sender());
-    }
-}
-
-void MainWindow::check()
-{
-    if (!exist(sender())){
-        addSubWindow(new CheckForm(),sender());
     }
 }

@@ -24,8 +24,7 @@
 #include "formmovwire.h"
 #include "formnakl.h"
 #include "formnorm.h"
-#include "checkform.h"
-#include "formship.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -79,8 +78,6 @@ private slots:
     void cubePerepack();
     void cubePodt();
     void cubePodtOut();
-    void sert();
-    void check();
 };
 
 #endif // MAINWINDOW_H

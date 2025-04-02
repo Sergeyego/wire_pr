@@ -30,6 +30,8 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("id_provol_src","id_provol_src");
     modelNorm->addColumn("id_podt_type","id_podt_type");
     modelNorm->addColumn("id_podt_type_src","id_podt_type_src");
+    modelNorm->addColumn("id_diam_src","id_diam_src");
+    modelNorm->addColumn("id_diam_podt","id_diam_podt");
     modelNorm->addColumn("id_matr",tr("Материал"),Rels::instance()->relMatr);
     modelNorm->addColumn("kvo",tr("Норма"));
     modelNorm->addColumn("id_vid",tr("Вид затрат"),Rels::instance()->relRasxVid);
@@ -37,18 +39,18 @@ FormNorm::FormNorm(QWidget *parent) :
     modelNorm->addColumn("dat_end",tr("Дата кон."));
 
     modelNorm->setSort("id_vid, id_matr, dat_beg");
-    modelNorm->setDecimals(10,3);
-    modelNorm->setDefaultValue(13,QDate());
+    modelNorm->setDecimals(12,3);
+    modelNorm->setDefaultValue(15,QDate());
 
     ui->tableViewNorm->setModel(modelNorm);
-    for (int i=0; i<=8; i++){
+    for (int i=0; i<=10; i++){
         ui->tableViewNorm->setColumnHidden(i,true);
     }
-    ui->tableViewNorm->setColumnWidth(9,330);
-    ui->tableViewNorm->setColumnWidth(10,80);
-    ui->tableViewNorm->setColumnWidth(11,200);
+    ui->tableViewNorm->setColumnWidth(11,330);
     ui->tableViewNorm->setColumnWidth(12,80);
-    ui->tableViewNorm->setColumnWidth(13,80);
+    ui->tableViewNorm->setColumnWidth(13,200);
+    ui->tableViewNorm->setColumnWidth(14,80);
+    ui->tableViewNorm->setColumnWidth(15,80);
 
     modelProd = new ModelProd(this);
     ui->tableViewProd->setModel(modelProd);
@@ -113,7 +115,7 @@ void FormNorm::upd()
     if (ui->tableViewProd->model()->rowCount()){
         ui->tableViewProd->selectRow(0);
     }
-    for (int i=0; i<=9; i++){
+    for (int i=0; i<=11; i++){
         ui->tableViewProd->setColumnHidden(i,true);
     }
     ui->tableViewProd->resizeToContents();
@@ -131,6 +133,8 @@ void FormNorm::updNorm(QModelIndex /*ind*/)
     int id_provol_src=currentData(6).toInt();
     int id_podt_type=currentData(7).toInt();
     int id_podt_type_src=currentData(8).toInt();
+    int id_diam_src=currentData(9).toInt();
+    int id_diam_podt=currentData(10).toInt();
 
     modelNorm->setDefaultValue(0,id_type);
     modelNorm->setDefaultValue(1,id_line);
@@ -141,9 +145,12 @@ void FormNorm::updNorm(QModelIndex /*ind*/)
     modelNorm->setDefaultValue(6,id_provol_src);
     modelNorm->setDefaultValue(7,id_podt_type);
     modelNorm->setDefaultValue(8,id_podt_type_src);
+    modelNorm->setDefaultValue(9,id_diam_src);
+    modelNorm->setDefaultValue(10,id_diam_podt);
 
-    modelNorm->setFilter(QString("id_add_type = %1 and id_line = %2 and id_provol = %3 and id_diam = %4 and id_spool = %5 and id_pack = %6 and id_provol_src = %7 and id_podt_type = %8 and id_podt_type_src = %9")
-                         .arg(id_type).arg(id_line).arg(id_provol).arg(id_diam).arg(id_spool).arg(id_pack).arg(id_provol_src).arg(id_podt_type).arg(id_podt_type_src));
+    modelNorm->setFilter(QString("id_add_type = %1 and id_line = %2 and id_provol = %3 and id_diam = %4 and id_spool = %5 and id_pack = %6 and id_provol_src = %7"
+                                 " and id_podt_type = %8 and id_podt_type_src = %9 and id_diam_src = %10 and id_diam_podt = %11")
+                         .arg(id_type).arg(id_line).arg(id_provol).arg(id_diam).arg(id_spool).arg(id_pack).arg(id_provol_src).arg(id_podt_type).arg(id_podt_type_src).arg(id_diam_src).arg(id_diam_podt));
     modelNorm->select();
 }
 
@@ -152,11 +159,11 @@ void FormNorm::copy()
     buf.clear();
     for (int i=0; i<modelNorm->rowCount();i++){
         pnorm m;
-        m.id_matr=modelNorm->data(modelNorm->index(i,9),Qt::EditRole).toInt();
-        m.kvo=modelNorm->data(modelNorm->index(i,10),Qt::EditRole).toDouble();
-        m.id_vid=modelNorm->data(modelNorm->index(i,11),Qt::EditRole).toInt();
-        m.d_beg=modelNorm->data(modelNorm->index(i,12),Qt::EditRole).toDate();
-        m.d_end=modelNorm->data(modelNorm->index(i,13),Qt::EditRole).toDate();
+        m.id_matr=modelNorm->data(modelNorm->index(i,11),Qt::EditRole).toInt();
+        m.kvo=modelNorm->data(modelNorm->index(i,12),Qt::EditRole).toDouble();
+        m.id_vid=modelNorm->data(modelNorm->index(i,13),Qt::EditRole).toInt();
+        m.d_beg=modelNorm->data(modelNorm->index(i,14),Qt::EditRole).toDate();
+        m.d_end=modelNorm->data(modelNorm->index(i,15),Qt::EditRole).toDate();
         buf.push_back(m);
     }
     ui->pushButtonPaste->setEnabled(true);
@@ -173,11 +180,13 @@ void FormNorm::paste()
     int id_provol_src=currentData(6).toInt();
     int id_podt_type=currentData(7).toInt();
     int id_podt_type_src=currentData(8).toInt();
+    int id_diam_src=currentData(9).toInt();
+    int id_diam_podt=currentData(10).toInt();
     QString err;
     foreach (pnorm m, buf) {
         QSqlQuery query;
-        query.prepare("insert into wire_norm (id_add_type, id_line, id_provol, id_diam, id_spool, id_pack, id_provol_src, id_podt_type, id_podt_type_src, id_matr, kvo, id_vid, dat_beg, dat_end) values "
-                      "(:id_add_type, :id_line, :id_provol, :id_diam, :id_spool, :id_pack, :id_provol_src, :id_podt_type, :id_podt_type_src, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
+        query.prepare("insert into wire_norm (id_add_type, id_line, id_provol, id_diam, id_spool, id_pack, id_provol_src, id_podt_type, id_podt_type_src, id_diam_src, id_diam_podt, id_matr, kvo, id_vid, dat_beg, dat_end) values "
+                      "(:id_add_type, :id_line, :id_provol, :id_diam, :id_spool, :id_pack, :id_provol_src, :id_podt_type, :id_podt_type_src, :id_diam_src, :id_diam_podt, :id_matr, :kvo, :id_vid, :dat_beg, :dat_end)");
         query.bindValue(":id_add_type",id_type);
         query.bindValue(":id_line",id_line);
         query.bindValue(":id_provol",id_provol);
@@ -187,6 +196,8 @@ void FormNorm::paste()
         query.bindValue(":id_provol_src",id_provol_src);
         query.bindValue(":id_podt_type",id_podt_type);
         query.bindValue(":id_podt_type_src",id_podt_type_src);
+        query.bindValue(":id_diam_src",id_diam_src);
+        query.bindValue(":id_diam_podt",id_diam_podt);
         query.bindValue(":id_matr",m.id_matr);
         query.bindValue(":kvo",m.kvo);
         query.bindValue(":id_vid",m.id_vid);
@@ -235,7 +246,7 @@ void FormNorm::calcSum()
 {
     double sum=0;
     for (int i=0; i<modelProd->rowCount(); i++){
-        sum+=modelProd->data(modelProd->index(i,18),Qt::EditRole).toDouble();
+        sum+=modelProd->data(modelProd->index(i,20),Qt::EditRole).toDouble();
     }
     ui->labelSum->setText(ui->comboBoxType->currentText()+tr(" итого: ")+QLocale().toString(sum,'f',2)+tr(" кг"));
 }
@@ -248,8 +259,8 @@ ModelProd::ModelProd(QObject *parent) : QSqlQueryModel(parent)
 void ModelProd::refresh(QDate beg, QDate end, int id_type)
 {
     QSqlQuery query;
-    query.prepare("select w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, pp.id_pr, coalesce(wp2.id_type,0), coalesce(ps.id_type,0), "
-                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, pr2.nam, coalesce(wpt.snam,'-'), coalesce(wpt2.snam,'-'), sum(w.m_netto) "
+    query.prepare("select w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, pp.id_pr, coalesce(wp2.id_type,0), coalesce(ps.id_type,0), pp.id_dim, coalesce(wp2.id_diam,0), "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, pr2.nam||' ф '||d2.sdim, coalesce(wpt.snam||' ф '||d3.sdim,'-'), coalesce(wpt2.snam,'-'), sum(w.m_netto) "
                   "from wire_in_cex_data w "
                   "inner join wire_in_cex_type t on w.id_type=t.id and t.koef=1 "
                   "inner join wire_parti p on w.id_wparti=p.id "
@@ -262,34 +273,36 @@ void ModelProd::refresh(QDate beg, QDate end, int id_type)
                   "inner join prov_buht pb on pb.id = m.id_buht "
                   "inner join prov_prih pp on pp.id = pb.id_prih "
                   "inner join provol pr2 on pr2.id = pp.id_pr "
+                  "inner join diam d2 on d2.id = pp.id_dim "
                   "left join wire_podt wp2 on wp2.id = m.id_podt "
+                  "left join diam d3 on d3.id = wp2.id_diam "
                   "left join wire_podt_type wpt on wpt.id = wp2.id_type "
                   "left join ( "
-                  "select wpc.id_podt as id_podt, max(wp.id_type) as id_type  "
+                  "select wpc.id_podt as id_podt, max(wp.id_type) as id_type "
                   "from wire_podt_cont wpc "
                   "inner join wire_podt wp on wp.id = wpc.id_podt_src "
                   "group by wpc.id_podt "
                   ") as ps on ps.id_podt = wp2.id "
                   "left join wire_podt_type wpt2 on wpt2.id = ps.id_type "
                   "where w.id_type = :id_type and w.dat between :d1 and :d2 "
-                  "group by w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, pp.id_pr, wp2.id_type, ps.id_type, "
-                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, pr2.nam, wpt.snam, wpt2.snam "
+                  "group by w.id_type, m.id_type, m.id_provol, m.id_diam, p.id_pack, p.id_pack_type, pp.id_pr, wp2.id_type, ps.id_type, pp.id_dim, wp2.id_diam, "
+                  "t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, pr2.nam, wpt.snam, wpt2.snam, d2.sdim, d3.sdim "
                   "order by t.short, l.snam, pr.nam, d.sdim, k.short, wp.pack_ed, pr2.nam, wpt.snam, wpt2.snam");
     query.bindValue(":id_type",id_type);
     query.bindValue(":d1",beg);
     query.bindValue(":d2",end);
     if (query.exec()){
         setQuery(query);
-        setHeaderData(9,Qt::Horizontal,QString::fromUtf8("Тип продукции"));
-        setHeaderData(10,Qt::Horizontal,QString::fromUtf8("Стан"));
-        setHeaderData(11,Qt::Horizontal,QString::fromUtf8("Марка"));
-        setHeaderData(12,Qt::Horizontal,QString::fromUtf8("Диам."));
-        setHeaderData(13,Qt::Horizontal,QString::fromUtf8("Носитель"));
-        setHeaderData(14,Qt::Horizontal,QString::fromUtf8("Упаковка"));
-        setHeaderData(15,Qt::Horizontal,QString::fromUtf8("Исх. марка"));
-        setHeaderData(16,Qt::Horizontal,QString::fromUtf8("Полуфабрикат"));
-        setHeaderData(17,Qt::Horizontal,QString::fromUtf8("Исх. полуфаб."));
-        setHeaderData(18,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
+        setHeaderData(11,Qt::Horizontal,QString::fromUtf8("Тип продукции"));
+        setHeaderData(12,Qt::Horizontal,QString::fromUtf8("Стан"));
+        setHeaderData(13,Qt::Horizontal,QString::fromUtf8("Марка"));
+        setHeaderData(14,Qt::Horizontal,QString::fromUtf8("Диам."));
+        setHeaderData(15,Qt::Horizontal,QString::fromUtf8("Носитель"));
+        setHeaderData(16,Qt::Horizontal,QString::fromUtf8("Упаковка"));
+        setHeaderData(17,Qt::Horizontal,QString::fromUtf8("Исх. марка"));
+        setHeaderData(18,Qt::Horizontal,QString::fromUtf8("Полуфабрикат"));
+        setHeaderData(19,Qt::Horizontal,QString::fromUtf8("Исх. полуфаб."));
+        setHeaderData(20,Qt::Horizontal,QString::fromUtf8("Выпуск, кг"));
         updState();
     } else {
         QMessageBox::critical(NULL,tr("Error"),query.lastError().text(),QMessageBox::Cancel);
@@ -300,7 +313,7 @@ QVariant ModelProd::data(const QModelIndex &item, int role) const
 {
     if (role==Qt::BackgroundRole){
         QString s;
-        for (int i=0; i<=8; i++){
+        for (int i=0; i<=10; i++){
             if (!s.isEmpty()){
                 s+=":";
             }
@@ -308,10 +321,10 @@ QVariant ModelProd::data(const QModelIndex &item, int role) const
         }
         return exList.contains(s) ? QVariant(QColor(255,255,255)) : QVariant(QColor(255,170,170));
     }
-    if (role==Qt::DisplayRole && item.column()==18){
+    if (role==Qt::DisplayRole && item.column()==20){
         return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',1);
     }
-    if (role==Qt::TextAlignmentRole && item.column()==18){
+    if (role==Qt::TextAlignmentRole && item.column()==20){
         return int(Qt::AlignRight | Qt::AlignVCenter);
     }
     return QSqlQueryModel::data(item,role);
@@ -322,7 +335,7 @@ bool ModelProd::ready()
     bool ok=true;
     for (int i=0; i<rowCount(); i++){
         QString s;
-        for (int j=0; j<=8; j++){
+        for (int j=0; j<=10; j++){
             if (!s.isEmpty()){
                 s+=":";
             }
@@ -339,7 +352,7 @@ bool ModelProd::ready()
 void ModelProd::updState()
 {
     QSqlQuery query;
-    query.prepare("select distinct id_add_type||':'||id_line||':'||id_provol||':'||id_diam||':'||id_spool||':'||id_pack||':'||id_provol_src||':'||id_podt_type||':'||id_podt_type_src as nam from wire_norm order by nam");
+    query.prepare("select distinct id_add_type||':'||id_line||':'||id_provol||':'||id_diam||':'||id_spool||':'||id_pack||':'||id_provol_src||':'||id_podt_type||':'||id_podt_type_src||':'||id_diam_src||':'||id_diam_podt as nam from wire_norm order by nam");
     if (query.exec()){
         exList.clear();
         while(query.next()){

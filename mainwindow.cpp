@@ -29,6 +29,7 @@ MainWindow::MainWindow(QString k, QWidget *parent) :
     actAction(ui->actionWarehouse,&MainWindow::warehouse);
     actAction(ui->actionNakl,&MainWindow::nakl);
     actAction(ui->actionNorm,&MainWindow::norm);
+    actAction(ui->actionFix,&MainWindow::fix);
 
     actAction(ui->actionCubeSpool,&MainWindow::cubeNam);
     actAction(ui->actionCubePack,&MainWindow::cubePack);
@@ -258,6 +259,13 @@ void MainWindow::norm()
 {
     if (!exist(sender())){
         addSubWindow(new FormNorm(),sender());
+    }
+}
+
+void MainWindow::fix()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormFix(),sender());
     }
 }
 

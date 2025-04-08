@@ -24,6 +24,7 @@
 #include "formmovwire.h"
 #include "formnakl.h"
 #include "formnorm.h"
+#include "formfix.h"
 
 
 namespace Ui {
@@ -71,6 +72,7 @@ private slots:
     void warehouse();
     void nakl();
     void norm();
+    void fix();
     void cubeNam();
     void cubePack();
     void cubePost();

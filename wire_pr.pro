@@ -44,6 +44,7 @@ SOURCES += main.cpp\
     formedtline.cpp \
     formedtpack.cpp \
     formedtwire.cpp \
+    formfix.cpp \
     formfixpodt.cpp \
     formlbl.cpp \
     formmatr.cpp \
@@ -92,6 +93,7 @@ HEADERS  += mainwindow.h \
     formedtline.h \
     formedtpack.h \
     formedtwire.h \
+    formfix.h \
     formfixpodt.h \
     formlbl.h \
     formmatr.h \
@@ -129,6 +131,7 @@ FORMS    += mainwindow.ui \
     formedtline.ui \
     formedtpack.ui \
     formedtwire.ui \
+    formfix.ui \
     formfixpodt.ui \
     formlbl.ui \
     formmatr.ui \

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>994</width>
-    <height>694</height>
+    <width>880</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Отчет</string>
+   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -24,7 +24,14 @@
       </widget>
      </item>
      <item>
-      <widget class="DbDateEdit" name="dateEditBeg"/>
+      <widget class="QDateEdit" name="dateEditBeg">
+       <property name="displayFormat">
+        <string>dd.MM.yy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_2">
@@ -34,15 +41,19 @@
       </widget>
      </item>
      <item>
-      <widget class="DbDateEdit" name="dateEditEnd"/>
+      <widget class="QDateEdit" name="dateEditEnd">
+       <property name="displayFormat">
+        <string>dd.MM.yy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButtonMar">
+      <widget class="QPushButton" name="pushButtonUpd">
        <property name="text">
-        <string>По маркам</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Обновить</string>
        </property>
       </widget>
      </item>
@@ -51,16 +62,15 @@
        <property name="text">
         <string>По партиям</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cmdUpd">
+      <widget class="QRadioButton" name="radioButtonMark">
        <property name="text">
-        <string>Обновить</string>
-       </property>
-       <property name="icon">
-        <iconset theme="view-refresh">
-         <normaloff>.</normaloff>.</iconset>
+        <string>По маркам</string>
        </property>
       </widget>
      </item>
@@ -78,13 +88,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="cmdSave">
+      <widget class="QPushButton" name="pushButtonSave">
        <property name="text">
         <string>Сохранить</string>
-       </property>
-       <property name="icon">
-        <iconset theme="document-save">
-         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -100,11 +106,6 @@
    <class>TableView</class>
    <extends>QTableView</extends>
    <header>olap/tableview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>DbDateEdit</class>
-   <extends>QDateEdit</extends>
-   <header>db/dbdateedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

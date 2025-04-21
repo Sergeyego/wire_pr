@@ -46,6 +46,10 @@ Rels::Rels(QObject *parent) : QObject(parent)
     relPack->setFilterColumn("id_pack_def");
     relPack->setSort("wire_pack_kind.short");
 
+    relPackEd = new DbSqlRelation("wire_pack_ed","id","nam",this);
+    relPackEd->setSort("wire_pack_ed.nam");
+    relPackEd->setEditable(true);
+
     relPackType = new DbSqlRelation("wire_pack","id","pack_ed",this);
     relPackType->setSort("wire_pack.pack_ed");
 

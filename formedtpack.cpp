@@ -23,7 +23,8 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
 
     modelPackType = new DbTableModel("wire_pack",this);
     modelPackType->addColumn("id",tr("id"));
-    modelPackType->addColumn("pack_ed",tr("Единичная упаковка"));
+    modelPackType->addColumn("pack_ed",tr("Наименование"));
+    modelPackType->addColumn("id_ed",tr("Единичная упаковка"),Rels::instance()->relPackEd);
     modelPackType->addColumn("pack_group",tr("Групповая упаковка"));
     modelPackType->addColumn("mas_ed",tr("Масса ед., кг"));
     modelPackType->addColumn("mas_group",tr("Масса гр., кг"));
@@ -32,9 +33,10 @@ FormEdtPack::FormEdtPack(QWidget *parent) :
     ui->tableViewType->setModel(modelPackType);
     ui->tableViewType->setColumnHidden(0,true);
     ui->tableViewType->setColumnWidth(1,150);
-    ui->tableViewType->setColumnWidth(2,150);
-    ui->tableViewType->setColumnWidth(3,100);
+    ui->tableViewType->setColumnWidth(2,160);
+    ui->tableViewType->setColumnWidth(3,150);
     ui->tableViewType->setColumnWidth(4,100);
+    ui->tableViewType->setColumnWidth(5,100);
 
     connect(modelPack,SIGNAL(sigUpd()),Rels::instance()->relPack,SLOT(refreshModel()));
     connect(modelPackType,SIGNAL(sigUpd()),Rels::instance()->relPackType,SLOT(refreshModel()));

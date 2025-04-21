@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1013</width>
+    <width>1067</width>
     <height>798</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Партии проволоки</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QHBoxLayout" name="horizontalLayout_11">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -324,7 +324,7 @@
           <widget class="QComboBox" name="comboBoxPack">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>220</width>
              <height>0</height>
             </size>
            </property>
@@ -394,24 +394,45 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="labelPack">
-           <property name="text">
-            <string>Варианты намотки</string>
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+           <property name="maximumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>16777215</width>
+             <height>50</height>
             </size>
            </property>
-          </spacer>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>-20</x>
+              <y>0</y>
+              <width>131</width>
+              <height>35</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QLabel" name="labelPack">
+               <property name="text">
+                <string>Варианты намотки</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_14">

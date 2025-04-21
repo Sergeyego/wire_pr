@@ -229,7 +229,11 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="DbViewer" name="tableViewPack"/>
+             <widget class="DbViewer" name="tableViewPack">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>

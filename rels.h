@@ -18,6 +18,7 @@ public:
     DbSqlRelation *relMark;
     DbSqlRelation *relWireType;
     DbSqlRelation *relPack;
+    DbSqlRelation *relPackEd;
     DbSqlRelation *relPackType;
     DbSqlRelation *relEanEd;
     DbSqlRelation *relEanGr;

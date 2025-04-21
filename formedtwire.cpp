@@ -168,7 +168,7 @@ ModelEan::ModelEan(QObject *parent) : DbTableModel("wire_ean",parent)
     addColumn("id_pack",tr("Упаковка (ед., групп.)"),Rels::instance()->relPackType);
     addColumn("ean_ed",tr("Штрих код (ед.)"),Rels::instance()->relEanEd);
     addColumn("ean_group",tr("Штрих код (гр.)"),Rels::instance()->relEanGr);
-    setSort("diam.sdim");
+    setSort("diam.sdim, wire_pack_kind.short, wire_pack.pack_ed");
 }
 
 void ModelEan::refresh(int id_prov)

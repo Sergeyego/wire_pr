@@ -31,7 +31,7 @@ void FormReport::upd()
     QString query;
     if (ui->radioButtonPart->isChecked()){
         query=QString("select pr.nam, d.sdim, k.short, r.n_s ||'-'|| r.year, ev.nam, p.pack_ed, "
-                        "r.beg, r.post, r.postp, r.postb, r.poste, r.ver, r.brak, r.isp, r.obr, r.rekl, r.elrtr, r.other, r.perep, r.otgr, r.ost "
+                        "r.beg, r.post, r.postd, r.postp, r.postb, r.poste, r.ver, r.brak, r.isp, r.obr, r.rekl, r.elrtr, r.other, r.perep, r.otgr, r.ost "
                         "from wire_calc_cex_report('%1','%2') as r "
                         "inner join provol as pr on r.id_provol=pr.id "
                         "inner join diam as d on r.id_diam=d.id "
@@ -42,7 +42,7 @@ void FormReport::upd()
                         "order by pr.nam, d.sdim, k.short, r.n_s, r.year").arg(ui->dateEditBeg->date().addDays(-1).toString("yyyy-MM-dd")).arg(ui->dateEditEnd->date().toString("yyyy-MM-dd"));
     } else {
         query=QString("select pr.nam, d.sdim, k.short, NULL, ev.nam, p.pack_ed, "
-                        "sum(r.beg), sum(r.post), sum(r.postp), sum(r.postb), sum(r.poste), sum(r.ver), sum(r.brak), sum(r.isp), sum(r.obr), "
+                        "sum(r.beg), sum(r.post), sum(r.postd), sum(r.postp), sum(r.postb), sum(r.poste), sum(r.ver), sum(r.brak), sum(r.isp), sum(r.obr), "
                         "sum(r.rekl), sum(r.elrtr), sum(r.other), sum(r.perep), sum(r.otgr), sum(r.ost) "
                         "from wire_calc_cex_report('%1','%2') as r "
                         "inner join provol as pr on r.id_provol=pr.id "
@@ -66,11 +66,11 @@ void FormReport::updFinished()
     QVector<QVariant> sums;
     int colCount= titles.size();
     sums.resize(colCount);
-    if (colCount>20){
+    if (colCount>21){
         sums[0]=tr("ИТОГО");
     }
     for (QVector<QVariant> dt : data){
-        for (int i=colCount-15; i<colCount; i++){
+        for (int i=colCount-16; i<colCount; i++){
             sums[i]=sums[i].toDouble()+dt[i].toDouble();
         }
     }
@@ -91,8 +91,8 @@ void FormReport::save()
 ModelReport::ModelReport(QWidget *parent) : TableModel(parent)
 {
     QStringList titles;
-    titles<<tr("Марка")<<tr("Диам.")<<tr("Носитель")<<tr("Партия")<<tr("Вариант")<<tr("Упаковка")<<tr("Налич.на нач.")<<tr("Пост. c пр-ва")<<tr("Пост. полуф.")<<tr("Пост. брак")<<tr("Пост. электр.");
-    titles<<tr("Воз. со скл.")<<tr("Брак")<<tr("Испыт.")<<tr("Образцы")<<tr("Реклама")<<tr("Для эл. цеха")<<tr("Другое")<<tr("Переп.(+/-)")<<tr("Пер. на скл.")<<tr("Ост. на конец");
+    titles<<tr("Марка")<<tr("Диам.")<<tr("Носитель")<<tr("Партия")<<tr("Вариант")<<tr("Упаковка")<<tr("Нал.на нач.")<<tr("Пост. c пр-ва")<<tr("Пост.длинн.")<<tr("Пост.полуф.")<<tr("Пост.брак")<<tr("Пост.электр.");
+    titles<<tr("Воз.со скл.")<<tr("Брак")<<tr("Испыт.")<<tr("Образцы")<<tr("Реклама")<<tr("Для эл.цеха")<<tr("Другое")<<tr("Переп.(+/-)")<<tr("Пер.на скл.")<<tr("Ост.на конец");
     setHeader(titles);
 }
 
@@ -100,7 +100,7 @@ QVariant ModelReport::data(const QModelIndex &index, int role) const
 {
     if((role == Qt::BackgroundRole)) {
         double beg = this->data(this->index(index.row(),6),Qt::EditRole).toDouble();
-        double end = this->data(this->index(index.row(),20),Qt::EditRole).toDouble();
+        double end = this->data(this->index(index.row(),21),Qt::EditRole).toDouble();
         if (beg<0 || end<0) {
             return QVariant(QColor(255,170,170));
         } else {

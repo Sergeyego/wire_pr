@@ -4,7 +4,7 @@
 #include <QObject>
 #include "db/dbtablemodel.h"
 #include "invoicemanager.h"
-#include "db/modelro.h"
+#include "modelro.h"
 
 class Rels : public QObject
 {

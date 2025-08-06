@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "progressexecutor.h"
-#include "db/modelro.h"
+#include "modelro.h"
 #include "db/tablemodel.h"
 
 namespace Ui {

@@ -37,7 +37,7 @@ SOURCES += main.cpp\
     db/dbviewer.cpp \
     db/dbxlsx.cpp \
     db/executor.cpp \
-    db/modelro.cpp \
+    modelro.cpp \
     db/tablemodel.cpp \
     dialogotk.cpp \
     dialogpack.cpp \
@@ -86,7 +86,7 @@ HEADERS  += mainwindow.h \
     db/dbviewer.h \
     db/dbxlsx.h \
     db/executor.h \
-    db/modelro.h \
+    modelro.h \
     db/tablemodel.h \
     dialogotk.h \
     dialogpack.h \

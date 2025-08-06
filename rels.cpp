@@ -32,6 +32,7 @@ Rels::Rels(QObject *parent) : QObject(parent)
     relNewGost->setSort("gost_new.nam");
 
     relProvol = new DbSqlRelation("provol","id","nam",this);
+    relProvol->model()->setAsync(false);
     relProvol->setAlias("relprov");
     relProvol->setSort("relprov.nam");
     relProvol->setFilter("relprov.is_w=1");

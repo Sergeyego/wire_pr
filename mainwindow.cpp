@@ -55,8 +55,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadSettings()
 {
-    QSettings settings("szsm", "wire_pr");
-    this->restoreGeometry(settings.value("main_geometry").toByteArray());
+    QSettings settings("szsm", "wire_pr"); 
     this->restoreState(settings.value("main_state").toByteArray());
     QString opentab=settings.value("main_opentab").toString();
     QString current=settings.value("main_currenttab").toString();
@@ -72,6 +71,7 @@ void MainWindow::loadSettings()
         }
     }
     setActiveSubWindow(current);
+    this->restoreGeometry(settings.value("main_geometry").toByteArray());
 }
 
 void MainWindow::saveSettings()

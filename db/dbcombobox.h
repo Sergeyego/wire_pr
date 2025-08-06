@@ -9,7 +9,6 @@
 #include <QAbstractItemView>
 #include <QAction>
 #include <QApplication>
-#include <QDesktopWidget>
 #include "dbrelationeditdialog.h"
 #include "dbtablemodel.h"
 #include "dbviewer.h"
@@ -45,15 +44,17 @@ private:
     colVal currentData;
     QAction *actionEdt;
     QModelIndex dbModelIndex;
+    bool isReset;
 
 signals:
     void sigActionEdtRel(const QModelIndex &index);
 
 private slots:
-    void blockSignal();
     void indexChanged(int n);
     void edtRel();
     void updData();
+    void mAboutReset();
+    void mReset();
 
 public slots:
     void setCurrentData(colVal data);

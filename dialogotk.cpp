@@ -58,5 +58,7 @@ QString DialogOtk::getNum(QComboBox *c)
     if (c->findText(c->currentText())!=-1 && c->model()->columnCount()>2){
         n=c->model()->data(c->model()->index(c->currentIndex(),2),Qt::EditRole).toInt();
     }
-    return QString("%1").arg(n,2,'d',0,QChar('0'));
+    QString num = QString::number(n);
+    num=num.rightJustified(2,'0',true);
+    return num;
 }

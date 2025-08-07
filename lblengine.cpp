@@ -2,9 +2,8 @@
 
 LblEngine::LblEngine(QObject *parent) : QObject(parent)
 {
-    dir=QDir::currentPath();
     QDomDocument domDocument;
-    QFile fileTemp(dir+"/templates/glabels_szsm.xml");
+    QFile fileTemp(":/templates/glabels_szsm.xml");
     domDocument.setContent(&fileTemp, true);
     QDomNodeList list;
     QDomElement main = domDocument.documentElement();
@@ -87,7 +86,11 @@ void LblEngine::createLblEd(QString text, QString barcode)
     if (!barcode.isEmpty()) {
         obj.appendChild(newBarcode("4mm","20.5mm","38mm","17mm",barcode,&doc));
     }
-    QFile file("lbl.glabels");
+    QDir dir(QDir::homePath()+"/.szsm");
+    if (!dir.exists()){
+        dir.mkdir(dir.path());
+    }
+    QFile file(dir.path()+"/lbl.glabels");
     if ( file.open( QIODevice::WriteOnly ) ) {
         QTextStream stream( &file );
         doc.save(stream,1);
@@ -176,7 +179,11 @@ void LblEngine::createLblGroup(int id_part)
         obj.appendChild(newText("91mm","24mm","40mm","32mm",str1,9,false,&doc));
         if (!ean.isEmpty()) obj.appendChild(newBarcode("51mm","42mm","38mm","17mm",ean,&doc));
 
-        QFile file("lbl.glabels");
+        QDir dir(QDir::homePath()+"/.szsm");
+        if (!dir.exists()){
+            dir.mkdir(dir.path());
+        }
+        QFile file(dir.path()+"/lbl.glabels");
         if ( file.open( QIODevice::WriteOnly ) ) {
             QTextStream stream( &file );
             doc.save(stream,1);

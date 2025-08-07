@@ -37,5 +37,6 @@
         <file>images/wire.ico</file>
         <file>images/simb.png</file>
         <file>images/key.png</file>
+        <file>templates/glabels_szsm.xml</file>
     </qresource>
 </RCC>

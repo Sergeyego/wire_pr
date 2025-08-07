@@ -42,6 +42,7 @@ public:
 private:
     CustomCompletter *sqlCompleter;
     colVal currentData;
+    colVal saveData;
     QAction *actionEdt;
     QModelIndex dbModelIndex;
     bool isReset;

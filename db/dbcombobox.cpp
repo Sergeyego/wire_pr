@@ -95,11 +95,13 @@ void DbComboBox::updData()
 void DbComboBox::mAboutReset()
 {
     isReset=true;
+    saveData=currentData;
 }
 
 void DbComboBox::mReset()
 {
     isReset=false;
+    setCurrentData(saveData);
 }
 
 void DbComboBox::setCurrentData(colVal data)

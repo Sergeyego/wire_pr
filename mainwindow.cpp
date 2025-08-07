@@ -209,7 +209,7 @@ void MainWindow::podtNorm()
 void MainWindow::wirePart()
 {
     if (!exist(sender())){
-        addSubWindow(new FormPart(key==QString("srt")),sender());
+        addSubWindow(new FormPart(true),sender());
     }
 }
 

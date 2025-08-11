@@ -15,6 +15,15 @@ LblEngine::LblEngine(QObject *parent) : QObject(parent)
         }
     }
     fileTemp.close();
+    QDir dir(QDir::homePath()+"/.szsm");
+    if (!dir.exists()){
+        dir.mkdir(dir.path());
+    }
+    lbldir=dir.path();
+    QFile fileSimb(":/images/simb.png");
+    fileSimb.copy(lbldir+"/simb.png");
+    QFile fileSite(":/images/site.png");
+    fileSite.copy(lbldir+"/site.png");
 }
 
 void LblEngine::createLblEd(int id_part, QString cod, bool barcode)
@@ -80,17 +89,14 @@ void LblEngine::createLblEd(QString text, QString barcode)
     root.appendChild(obj);
 
     obj.appendChild(newText("4mm","35mm","38mm","28.5mm",text,7,true,&doc));
-    obj.appendChild(newImage("6.5mm","4mm","33mm","13mm",dir+"/images/simb.png",&doc));
-    obj.appendChild(newImage("5.5mm","17.5mm","35mm","2.5mm",dir+"/images/site.png",&doc));
+    obj.appendChild(newImage("6.5mm","4mm","33mm","13mm",lbldir+"/simb.png",&doc));
+    obj.appendChild(newImage("5.5mm","17.5mm","35mm","2.5mm",lbldir+"/site.png",&doc));
 
     if (!barcode.isEmpty()) {
         obj.appendChild(newBarcode("4mm","20.5mm","38mm","17mm",barcode,&doc));
     }
-    QDir dir(QDir::homePath()+"/.szsm");
-    if (!dir.exists()){
-        dir.mkdir(dir.path());
-    }
-    QFile file(dir.path()+"/lbl.glabels");
+
+    QFile file(lbldir+"/lbl.glabels");
     if ( file.open( QIODevice::WriteOnly ) ) {
         QTextStream stream( &file );
         doc.save(stream,1);
@@ -172,18 +178,14 @@ void LblEngine::createLblGroup(int id_part)
         obj.appendChild(newLine("3mm","23mm","129mm","0mm",&doc));
         obj.appendChild(newLine("90mm","23mm","0mm","34mm",&doc));
         obj.appendChild(newLine("3mm","44mm","87mm","0mm",&doc));
-        obj.appendChild(newImage("4mm","4mm","26mm","12mm",dir+"/images/simb.png",&doc));
+        obj.appendChild(newImage("4mm","4mm","26mm","12mm",lbldir+"/simb.png",&doc));
         obj.appendChild(newText("35mm","5.5mm","95mm","10mm",str0,18,false,&doc));
         obj.appendChild(newText("4mm","18mm","127mm","4mm",tuStr,9,false,&doc));
         obj.appendChild(newText("4mm","24mm","85mm","19mm",description,8,false,&doc));
         obj.appendChild(newText("91mm","24mm","40mm","32mm",str1,9,false,&doc));
         if (!ean.isEmpty()) obj.appendChild(newBarcode("51mm","42mm","38mm","17mm",ean,&doc));
 
-        QDir dir(QDir::homePath()+"/.szsm");
-        if (!dir.exists()){
-            dir.mkdir(dir.path());
-        }
-        QFile file(dir.path()+"/lbl.glabels");
+        QFile file(lbldir+"/lbl.glabels");
         if ( file.open( QIODevice::WriteOnly ) ) {
             QTextStream stream( &file );
             doc.save(stream,1);

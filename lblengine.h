@@ -26,7 +26,7 @@ public:
     void createLblGroup(int id_part);
 
 private:
-    QString dir;
+    QString lbldir;
     QMap <QString,QDomElement> map;
     QDomElement newImage(QString x, QString y, QString w, QString h, QString fnam, QDomDocument *doc);
     QDomElement newBarcode(QString x, QString y, QString w, QString h, QString code, QDomDocument *doc);
